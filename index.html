@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<!-- saved from url=(0203)file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Salesforce Personalization — Banco Mercantil: Análise de ROI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./index_files/css2" rel="stylesheet">
+<script src="./index_files/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #032D60;
+    --blue: #0176D3;
+    --blue-mid: #014F9B;
+    --cloud: #EBF4FF;
+    --gold: #C4922A;
+    --gold-light: #FFF9EC;
+    --ink: #1B1F2A;
+    --ink-muted: #4A5568;
+    --line: #D1DCE5;
+    --white: #FFFFFF;
+    --bg-alt: #F5F8FC;
+    --green-pos: #1B6B45;
+    --green-bg: #EDFAF3;
+    --red-neg: #B91C1C;
+    color-scheme: light;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 48px; height: 52px;
+  }
+  .nav-brand { display: flex; align-items: center; gap: 12px; }
+  .nav-sep { width: 1px; height: 18px; background: rgba(255,255,255,0.25); }
+  .nav-ctx { font-size: 12px; color: rgba(255,255,255,0.65); }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 13px; font-weight: 500; white-space: nowrap; }
+  .nav-links a:hover { color: #fff; }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    padding: 80px 48px 72px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; right: 0; top: 0;
+    width: 55%; height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(1,118,211,0.12) 100%);
+    pointer-events: none;
+  }
+  .hero-inner { max-width: 880px; margin: 0 auto; position: relative; z-index: 1; }
+  .hero-kicker {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 24px;
+  }
+  .hero-headline {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: clamp(34px, 4.8vw, 56px);
+    font-weight: normal; color: var(--white);
+    line-height: 1.18; max-width: 760px; margin-bottom: 28px;
+  }
+  .hero-subline {
+    font-size: 17px; color: rgba(255,255,255,0.68);
+    max-width: 600px; line-height: 1.7; margin-bottom: 44px;
+  }
+  .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--blue); color: #fff; text-decoration: none;
+    font-size: 14px; font-weight: 600; padding: 13px 28px;
+    border-radius: 4px; transition: background 0.15s;
+  }
+  .btn-primary:hover { background: #0161b3; }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent; color: rgba(255,255,255,0.75); text-decoration: none;
+    font-size: 14px; font-weight: 500; padding: 13px 20px;
+    border: 1px solid rgba(255,255,255,0.25); border-radius: 4px;
+  }
+  .btn-ghost:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+
+  /* IMPACT STRIP */
+  .impact-strip {
+    background: var(--cloud);
+    border-bottom: 1px solid var(--line);
+    padding: 40px 48px;
+  }
+  .impact-inner {
+    max-width: 980px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 0;
+  }
+  .impact-item {
+    padding: 0 32px;
+    border-right: 1px solid var(--line);
+  }
+  .impact-item:first-child { padding-left: 0; }
+  .impact-item:last-child { border-right: none; }
+  .impact-val {
+    font-family: Georgia, serif;
+    font-size: 38px; color: var(--navy); font-weight: normal;
+    line-height: 1; margin-bottom: 8px;
+  }
+  .impact-val em { font-style: normal; font-size: 24px; color: var(--blue); }
+  .impact-lbl { font-size: 13px; color: var(--ink-muted); line-height: 1.45; max-width: 160px; }
+  .impact-src { font-size: 11px; color: var(--blue); margin-top: 5px; }
+
+  /* SECTIONS */
+  section { padding: 72px 48px; }
+  .sec-inner { max-width: 980px; margin: 0 auto; }
+  .sec-title {
+    font-family: Georgia, serif;
+    font-size: clamp(22px, 2.8vw, 30px);
+    font-weight: normal; color: var(--navy);
+    line-height: 1.25; margin-bottom: 10px;
+  }
+  .sec-intro {
+    font-size: 15px; color: var(--ink-muted);
+    max-width: 620px; margin-bottom: 44px; line-height: 1.7;
+  }
+
+  /* ── FINANCIALS SECTION ── */
+  #financials { background: var(--navy); }
+  #financials .sec-title { color: #fff; }
+  #financials .sec-intro { color: rgba(255,255,255,0.65); }
+
+  .fin-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .fin-card {
+    background: rgba(255,255,255,0.06);
+    padding: 28px 24px;
+    transition: background 0.15s;
+  }
+  .fin-card:hover { background: rgba(255,255,255,0.1); }
+  .fin-period {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 10px;
+  }
+  .fin-val {
+    font-family: Georgia, serif;
+    font-size: 28px; color: #fff; font-weight: normal;
+    line-height: 1; margin-bottom: 6px;
+  }
+  .fin-val em {
+    font-style: normal; font-size: 16px; color: rgba(255,255,255,0.5);
+  }
+  .fin-label { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.4; }
+  .fin-delta {
+    margin-top: 8px; font-size: 12px; font-weight: 600;
+    color: #5EEAD4;
+  }
+  .fin-delta.neg { color: #FCA5A5; }
+
+  .fin-insight {
+    background: rgba(196,146,42,0.15);
+    border: 1px solid rgba(196,146,42,0.3);
+    border-radius: 6px;
+    padding: 20px 24px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .fin-insight-icon { font-size: 18px; margin-top: 2px; flex-shrink: 0; }
+  .fin-insight p { font-size: 14px; color: rgba(255,255,255,0.8); line-height: 1.7; }
+  .fin-insight strong { color: #fff; }
+
+  /* ── HOW IT WORKS ── */
+  #how { background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+  .channel-tabs {
+    display: flex; gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 8px; overflow: hidden;
+    margin-bottom: 36px;
+    background: var(--white);
+  }
+  .channel-tab {
+    flex: 1; padding: 16px 20px;
+    background: transparent; border: none;
+    cursor: pointer; text-align: left;
+    border-right: 1px solid var(--line);
+    transition: background 0.12s;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .channel-tab:last-child { border-right: none; }
+  .channel-tab.active { background: var(--navy); }
+  .channel-tab.active .tab-label { color: #fff; }
+  .channel-tab.active .tab-sub { color: rgba(255,255,255,0.6); }
+  .channel-tab:not(.active):hover { background: var(--cloud); }
+  .channel-tab-icon {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    background: var(--cloud);
+  }
+  .channel-tab.active .channel-tab-icon { background: rgba(255,255,255,0.15); }
+  .channel-tab-icon svg { width: 18px; height: 18px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .channel-tab.active .channel-tab-icon svg { stroke: #fff; }
+  .tab-label { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .tab-sub { font-size: 11px; color: var(--ink-muted); margin-top: 1px; }
+
+  .channel-panels { position: relative; }
+  .channel-panel { display: none; }
+  .channel-panel.active { display: block; }
+
+  .channel-layout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+  }
+
+  .channel-flow { background: var(--white); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .channel-flow-header {
+    background: var(--navy); padding: 14px 20px;
+    font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8);
+    letter-spacing: 0.04em;
+  }
+  .flow-steps { padding: 20px; display: flex; flex-direction: column; gap: 0; }
+  .flow-step {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    position: relative;
+  }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-num {
+    width: 28px; height: 28px; flex-shrink: 0;
+    background: var(--navy); border-radius: 50%;
+    color: #fff; font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+  .flow-step h5 { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .flow-step p { font-size: 12px; color: var(--ink-muted); line-height: 1.55; }
+  .flow-step .tech-tag {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    color: var(--blue); background: var(--cloud);
+    padding: 2px 8px; border-radius: 100px; margin-top: 5px;
+  }
+
+  .channel-gains h4 {
+    font-size: 14px; font-weight: 600; color: var(--navy);
+    margin-bottom: 16px; padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+  }
+  .gain-row {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    padding: 12px 0; border-bottom: 1px solid var(--line);
+    gap: 16px;
+  }
+  .gain-row:last-child { border-bottom: none; }
+  .gain-label { font-size: 13px; color: var(--ink-muted); line-height: 1.45; flex: 1; }
+  .gain-val {
+    font-size: 14px; font-weight: 700; color: var(--green-pos);
+    background: var(--green-bg); padding: 3px 12px;
+    border-radius: 100px; white-space: nowrap; flex-shrink: 0;
+  }
+
+  /* ── COST OF DOING NOTHING ── */
+  #cost { background: var(--white); }
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  .cost-col h3 { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 20px; }
+  .cost-item {
+    display: flex; gap: 16px; align-items: flex-start;
+    padding: 16px 0; border-bottom: 1px solid var(--line);
+  }
+  .cost-item:last-child { border-bottom: none; }
+  .cost-icon { font-size: 20px; margin-top: 2px; flex-shrink: 0; }
+  .cost-item h5 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+  .cost-item p { font-size: 13px; color: var(--ink-muted); line-height: 1.6; }
+  .cost-item .est { font-size: 12px; font-weight: 600; color: var(--red-neg); margin-top: 4px; }
+  .cost-item .fix { font-size: 12px; font-weight: 600; color: var(--green-pos); margin-top: 4px; }
+
+  /* ── EXEC PRIORITIES ── */
+  #exec { background: var(--bg-alt); border-top: 1px solid var(--line); }
+
+  .exec-mapping {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .exec-card {
+    background: var(--white); border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+  }
+  .exec-card-header {
+    background: var(--cloud); border-bottom: 1px solid var(--line);
+    padding: 16px 20px; display: flex; align-items: center; gap: 14px;
+  }
+  .exec-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--navy); color: #fff;
+    font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .exec-info h4 { font-size: 14px; font-weight: 600; color: var(--navy); }
+  .exec-info span { font-size: 12px; color: var(--ink-muted); }
+  .exec-card-body { padding: 20px; }
+  .exec-priority {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 0; border-bottom: 1px solid var(--line);
+  }
+  .exec-priority:last-child { border-bottom: none; }
+  .exec-priority-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0; margin-top: 6px;
+  }
+  .exec-priority-content {}
+  .exec-priority-content h5 { font-size: 13px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .exec-priority-content p { font-size: 12px; color: var(--ink-muted); line-height: 1.55; }
+  .exec-priority-content .sf-match {
+    font-size: 11px; font-weight: 600; color: var(--blue);
+    background: var(--cloud); padding: 2px 8px;
+    border-radius: 100px; margin-top: 6px; display: inline-block;
+  }
+
+  /* ── SIMULATOR ── */
+  #simulator { background: var(--white); border-top: 1px solid var(--line); }
+  .simulator-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 52px; align-items: start; }
+  .sim-controls h3 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .sim-control { margin-bottom: 22px; }
+  .sim-control label { display: flex; justify-content: space-between; align-items: center; font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 8px; }
+  .sim-control label span { font-weight: 600; color: var(--blue); font-size: 14px; min-width: 80px; text-align: right; }
+  .sim-control input[type=range] { width: 100%; accent-color: var(--blue); cursor: pointer; }
+  .sim-control .hint { font-size: 11px; color: var(--ink-muted); margin-top: 4px; line-height: 1.5; }
+
+  .sim-result {
+    background: var(--gold-light); border: 1px solid #E8C96A;
+    border-radius: 8px; padding: 22px; margin-top: 24px;
+  }
+  .sim-result h4 { font-size: 11px; font-weight: 600; color: var(--gold); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 14px; }
+  .sim-row { display: flex; justify-content: space-between; align-items: baseline; padding: 8px 0; border-bottom: 1px solid rgba(196,146,42,0.18); font-size: 13px; gap: 12px; }
+  .sim-row:last-child { border-bottom: none; }
+  .sim-row .lbl { color: var(--ink-muted); flex: 1; }
+  .sim-row .val { font-weight: 600; color: var(--ink); text-align: right; }
+  .sim-row .val.pos { color: var(--green-pos); }
+  .sim-row .val.neg { color: var(--red-neg); }
+  .sim-row .val.big { font-size: 18px; }
+
+  .chart-panel h3 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .chart-wrap { position: relative; height: 320px; }
+  .chart-note { font-size: 11px; color: var(--ink-muted); margin-top: 12px; line-height: 1.6; }
+
+  /* ── STRATEGIC FIT ── */
+  #strategic { background: var(--bg-alt); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .strategic-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
+  .strat-card { background: var(--white); border: 1px solid var(--line); border-radius: 8px; padding: 24px; }
+  .strat-icon { width: 36px; height: 36px; background: var(--cloud); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .strat-icon svg { width: 18px; height: 18px; stroke: var(--blue); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .strat-card h4 { font-size: 14px; font-weight: 600; color: var(--navy); margin-bottom: 8px; line-height: 1.3; }
+  .strat-card p { font-size: 13px; color: var(--ink-muted); line-height: 1.65; margin-bottom: 12px; }
+  .strat-tag { display: inline-block; font-size: 11px; font-weight: 600; color: var(--blue); background: var(--cloud); padding: 3px 10px; border-radius: 100px; }
+
+  /* ── CASES ── */
+  #cases { background: var(--white); }
+  .cases-table { width: 100%; border-collapse: collapse; }
+  .cases-table th { text-align: left; font-size: 11px; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 16px; background: var(--cloud); border-bottom: 2px solid var(--blue); }
+  .cases-table td { padding: 14px 16px; font-size: 13px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .cases-table tr:last-child td { border-bottom: none; }
+  .cases-table td:first-child { font-weight: 600; color: var(--navy); font-size: 14px; }
+  .pill { display: inline-block; font-size: 12px; font-weight: 600; color: var(--green-pos); background: var(--green-bg); border: 1px solid #A7F3D0; padding: 2px 10px; border-radius: 100px; }
+  .rel { font-size: 12px; color: var(--blue); margin-top: 4px; }
+
+  /* ── PRICING ── */
+  #pricing { background: var(--bg-alt); border-top: 1px solid var(--line); }
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+  .pricing-card { background: var(--white); border: 1px solid var(--line); border-radius: 8px; padding: 28px; position: relative; }
+  .pricing-card.rec { border-color: var(--blue); border-width: 2px; }
+  .rec-badge { position: absolute; top: -11px; left: 24px; background: var(--blue); color: #fff; font-size: 11px; font-weight: 600; padding: 3px 14px; border-radius: 100px; }
+  .pricing-card h4 { font-family: Georgia, serif; font-size: 19px; font-weight: normal; color: var(--navy); margin-bottom: 6px; }
+  .price { font-size: 26px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .price span { font-size: 14px; font-weight: 400; color: var(--ink-muted); }
+  .price-note { font-size: 12px; color: var(--ink-muted); margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--line); line-height: 1.6; }
+  .pricing-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .pricing-card ul li { font-size: 13px; color: var(--ink-muted); display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+  .pricing-card ul li::before { content: ''; width: 16px; height: 16px; min-width: 16px; margin-top: 2px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3 8l3.5 3.5L13 4.5' stroke='%230176D3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; }
+  .pricing-rec { background: var(--gold-light); border: 1px solid #E8C96A; border-radius: 6px; padding: 20px 24px; display: flex; align-items: flex-start; gap: 16px; }
+  .pricing-rec p { font-size: 14px; color: var(--ink); line-height: 1.7; }
+  .pricing-rec strong { color: var(--navy); }
+
+  /* ── TIMELINE ── */
+  #timeline { background: var(--white); border-top: 1px solid var(--line); }
+  .timeline-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; position: relative; }
+  .timeline-steps::before { content: ''; position: absolute; top: 20px; left: 10%; right: 10%; height: 2px; background: var(--line); z-index: 0; }
+  .tl-step { padding: 0 16px; position: relative; z-index: 1; }
+  .tl-dot { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: #fff; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .tl-step h4 { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+  .tl-step p { font-size: 12px; color: var(--ink-muted); line-height: 1.6; }
+  .tl-dur { display: inline-block; font-size: 11px; font-weight: 600; color: var(--gold); margin-bottom: 8px; }
+
+  /* FOOTER */
+  footer { background: var(--navy); padding: 36px 48px; text-align: center; }
+  footer p { font-size: 12px; color: rgba(255,255,255,0.45); line-height: 1.7; max-width: 680px; margin: 0 auto; }
+  footer a { color: rgba(255,255,255,0.65); text-decoration: none; }
+
+  /* RESPONSIVE */
+  @media (max-width: 860px) {
+    nav, .hero, section, .impact-strip, footer { padding-left: 20px; padding-right: 20px; }
+    .impact-inner { grid-template-columns: repeat(2,1fr); gap: 20px; }
+    .impact-item { border-right: none; padding: 0; }
+    .simulator-layout, .cost-grid, .exec-mapping, .pricing-grid, .channel-layout { grid-template-columns: 1fr; }
+    .strategic-grid { grid-template-columns: 1fr 1fr; }
+    .timeline-steps { grid-template-columns: 1fr 1fr; }
+    .timeline-steps::before { display: none; }
+    .fin-grid { grid-template-columns: repeat(2,1fr); }
+    .nav-links { display: none; }
+    .channel-tabs { flex-wrap: wrap; }
+    .channel-tab { flex: 1 1 calc(50% - 1px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <svg width="36" height="25" viewBox="0 0 36 25" fill="none">
+      <path d="M14.5 3.3C15.8 1.3 18.1 0 20.6 0c3.4 0 6.2 2.3 7.1 5.4.7-.3 1.6-.5 2.5-.5 3.2 0 5.8 2.6 5.8 5.8 0 3.2-2.6 5.8-5.8 5.8H7.8C4 16.5 1 13.5 1 9.8 1 6.3 3.6 3.5 6.9 3.1c.2-3 2.7-5.4 5.7-5.4.6 0 1.2.1 1.8.3-.2.3-.2.3.1.3z" fill="white"></path>
+    </svg>
+    <div class="nav-sep"></div>
+    <span class="nav-ctx">Banco Mercantil — Análise de ROI Salesforce Personalization</span>
+  </div>
+  <div class="nav-links">
+    <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#produto">Produto</a>
+    <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#financials">Contexto Financeiro</a>
+    <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#how">Como Funciona</a><a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#meu-mais" id="nav-meu">Meu+</a>
+    <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#meu-mais">Meu+</a>
+    <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#exec">Prioridades Executivas</a>
+    <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#simulator">Simulador</a>
+    <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#cases">Referências</a>
+    <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#pricing">Preço</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <p class="hero-kicker">Salesforce Personalization × Banco Mercantil</p>
+    <h1 class="hero-headline">10 milhões de clientes.<br>Cada um vê a oferta certa,<br>no canal certo, na hora certa.</h1>
+    <p class="hero-subline">
+      15º recorde trimestral consecutivo de lucro. R$ 25 bilhões em carteira. RPS de R$ 363M crescendo 76% ao ano.
+      Cada visita ao app, ao site ou ao ATM é um sinal de intenção que ainda não é capturado.
+      Esta análise quantifica o que personalização em tempo real pode adicionar a esse resultado.
+    </p>
+    <div class="hero-actions">
+      <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#simulator" class="btn-primary">Simular meu ROI</a>
+      <a href="file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/roi_mercantil.html#how" class="btn-ghost">Como funciona</a>
+    </div>
+  </div>
+</div>
+
+<!-- IMPACT STRIP -->
+<div class="impact-strip">
+  <div class="impact-inner">
+    <div class="impact-item">
+      <div class="impact-val">+33<em>%</em></div>
+      <div class="impact-lbl">conversão em ofertas personalizadas</div>
+      <div class="impact-src">Fisher &amp; Paykel — Salesforce Personalization</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-val">80<em>%+</em></div>
+      <div class="impact-lbl">deflexão de suporte via canal digital</div>
+      <div class="impact-src">Agibank — consignado digital, Brasil</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-val">+20<em>%</em></div>
+      <div class="impact-lbl">produtividade de gerentes com Next Best Offer</div>
+      <div class="impact-src">CaixaBank — varejo FS, Espanha</div>
+    </div>
+    <div class="impact-item">
+      <div class="impact-val">3<em>bi</em></div>
+      <div class="impact-lbl">decisões de oferta por ano em escala</div>
+      <div class="impact-src">Bajaj Finance — NBFC, Ásia</div>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT CAPABILITIES -->
+<section id="produto" style="background:var(--bg-alt);">
+  <div class="sec-inner">
+    <h2 class="sec-title">O que Salesforce Personalization entrega — FY27</h2>
+    <p class="sec-intro">
+      Três capacidades macro, oito features em GA. Tudo integrado ao Marketing Cloud e ao Data 360 —
+      a mesma plataforma que já processa <strong>3 bilhões de decisões/ano</strong> para instituições financeiras globais.
+    </p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:40px;">
+
+      <!-- Capability 1 -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;">
+        <div style="background:var(--navy);padding:18px 20px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Capacidade 1</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.3;">Make every experience adaptive</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px;">Adaptive Web · Agentforce Actions</div>
+        </div>
+        <div style="padding:20px;">
+          <div style="margin-bottom:14px;">
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Adaptive Web</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">Adapta layout, conteúdo e recomendações da página em tempo real para cada visitante — sem código adicional, gerenciado pelo time de negócio. Lançado em Spring '26.</div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Agentforce: Understand User Intent</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">Agentforce analisa a conversa do cliente em tempo real e traduz intenção em dados estruturados — alimentando o decisioning engine com contexto preciso, sem o cliente se repetir.</div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Agentforce: Get Context</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">Filtra o histórico do cliente e entrega ao agente apenas o que é relevante para a conversa atual — agentes mais rápidos, clientes que não se repetem.</div>
+          </div>
+          <div style="margin-top:16px;padding:10px 12px;background:var(--cloud);border-radius:6px;font-size:11px;color:var(--blue);font-weight:600;">
+            → Para o Mercantil: app e internet banking que se adaptam ao perfil 50+ em cada sessão
+          </div>
+        </div>
+      </div>
+
+      <!-- Capability 2 -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;">
+        <div style="background:var(--blue);padding:18px 20px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Capacidade 2</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.3;">Lift engagement with real-time context</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;">Recommendations · Offer Decisioning · Experimentation · Analytics</div>
+        </div>
+        <div style="padding:20px;">
+          <div style="margin-bottom:14px;">
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Recommendations (AI)</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">Recomendações de produto, conteúdo e oferta via ML — otimizando para receita, engajamento ou retenção. O modelo aprende continuamente com os sinais do Data 360.</div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Offer Decisioning</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">Entrega a promoção exata com o incentivo necessário para converter — sem o cliente precisar buscar. Analisa histórico de navegação, interesses e engajamento passado com promoções.</div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Experimentation (A/B nativo)</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">Testa variações de jornada e conteúdo com atribuição de cohort automática. Seleção de winner baseada em resultado real — sem intervenção manual.</div>
+          </div>
+          <div style="margin-top:16px;padding:10px 12px;background:var(--cloud);border-radius:6px;font-size:11px;color:var(--blue);font-weight:600;">
+            → Para o Meu+: next best offer por IA para saúde, odontologia, bem-estar por perfil
+          </div>
+        </div>
+      </div>
+
+      <!-- Capability 3 -->
+      <div style="background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;">
+        <div style="background:#1B6B45;padding:18px 20px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:rgba(255,255,255,0.5);text-transform:uppercase;margin-bottom:6px;">Capacidade 3</div>
+          <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.3;">Carry conversations across channels</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;">Web · Mobile App · Email · SMS/WhatsApp/Push</div>
+        </div>
+        <div style="padding:20px;">
+          <div style="margin-bottom:14px;">
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Personalization for Mobile Apps</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">iOS e Android via <strong>Unified Engagement SDK</strong> — um único SDK que elimina a necessidade de múltiplas integrações. Personalization + Marketing Cloud + Data 360 no mesmo módulo.</div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Personalization for Websites</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">Web SDK captura comportamento e enriquece perfis em tempo real. Business users configuram Content Zones via interface visual — sem dependência de TI para cada campanha.</div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--ink);margin-bottom:4px;">Personalization for Mobile Messaging</div>
+            <div style="font-size:12px;color:var(--ink-muted);line-height:1.6;">SMS, WhatsApp, RCS e push com dados dinâmicos de qualquer objeto Salesforce — pedidos, marcos de conta, tickets de suporte. Cross-Object Merge Fields + Data Graphs em tempo real.</div>
+          </div>
+          <div style="margin-top:16px;padding:10px 12px;background:var(--cloud);border-radius:6px;font-size:11px;color:var(--blue);font-weight:600;">
+            → Para o Mercantil: jornada contínua app → web → ATM → gerente sem repetição
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pipeline & Attribution -->
+    <div style="background:#fff;border:1px solid var(--line);border-radius:10px;padding:24px 28px;display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:center;">
+      <div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:0.1em;color:var(--blue);text-transform:uppercase;margin-bottom:10px;">Pipeline &amp; Attribution Analytics</div>
+        <h4 style="font-size:15px;font-weight:700;color:var(--navy);margin-bottom:10px;line-height:1.3;">Visibilidade total do impacto de personalização no resultado do negócio</h4>
+        <p style="font-size:13px;color:var(--ink-muted);line-height:1.65;margin-bottom:10px;">
+          <strong>Pipeline Intelligence</strong> monitora saúde e performance da entrega de personalização.
+          <strong>Attribution Intelligence</strong> conecta cada ponto de engajamento personalizado diretamente a resultados de negócio —
+          receita, conversão, retenção. Todos os dados de personalização disponíveis no Data 360 para analytics avançado.
+        </p>
+        <p style="font-size:12px;color:var(--ink-muted);line-height:1.6;">
+          Para o Mercantil: prova quantificada de quanto RPS adicional foi gerado pelo Meu+ via canal personalizado —
+          argumento de renovação e expansão contratual.
+        </p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div style="background:var(--bg-alt);border-radius:8px;padding:16px;">
+          <div style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:var(--navy);margin-bottom:6px;">Spring '26</div>
+          <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;">Adaptive Web · Calculated Affinities · Sitemap Builder · Locale-Based Recommendations · Recommendation Fallbacks</div>
+        </div>
+        <div style="background:var(--bg-alt);border-radius:8px;padding:16px;">
+          <div style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:var(--navy);margin-bottom:6px;">RTOM</div>
+          <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;">Real-Time Offer Management — GA julho '26. Orchestração ponta a ponta de promoções: Lifecycle Management, Basket Adjudication, Offer Hub, Analytics &amp; Attribution.</div>
+        </div>
+        <div style="background:var(--bg-alt);border-radius:8px;padding:16px;">
+          <div style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:var(--navy);margin-bottom:6px;">1 SDK</div>
+          <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;">Unified Engagement SDK unifica Marketing Cloud + Data 360 + Personalization no app — sem múltiplos SDKs, sem complexidade adicional de integração.</div>
+        </div>
+        <div style="background:var(--bg-alt);border-radius:8px;padding:16px;">
+          <div style="font-size:22px;font-family:Georgia,serif;font-weight:400;color:var(--navy);margin-bottom:6px;">GA Now</div>
+          <div style="font-size:11px;color:var(--ink-muted);line-height:1.5;">Todas as 8 features de SP listadas acima estão em GA (Generally Available) — sem dependência de roadmap futuro para começar o piloto.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FINANCIALS -->
+<section id="financials">
+  <div class="sec-inner">
+    <h2 class="sec-title">Banco Mercantil em números — 4T25 e 2T26</h2>
+    <p class="sec-intro">
+      Dados extraídos diretamente dos relatórios de resultados do Banco Mercantil.
+      O banco está em um momento de crescimento acelerado e diversificação de receita —
+      com o Meu+ como principal vetor — exatamente onde personalização gera maior retorno por real investido.
+    </p>
+
+    <div class="fin-grid">
+      <div class="fin-card">
+        <div class="fin-period">Lucro líquido recorrente — 2025</div>
+        <div class="fin-val">R$ 1<em>bi</em></div>
+        <div class="fin-label">Primeiro bilhão recorrente da história do banco. 13º recorde consecutivo de lucro trimestral no 4T25.</div>
+        <div class="fin-delta">↑ +34% vs. 2024 — CAGR de 67% a.a. desde 3T22</div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-period">Lucro líquido — 2T26</div>
+        <div class="fin-val">R$ 275<em>M</em></div>
+        <div class="fin-label">15º recorde trimestral consecutivo. Crescimento de 13% em relação ao 2T25.</div>
+        <div class="fin-delta">↑ ROAE LTM de 41,4% — entre os mais rentáveis do setor</div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-period">Clientes totais — 2T26</div>
+        <div class="fin-val">10,2<em>M</em></div>
+        <div class="fin-label">Base de aposentados, pensionistas e servidores públicos. Público 50+, foco estratégico declarado.</div>
+        <div class="fin-delta">↑ +13% vs. 2T25 — movimentam ~R$ 2 tri/ano na economia</div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-period">Carteira de crédito — 2T26</div>
+        <div class="fin-val">R$ 25,0<em>bi</em></div>
+        <div class="fin-label">Consignado INSS: R$ 15,5bi (+24% a.a.). Consignado Privado: R$ 3,0bi (produto novo, +3336% a.a.).</div>
+        <div class="fin-delta">↑ +30% vs. 2T25 — 78% da originação via canais digitais</div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-period">Receitas de prestação de serviços — 2T26</div>
+        <div class="fin-val">R$ 363<em>M</em></div>
+        <div class="fin-label">+76% vs. 2T25. Do total, 90,3% provém de seguros e assistências (Meu+) — +17,9 p.p. vs. 2T25.</div>
+        <div class="fin-delta">↑ Meu+ é o principal driver de crescimento de RPS</div>
+      </div>
+      <div class="fin-card">
+        <div class="fin-period">Inadimplência e margem — 2T26</div>
+        <div class="fin-val">3,1<em>%</em></div>
+        <div class="fin-label">NPL &gt;90 dias. Queda de 0,2 p.p. vs. 1T26. NIM trimestral: 17,2% (pressão de Selic e mix de carteira).</div>
+        <div class="fin-delta neg">⚠ NIM comprimido — crescimento de RPS via Meu+ é a resposta estratégica</div>
+      </div>
+    </div>
+
+    <div class="fin-insight">
+      <div class="fin-insight-icon">💡</div>
+      <p>
+        <strong>O que os números dizem:</strong> o Mercantil atingiu R$ 1bi recorrente em 2025 com ROAE de 43,5%,
+        mas a NIM está comprimida pela Selic e pelo mix de carteira.
+        A administração declarou explicitamente no relatório de 2T26 que o <strong>Meu+ é o vetor de crescimento e diversificação</strong> —
+        as RPS cresceram 76% em 12 meses e já representam 90,3% de seguros e assistências.
+        Salesforce Personalization acelera exatamente esse vetor: mais penetração de produtos Meu+ na base de 10,2M clientes,
+        com <strong>next best offer baseado em IA</strong> e custo de aquisição incremental próximo de zero.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="sec-inner">
+    <h2 class="sec-title">Como o Salesforce Personalization funciona em cada canal</h2>
+    <p class="sec-intro">
+      Uma plataforma única de decisão em tempo real. O mesmo perfil unificado de cliente
+      alimenta recomendações no app, no site, no ATM e nos canais assistidos — sem duplicidade de dados
+      e sem latência.
+    </p>
+
+    <div class="channel-tabs">
+      <button class="channel-tab" onclick="showTab(&#39;app&#39;, this)">
+        <div class="channel-tab-icon">
+          <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12" y2="18"></line></svg>
+        </div>
+        <div>
+          <div class="tab-label">App do Banco</div>
+          <div class="tab-sub">SDK mobile, eventos em tempo real</div>
+        </div>
+      </button>
+      <button class="channel-tab" onclick="showTab(&#39;web&#39;, this)">
+        <div class="channel-tab-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+        </div>
+        <div>
+          <div class="tab-label">Internet Banking / Site</div>
+          <div class="tab-sub">Beacon JS, overlay de oferta</div>
+        </div>
+      </button>
+      <button class="channel-tab" onclick="showTab(&#39;atm&#39;, this)">
+        <div class="channel-tab-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line><path d="M6 15h4M14 15h4"></path></svg>
+        </div>
+        <div>
+          <div class="tab-label">ATM / Caixa eletrônico</div>
+          <div class="tab-sub">API de decisão, oferta na tela</div>
+        </div>
+      </button>
+      <button class="channel-tab active" onclick="showTab(&#39;gerente&#39;, this)">
+        <div class="channel-tab-icon">
+          <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <div>
+          <div class="tab-label">Gerente / Central</div>
+          <div class="tab-sub">Next Best Offer, painel unificado</div>
+        </div>
+      </button>
+    </div>
+
+    <div class="channel-panels">
+
+      <!-- APP -->
+      <div class="channel-panel" id="panel-app">
+        <div class="channel-layout">
+          <div class="channel-flow">
+            <div class="channel-flow-header">Fluxo de personalização — App do Banco Mercantil</div>
+            <div class="flow-steps">
+              <div class="flow-step">
+                <div class="flow-num">1</div>
+                <div>
+                  <h5>Unified Engagement SDK — iOS e Android</h5>
+                  <p>Um único SDK unifica Marketing Cloud, Data 360 e Salesforce Personalization no app do banco — sem múltiplas integrações. Captura eventos em tempo real (tela visitada, simulação iniciada, produto visualizado) sem transmitir dados pessoais.</p>
+                  <span class="tech-tag">Unified Engagement SDK — instalação em 1–2 sprints, sem refatoração</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">2</div>
+                <div>
+                  <h5>Perfil unificado + Data 360 em &lt;100ms</h5>
+                  <p>O motor une comportamento atual (sessão) com histórico via Data 360 — zero-party data capturado pelo mobile, dados de crédito, segmento de lifecycle. Perfil atualizado antes de qualquer decisão de oferta.</p>
+                  <span class="tech-tag">Data 360 + Identity Resolution — first-party, LGPD-ready</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">3</div>
+                <div>
+                  <h5>Hot spots mapeados: abandono na biometria, saldo ocioso, checkout Meu+</h5>
+                  <p>Eventos <code>loan_simulation_view</code>, <code>exit_before_biometrics</code> e <code>account_summary_view</code> detectam os três principais pontos de abandono. Proposta congelada por até 48h — ao reabrir o app, o cliente vê "Continuar contratação segura" com os mesmos prazos e taxas, sem reinserir dados.</p>
+                  <span class="tech-tag">Eventos telemetria nativos — hot spot recovery em &lt;150ms</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">4</div>
+                <div>
+                  <h5>Escalada omnicanal: push → WhatsApp Mel → FSC → ATM</h5>
+                  <p>Se não converteu em 15 min → push com instruções de biometria. 2h → WhatsApp via assistente Mel com guia interativo. 24h → pendência no Financial Services Cloud para abordagem na agência. Na próxima visita ao ATM → oferta de crédito pre-aprovado via leitor biométrico do terminal.</p>
+                  <span class="tech-tag">Régua omnichannel — app + WhatsApp + FSC + ATM sem repetição</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="channel-gains">
+            <h4>KPIs com impacto quantificado — Canal App</h4>
+            <div class="gain-row">
+              <span class="gain-label">RPS incremental via Meu+ (sobre base anual ~R$1,4bi)</span>
+              <span class="gain-val">+18% a +25%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Custo de originação por contrato digital (vs. retargeting externo)</span>
+              <span class="gain-val">−25% a −35%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">NIM — expansão por captação de CDB via saldo ocioso detectado</span>
+              <span class="gain-val">+30 a +50 bps</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Cross-sell: média de produtos por cliente ativo (18 meses)</span>
+              <span class="gain-val">1,8 → 2,7 produtos</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Churn de domicílio INSS — portabilidade de saída contida</span>
+              <span class="gain-val">−1,5 a −2,2 p.p.</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">ROAE — ganho incremental por receitas leves de capital (Meu+)</span>
+              <span class="gain-val">+1,2 a +2,0 p.p.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WEB -->
+      <div class="channel-panel" id="panel-web">
+        <div class="channel-layout">
+          <div class="channel-flow">
+            <div class="channel-flow-header">Fluxo de personalização — Internet Banking / Site</div>
+            <div class="flow-steps">
+              <div class="flow-step">
+                <div class="flow-num">1</div>
+                <div>
+                  <h5>Web SDK — captura comportamento e enriquece perfis em tempo real</h5>
+                  <p>Uma única linha de código JS captura navegação anônima e autenticada. Identifica o cliente logado e une comportamento web com histórico CRM via Data 360 — mesmo perfil do app, sem duplicação ou latência.</p>
+                  <span class="tech-tag">Personalization for Websites — Web SDK, deploy imediato</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">2</div>
+                <div>
+                  <h5>Adaptive Web + Content Zones — página que se adapta sem código</h5>
+                  <p>Áreas da página (banner home, módulo de oferta no dashboard, sidebar do extrato) são substituídas por conteúdo personalizado em tempo real via Content Zones — interface visual, sem dependência de TI para cada campanha.</p>
+                  <span class="tech-tag">Adaptive Web + Content Zones — configurado pelo time de negócio</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">3</div>
+                <div>
+                  <h5>Hot spot Meu+: abandono no checkout detectado em tempo real</h5>
+                  <p>Eventos <code>plan_added_to_cart</code>, <code>payment_method_hesitation</code> e <code>cursor_exit_intent</code> ativam modal dinâmico: para correntistas — débito automático em conta + isenção de tarifa de pacote + dobro de números da sorte (sorteios de R$50k). Para não correntistas — telemedicina para 8 dependentes, sem carência, sem operadora de plano de saúde.</p>
+                  <span class="tech-tag">Web SDK sitemap declarativo — intervenção &lt;100ms no checkout</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">4</div>
+                <div>
+                  <h5>Carry conversations across channels — jornada não se perde</h5>
+                  <p>Se o cliente abandona no site e abre o app mais tarde, a jornada continua — push com link direto para a proposta, no ponto exato onde parou. Sinais web, mobile e ATM formam um perfil único e contínuo.</p>
+                  <span class="tech-tag">Omnichannel Journey Continuity — web + mobile + ATM unificados</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="channel-gains">
+            <h4>Ganhos esperados — Canal Web</h4>
+            <div class="gain-row">
+              <span class="gain-label">Conversão em simulações de crédito (de visitante para contratante)</span>
+              <span class="gain-val">+20 a +33%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Tempo de permanência e page views relevantes</span>
+              <span class="gain-val">+30 a +40%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">CTR em ofertas personalizadas vs. banner genérico</span>
+              <span class="gain-val">+10 a +15%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Recuperação de jornadas iniciadas no web e continuadas no app</span>
+              <span class="gain-val">Novo vetor de receita</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Referência: Fisher &amp; Paykel (conversão + page views)</span>
+              <span class="gain-val">+33% / +40%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ATM -->
+      <div class="channel-panel" id="panel-atm">
+        <div class="channel-layout">
+          <div class="channel-flow">
+            <div class="channel-flow-header">Fluxo de personalização — ATM / Caixa Eletrônico</div>
+            <div class="flow-steps">
+              <div class="flow-step">
+                <div class="flow-num">1</div>
+                <div>
+                  <h5>Gatilho Server-Side: biometria ou cartão magnético ativa a API</h5>
+                  <p>Na autenticação no terminal — leitura de cartão ou biometria — o middleware do ATM dispara chamada REST ao motor do Salesforce Personalization. Payload JSON com recomendação visual retorna em <strong>&lt;300ms</strong> — dentro do tempo de carregamento da tela do terminal.</p>
+                  <span class="tech-tag">Server-Side REST API — headless, integra ao middleware ATM existente</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">2</div>
+                <div>
+                  <h5>Cross com abandono digital: crédito pre-aprovado no terminal</h5>
+                  <p>O motor cruza o evento <code>atm_auth_biometric</code> com <code>cash_dispensed_event</code> e verifica simulações digitais nas últimas 72h. Cliente que abandonou proposta no app recebe, na tela pós-saque de proventos, oferta de crédito pre-aprovado com contratação via leitor biométrico do próprio terminal — sem precisar do smartphone.</p>
+                  <span class="tech-tag">Hot spot reverso — converte no físico o que foi abandonado no digital</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">3</div>
+                <div>
+                  <h5>Meu+ Residência pós-consulta: oferta contextual após o saque</h5>
+                  <p>Cliente que navegou por proteção patrimonial ou assistência residencial no portal nos últimos dias vê, após liberar as cédulas, oferta de Meu+ Residência (chaveiro, encanador, eletricista) com autorização imediata na tela do terminal.</p>
+                  <span class="tech-tag">Perfil unificado app/web → ATM — contexto carregado em tempo real</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">4</div>
+                <div>
+                  <h5>Evento ATM registrado no perfil — sem repetição em nenhum canal</h5>
+                  <p>Viu oferta, clicou ou recusou — o evento <code>atm_offer_interaction</code> atualiza o perfil unificado no Data Cloud. A próxima abordagem no app, WhatsApp ou gerente já sabe o que o cliente respondeu no terminal — sem repetir oferta recusada, conforme SARB 27.</p>
+                  <span class="tech-tag">Omnichannel — sinal do ATM alimenta todas as próximas decisões</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="channel-gains">
+            <h4>Ganhos esperados — Canal ATM</h4>
+            <div class="gain-row">
+              <span class="gain-label">Conversão de oferta apresentada na tela inicial do ATM</span>
+              <span class="gain-val">+12 a +20%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Eliminação de oferta irrelevante (reclamação / desconfiança)</span>
+              <span class="gain-val">Redução de atrito</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Cross-sell pós-transação (seguro, capitalização, CDB)</span>
+              <span class="gain-val">Novo vetor</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Sinal de intenção alimentando próxima ação no app / gerente</span>
+              <span class="gain-val">Reduz ciclo de venda</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Diferencial competitivo: poucos bancos brasileiros personalizam ATM</span>
+              <span class="gain-val">First mover</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GERENTE -->
+      <div class="channel-panel active" id="panel-gerente">
+        <div class="channel-layout">
+          <div class="channel-flow">
+            <div class="channel-flow-header">Fluxo — Gerente de Relacionamento / Central</div>
+            <div class="flow-steps">
+              <div class="flow-step">
+                <div class="flow-num">1</div>
+                <div>
+                  <h5>Totem de senha → dossiê de intenção carregado no FSC antes do gerente atender</h5>
+                  <p>Evento <code>queue_ticket_issued</code> no totem de triagem dispara <code>customer_fsc_record_opened</code>. O gerente recebe no Financial Services Cloud — já na abertura da ficha — o histórico comportamental dos últimos dias: produtos pesquisados, simulações iniciadas, planos do Meu+ visitados, abandonos registrados.</p>
+                  <span class="tech-tag">Integração nativa FSC — atendimento reativo vira consultoria personalizada</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">2</div>
+                <div>
+                  <h5>Proposta congelada: gerente finaliza o que o app não conseguiu converter</h5>
+                  <p>Se o cliente abandonou simulação de crédito por dificuldades de biometria, o sistema sinaliza na abertura da ficha. O gerente pode validar a transação presencialmente com <strong>os mesmos prazos e taxas</strong> cotados no digital — sem o cliente percorrer o fluxo novamente, sem nova simulação.</p>
+                  <span class="tech-tag">Journey continuity — digital → presencial sem atrito</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">3</div>
+                <div>
+                  <h5>Agentforce Actions — contexto filtrado, agente não repete perguntas</h5>
+                  <p>A Agentforce Action "Get Context" analisa o histórico do cliente e filtra apenas o que é relevante para a conversa atual — o gerente recebe um resumo de intenção, não um data dump. Sugestão de abordagem gerada automaticamente: "cliente próximo do aniversário de contrato, demonstrou interesse em portabilidade nos últimos 3 dias."</p>
+                  <span class="tech-tag">Agentforce: Get Context + Understand User Intent — GA Now</span>
+                </div>
+              </div>
+              <div class="flow-step">
+                <div class="flow-num">4</div>
+                <div>
+                  <h5>Registro da interação alimenta modelo de propensão</h5>
+                  <p>O resultado da ligação (contratou, recusou, pediu para ligar depois) entra no modelo de ML e melhora as próximas recomendações para clientes similares — loop de aprendizado contínuo.</p>
+                  <span class="tech-tag">Feedback loop — modelo melhora com uso</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="channel-gains">
+            <h4>Ganhos esperados — Gerente / Central</h4>
+            <div class="gain-row">
+              <span class="gain-label">Produtividade do gerente (contratos por hora de trabalho)</span>
+              <span class="gain-val">+15 a +20%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Taxa de conversão em abordagem outbound (ligações)</span>
+              <span class="gain-val">+20 a +30%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Redução de esforço em priorização de carteira (manual → automático)</span>
+              <span class="gain-val">−60 a −70%</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Satisfação do cliente (menos abordagens irrelevantes)</span>
+              <span class="gain-val">+NPS mensurável</span>
+            </div>
+            <div class="gain-row">
+              <span class="gain-label">Referência: CaixaBank (gerentes de varejo FS)</span>
+              <span class="gain-val">+20% produtividade</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MEU+ BU SECTION -->
+<section id="meu-mais" style="background:var(--navy);padding:72px 48px;">
+  <div class="sec-inner">
+    <h2 class="sec-title" style="color:#fff;">Meu+: o ecossistema de assistências do Mercantil e o caso de uso mais direto para Personalization</h2>
+    <p class="sec-intro" style="color:rgba(255,255,255,0.65);">
+      Citado diretamente nos relatórios de resultados de 4T25 e 2T26 como o principal vetor de crescimento de receitas
+      do banco, o Meu+ é o ecossistema de assistências e benefícios voltado ao público 50+ —
+      e representa 90,3% das receitas de prestação de serviços do Mercantil no 2T26.
+    </p>
+
+    <!-- Banner de dados reais -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;margin-bottom:28px;">
+      <div style="padding:20px 18px;background:rgba(255,255,255,0.04);">
+        <div style="font-family:Georgia,serif;font-size:30px;color:#fff;line-height:1;margin-bottom:6px;">90,3<span style="font-size:16px;color:rgba(255,255,255,0.5);">%</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.4;">da RPS do banco vem de seguros e assistências (Meu+) no 2T26</div>
+        <div style="font-size:11px;font-weight:600;color:var(--gold);margin-top:6px;">+17,9 p.p. vs. 2T25</div>
+      </div>
+      <div style="padding:20px 18px;background:rgba(255,255,255,0.04);">
+        <div style="font-family:Georgia,serif;font-size:30px;color:#fff;line-height:1;margin-bottom:6px;">R$ 363<span style="font-size:16px;color:rgba(255,255,255,0.5);">M</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.4;">RPS trimestral — 2T26. A maior parte via Meu+</div>
+        <div style="font-size:11px;font-weight:600;color:var(--gold);margin-top:6px;">+76% vs. 2T25</div>
+      </div>
+      <div style="padding:20px 18px;background:rgba(255,255,255,0.04);">
+        <div style="font-family:Georgia,serif;font-size:30px;color:#fff;line-height:1;margin-bottom:6px;">R$ 311<span style="font-size:16px;color:rgba(255,255,255,0.5);">M</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.4;">RPS trimestral no 4T25 — recorde histórico naquele momento</div>
+        <div style="font-size:11px;font-weight:600;color:var(--gold);margin-top:6px;">+73% vs. 4T24</div>
+      </div>
+      <div style="padding:20px 18px;background:rgba(255,255,255,0.04);">
+        <div style="font-family:Georgia,serif;font-size:30px;color:#fff;line-height:1;margin-bottom:6px;">10,2<span style="font-size:16px;color:rgba(255,255,255,0.5);">M</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.4;">clientes do público 50+ — mercado endereçável do Meu+</div>
+        <div style="font-size:11px;font-weight:600;color:var(--gold);margin-top:6px;">+13% vs. 2T25</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px;">
+
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:28px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;">O que é o Meu+ — dados do relatório</div>
+        <p style="font-size:14px;color:rgba(255,255,255,0.8);line-height:1.7;margin-bottom:14px;">
+          Segundo o relatório de resultados 4T25, o Meu+ é uma <strong style="color:#fff;">"plataforma que oferece assistências e benefícios exclusivos para clientes do Banco Mercantil,
+          expandindo o relacionamento através de produtos para além do crédito"</strong>.
+        </p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.65;margin-bottom:14px;">
+          Portfólio declarado de produtos: <strong style="color:rgba(255,255,255,0.9);">saúde, bem-estar, tecnologia, odontologia, educação e notícias</strong> —
+          além de seguros e assistências tradicionais. Tudo voltado ao público 50+.
+        </p>
+        <p style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.65;">
+          No 2T26, a administração declarou que o Meu+ <strong style="color:rgba(255,255,255,0.9);">"aprofunda a presença do Mercantil na vida dos clientes,
+          oferecendo soluções alinhadas às suas necessidades"</strong> e contribui para a <em>principalidade</em> —
+          fazer o Mercantil ser o banco principal do cliente.
+        </p>
+      </div>
+
+      <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:28px;">
+        <div style="font-size:11px;font-weight:600;letter-spacing:0.08em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;">Por que Personalization acelera o Meu+</div>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px;"></div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;">Portfólio amplo exige relevância por segmento</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.55;">Saúde para um cliente é odontologia para outro. Personalização define qual produto apresentar para cada perfil — e em qual momento da jornada.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px;"></div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;">Canal digital como principal ponto de venda</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.55;">78% da originação de crédito já é digital. O Meu+ aproveita essa base para conversão sem custo incremental de agência ou força de vendas.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px;"></div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;">Principalidade — objetivo declarado pela administração</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.55;">Personalização cria contexto para o cliente usar mais produtos além do crédito — exatamente o que o banco chama de "principalidade" em todos os seus relatórios.</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:6px;"></div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:3px;">Next Best Offer com IA — prioridade identificada internamente</div>
+              <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.55;">"Ofertas no Meu+ — Next best offer com decisão por IA" foi listado como caso de uso prioritário no deck de estratégia do Mercantil. A fundação técnica está mapeada.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fluxo de personalização para o Meu+ -->
+    <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;overflow:hidden;">
+      <div style="background:rgba(1,118,211,0.3);padding:14px 24px;font-size:12px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:0.04em;">
+        Como o Salesforce Personalization atua no Meu+
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:0;">
+
+        <div style="padding:24px 20px;border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="width:28px;height:28px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-bottom:14px;">1</div>
+          <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px;">Cliente acessa o canal digital</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.55;">Abre app do banco ou acessa internet banking. O SDK captura a sessão e identifica o perfil — sem intervenção manual.</div>
+        </div>
+
+        <div style="padding:24px 20px;border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="width:28px;height:28px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-bottom:14px;">2</div>
+          <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px;">Einstein analisa propensão</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.55;">Com base em perfil (idade, renda, produtos ativos, comportamento recente), o modelo calcula qual produto do Meu+ tem maior probabilidade de conversão naquele momento.</div>
+        </div>
+
+        <div style="padding:24px 20px;border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="width:28px;height:28px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-bottom:14px;">3</div>
+          <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px;">Oferta entregue no contexto certo</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.55;">Banner personalizado na tela de extrato, push pós-transação, ou oferta na tela do ATM após saque — o produto certo aparece no momento de maior atenção.</div>
+        </div>
+
+        <div style="padding:24px 20px;">
+          <div style="width:28px;height:28px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;margin-bottom:14px;">4</div>
+          <div style="font-size:13px;font-weight:600;color:#fff;margin-bottom:6px;">Contratação com 1 clique</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.55);line-height:1.55;">Para produtos de assistência, o modelo de contratação simplificado (confirma dados pré-preenchidos + aceita) converte no mesmo canal — sem sair do app, sem ligação, sem agência.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RTOM use case para Meu+ -->
+    <div style="background:rgba(196,146,42,0.1);border:1px solid rgba(196,146,42,0.25);border-radius:10px;padding:24px 28px;margin-bottom:24px;">
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:start;">
+        <div style="background:var(--gold);color:#fff;font-weight:800;font-size:12px;padding:6px 10px;border-radius:6px;letter-spacing:0.06em;white-space:nowrap;">NOVO — GA JUL '26</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3;">Real-Time Offer Management (RTOM) — orchestração ponta a ponta das promoções do Meu+</div>
+          <p style="font-size:12px;color:rgba(255,255,255,0.7);line-height:1.65;margin-bottom:10px;">
+            O RTOM entra em GA em julho de 2026 e é o complemento natural da estratégia do Meu+:
+            permite ao Mercantil definir, aprovar, personalizar e distribuir promoções de assistências em um único lugar —
+            com <strong style="color:#fff;">Promotion Lifecycle Management</strong> (criação com Agentforce),
+            <strong style="color:#fff;">Basket Adjudication</strong> (stacking de promoções sem conflito de margem),
+            <strong style="color:#fff;">Offer Hub</strong> (cliente encontra todas as ofertas em um único lugar)
+            e <strong style="color:#fff;">Offer Analytics &amp; Attribution</strong> (prova de impacto no RPS).
+          </p>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+            <div style="background:rgba(255,255,255,0.07);border-radius:6px;padding:10px 12px;">
+              <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px;">Promotion Lifecycle</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.6);">Define e gerencia promoções do Meu+ com Agentforce — de templates OOTB a regras customizadas por produto.</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.07);border-radius:6px;padding:10px 12px;">
+              <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px;">Offer Personalization</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.6);">Serve a oferta mais relevante para cada cliente no momento certo — via app, web, SMS ou push.</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.07);border-radius:6px;padding:10px 12px;">
+              <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px;">Analytics &amp; Attribution</div>
+              <div style="font-size:11px;color:rgba(255,255,255,0.6);">Rastreia e melhora performance de cada oferta — qual produto gerou RPS, qual cohort converteu.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KPIs: contexto real + projeção -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px;">
+      <div style="background:rgba(196,146,42,0.15);border:1px solid rgba(196,146,42,0.3);border-radius:8px;padding:20px 24px;">
+        <div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;">Base real (2T26)</div>
+        <div style="font-family:Georgia,serif;font-size:30px;color:#fff;line-height:1;margin-bottom:8px;">R$ 363<span style="font-size:16px;color:rgba(255,255,255,0.5);">M</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">RPS trimestral — já crescendo 76% a.a. com o Meu+. Personalização acelera essa curva ao aumentar conversão e penetração por cliente ativo.</div>
+      </div>
+      <div style="background:rgba(196,146,42,0.15);border:1px solid rgba(196,146,42,0.3);border-radius:8px;padding:20px 24px;">
+        <div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;">Impacto esperado</div>
+        <div style="font-family:Georgia,serif;font-size:30px;color:#fff;line-height:1;margin-bottom:8px;">+15–25<span style="font-size:16px;color:rgba(255,255,255,0.5);">%</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">Uplift conservador de conversão de oferta via Personalization. Sobre RPS anual de ~R$ 1,4bi (projeção 4×363M), representa R$ 210M–350M de receita incremental.</div>
+      </div>
+      <div style="background:rgba(196,146,42,0.15);border:1px solid rgba(196,146,42,0.3);border-radius:8px;padding:20px 24px;">
+        <div style="font-size:10px;font-weight:600;color:var(--gold);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;">Custo de aquisição incremental</div>
+        <div style="font-family:Georgia,serif;font-size:30px;color:#fff;line-height:1;margin-bottom:8px;">R$ 0<span style="font-size:16px;color:rgba(255,255,255,0.5);">/cliente</span></div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.65);line-height:1.5;">O cliente já está na base. Personalization entrega receita sobre a base existente de 10,2M clientes — sem campanha de aquisição, sem agência, sem custo marginal de originação.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- NAV UPDATE: add Meu+ link -->
+<script>
+// injeta link Meu+ na nav se ela ainda nao tem
+(function(){
+  var links = document.querySelector('.nav-links');
+  if (links && !document.getElementById('nav-meu')) {
+    var a = document.createElement('a');
+    a.href = '#meu-mais'; a.id = 'nav-meu'; a.textContent = 'Meu+';
+    // inserir depois do link "Como Funciona"
+    var how = links.querySelector('a[href="#how"]');
+    if (how && how.nextSibling) links.insertBefore(a, how.nextSibling);
+    else links.appendChild(a);
+  }
+})();
+</script>
+
+<!-- COST OF DOING NOTHING -->
+<section id="cost">
+  <div class="sec-inner">
+    <h2 class="sec-title">Fricções reais do público 50+ e o custo do não-personalizar</h2>
+    <p class="sec-intro">
+      O público sênior transita de forma híbrida entre físico e digital, com maior sensibilidade a fricções de usabilidade
+      e receio em etapas de autenticação. Cada abandono de jornada sem recuperação contextual é receita permanentemente perdida.
+    </p>
+
+    <div class="cost-grid">
+      <div>
+        <h3 style="font-size:15px;font-weight:600;color:var(--red-neg);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #FCA5A5;">Hot spots sem cobertura — o que ocorre hoje</h3>
+        <div class="cost-item">
+          <div class="cost-icon">🔴</div>
+          <div>
+            <h5>Abandono na biometria facial — o nó mais crítico</h5>
+            <p>Cliente customiza prazo, simula valor, avança pelas condições — e abandona na tela de captura biométrica por erro de luminosidade ou receio de fraude. Sem recuperação contextual, a proposta expira. Sem personalização: o cliente começa do zero na próxima vez.</p>
+            <div class="est">Com SP: proposta congelada 48h + push 15min + WhatsApp Mel 2h + FSC agência 24h</div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🔴</div>
+          <div>
+            <h5>Saldo ocioso na conta corrente — oportunidade de NIM perdida</h5>
+            <p>Cliente recebe proventos do INSS no início do mês, mantém saldo parado por mais de 5 dias por receio de indisponibilidade em emergências. Sem personalização: nenhum produto de captação é oferecido no momento de maior propensão.</p>
+            <div class="est">Com SP: card de CDB Renda Mensal com FGC R$250k, creditado automaticamente na conta</div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🔴</div>
+          <div>
+            <h5>Checkout do Meu+ com evasão por forma de pagamento</h5>
+            <p>Cliente navega entre planos Meu+ Saúde, Meu+ Família e Meu+ Total, adiciona ao carrinho — e abandona ao ser confrontado com exigência de dados de cartão externo, desconhecendo a opção de débito em conta com desconto.</p>
+            <div class="est">Com SP: modal dinâmico com isenção de tarifa para correntistas + telemedicina 8 dependentes para não correntistas</div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🔴</div>
+          <div>
+            <h5>ATM: banner institucional genérico no maior momento de atenção</h5>
+            <p>Cliente que sacou proventos, verificou saldo e está na tela de encerramento vê o mesmo banner de campanha que todos os outros. O momento de maior atenção captiva do público 50+ — presença física no terminal — é desperdiçado.</p>
+            <div class="est">Com SP: oferta contextual pós-saque com contratação via biometria do terminal em &lt;300ms</div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🔴</div>
+          <div>
+            <h5>Ofertas de crédito para negativados — risco regulatório SARB 27</h5>
+            <p>Sistemas batch enviam ofertas de crédito pessoal para clientes já comprometidos financeiramente. Além do risco de inadimplência, viola as diretrizes do Normativo SARB nº 27/2023 da Febraban sobre proteção ao superendividamento de idosos.</p>
+            <div class="est">Com SP: motor suprime crédito e oferece Meu+ Educação ou planejamento orçamentário automaticamente</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size:15px;font-weight:600;color:var(--green-pos);margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid #A7F3D0;">Impacto quantificado nos KPIs do Mercantil</h3>
+        <div class="cost-item">
+          <div class="cost-icon">🟢</div>
+          <div>
+            <h5>ROAE: +1,2 a +2,0 p.p. incremental</h5>
+            <p>Crescimento de receitas leves de capital (Meu+, sem consumo de capital regulatório) somado ao aumento de originação via recuperação de abandono. Numerador sobe, denominador não cresce proporcionalmente.</p>
+            <div class="fix">Banco já opera com ROAE 41,4% — personalização sustenta e expande</div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🟢</div>
+          <div>
+            <h5>RPS: +18% a +25% a/a incremental via Meu+</h5>
+            <p>Conversão contextual de assinaturas no extrato, app, portal e ATMs. Sobre base anual ~R$1,4bi (projeção 4×363M), representa R$250M–350M de receita adicional com custo de aquisição marginal próximo de zero.</p>
+            <div class="fix">Planos: R$34,99–R$99,99/mês por cliente ativo convertido</div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🟢</div>
+          <div>
+            <h5>CAC: −25% a −35% no custo por originação digital</h5>
+            <p>Substituição de retargeting externo (buscadores, display) por réguas proprietárias de baixo custo marginal: push in-app, WhatsApp com assistente Mel, telas de ATM e alertas no FSC — eliminando recompra de lead.</p>
+            <div class="fix">Recuperação de proposta parada na biometria = custo quase zero</div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🟢</div>
+          <div>
+            <h5>Índice de eficiência: −1,5 a −2,8 p.p. (melhora)</h5>
+            <p>Migração para canais digitais assistidos, redução do tempo de atendimento em agências por scripts preditivos no FSC, e automação de autoatendimento no ATM. Receita por ponto de contato sobe, custo fixo não cresce.</p>
+            <div class="fix">Atendimento reativo vira consultoria — mesmo tempo, mais conversão</div>
+          </div>
+        </div>
+        <div class="cost-item">
+          <div class="cost-icon">🟢</div>
+          <div>
+            <h5>Cross-sell: 1,8 → 2,7 produtos médios por cliente ativo</h5>
+            <p>NBA calculada em cada ponto de interação física ou digital, correlacionando crédito + Meu+ + investimentos. Em 18 meses de operação do motor, a média de produtos por cliente ativo passa de 1,8 para 2,7.</p>
+            <div class="fix">Principalidade mensurável — objetivo estratégico declarado pelo banco</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela de latência por canal -->
+    <div style="margin-top:40px;">
+      <h3 style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:16px;">Arquitetura de decisão em tempo real — latência por canal</h3>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--navy);color:#fff;">
+              <th style="padding:10px 14px;text-align:left;font-weight:600;">Canal</th>
+              <th style="padding:10px 14px;text-align:left;font-weight:600;">Mecanismo de Coleta</th>
+              <th style="padding:10px 14px;text-align:left;font-weight:600;">Camada de Decisão</th>
+              <th style="padding:10px 14px;text-align:left;font-weight:600;">Renderização</th>
+              <th style="padding:10px 14px;text-align:center;font-weight:600;color:var(--gold);">Latência</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background:#fff;border-bottom:1px solid var(--line);">
+              <td style="padding:10px 14px;font-weight:600;color:var(--navy);">App Mobile (iOS/Android)</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Salesforce Mobile SDK — eventos nativos e parâmetros de tela</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Einstein Recipes + Regras de Negócio em Tempo Real</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Componentes dinâmicos in-app e push notifications</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--green-pos);">&lt;150ms</td>
+            </tr>
+            <tr style="background:var(--bg-alt);border-bottom:1px solid var(--line);">
+              <td style="padding:10px 14px;font-weight:600;color:var(--navy);">Portal Web / Loja Meu+</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Salesforce Web SDK — Sitemap declarativo de atributos</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Grafos de Perfil + Segmentação Sub-Segundo</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Injeção de componentes web dinâmicos e pop-ins contextuais</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--green-pos);">&lt;100ms</td>
+            </tr>
+            <tr style="background:#fff;border-bottom:1px solid var(--line);">
+              <td style="padding:10px 14px;font-weight:600;color:var(--navy);">ATM / Caixa Eletrônico</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Gatilho Server-Side na leitura do cartão ou biometria</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Motor de Decisão Server-Side Personalization</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Payload JSON integrado ao software do terminal</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--gold);">&lt;300ms</td>
+            </tr>
+            <tr style="background:var(--bg-alt);">
+              <td style="padding:10px 14px;font-weight:600;color:var(--navy);">Agência (Mesa/Guichê)</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">CRM + eventos agregados de jornada digital via FSC</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Motor NBA (Next Best Action) do Data Cloud</td>
+              <td style="padding:10px 14px;color:var(--ink-muted);">Painel do Agente no Salesforce Financial Services Cloud</td>
+              <td style="padding:10px 14px;text-align:center;font-weight:700;color:var(--blue);">Imediato no carregamento</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXEC PRIORITIES -->
+<section id="exec">
+  <div class="sec-inner">
+    <h2 class="sec-title">Alinhamento com as prioridades da liderança Mercantil</h2>
+    <p class="sec-intro">
+      Extraído diretamente das mensagens da administração e relatórios de resultados 4T25 e 2T26.
+      Cada prioridade declarada pelo banco mapeia diretamente com o que Salesforce Personalization entrega.
+    </p>
+
+    <div class="exec-mapping">
+
+      <div class="exec-card">
+        <div class="exec-card-header">
+          <div class="exec-avatar">CEO</div>
+          <div class="exec-info">
+            <h4>Administração — mensagem 2T26</h4>
+            <span>"15º recorde consecutivo — crescimento com consistência, rentabilidade e prudência"</span>
+          </div>
+        </div>
+        <div class="exec-card-body">
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>"O Meu+ aprofunda a presença do Mercantil na vida dos clientes"</h5>
+              <p>Citação direta do relatório 2T26. A evolução do ecossistema Meu+ é descrita como o principal motor de diversificação de receitas — e "principalidade" (ser o banco principal do cliente 50+) é o objetivo estratégico declarado para os próximos anos.</p>
+              <span class="sf-match">Salesforce Personalization → acelera Meu+ com next best offer por IA</span>
+            </div>
+          </div>
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>"78% da originação de consignado via canais digitais em 2T26"</h5>
+              <p>100% do consignado INSS já é via canais próprios. O banco declarou o digital como principal ativo comercial — personalizar esse canal significa ampliar conversão sem nenhum custo adicional de distribuição.</p>
+              <span class="sf-match">Salesforce Personalization → canal digital como motor de receita do Meu+</span>
+            </div>
+          </div>
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>"Crescer com consistência diante das mudanças regulatórias"</h5>
+              <p>2S26 trouxe novas regras para consignado INSS e portabilidade. O banco precisa crescer RPS para compensar seletividade na originação de crédito — e Meu+ é o vetor de diversificação que não depende de ciclo de crédito.</p>
+              <span class="sf-match">Salesforce Personalization → RPS via Meu+ independe de ciclo de crédito</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exec-card">
+        <div class="exec-card-header">
+          <div class="exec-avatar">CFO</div>
+          <div class="exec-info">
+            <h4>Administração — mensagem 4T25</h4>
+            <span>"R$ 1 bilhão recorrente em 2025 — ROAE de 43,5% no 4T25, 41,4% LTM no 2T26"</span>
+          </div>
+        </div>
+        <div class="exec-card-body">
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>"Diversificação das fontes de resultado — menos dependência de spread"</h5>
+              <p>Declaração explícita no relatório 4T25: o crescimento de RPS via seguros e assistências "contribui para a diversificação das fontes de resultado, sobretudo em momentos de estresse em ciclos de crédito mais desafiadores".</p>
+              <span class="sf-match">Salesforce Personalization → receita de RPS independente de NIM/Selic</span>
+            </div>
+          </div>
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>NIM caiu de 18,1% para 17,2% — manter ROAE acima de 40% exige RPS</h5>
+              <p>Compressão de 0,9 p.p. na margem entre 2T25 e 2T26. Manter ROAE elevado com NIM caindo exige crescer receita sem crescer ativos na mesma proporção. Personalização no Meu+ entrega exatamente isso: mais receita de serviços, zero crescimento de ativo.</p>
+              <span class="sf-match">Salesforce Personalization → ROAE sem crescimento proporcional de ativo</span>
+            </div>
+          </div>
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>NPL 90d subiu para 3,1% (+0,8 p.p. vs 2T25) — intervenção precoce é prioridade</h5>
+              <p>Com inadimplência em alta, identificar clientes em comportamento de pré-default via canal digital e oferecer renegociação antes do vencimento pode conter o NPL antes que se consolide no balanço.</p>
+              <span class="sf-match">Salesforce Personalization → sinal comportamental → intervenção proativa</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exec-card">
+        <div class="exec-card-header">
+          <div class="exec-avatar">CMO</div>
+          <div class="exec-info">
+            <h4>Canal Digital / Marketing — dados 2T26</h4>
+            <span>"Controle da jornada comercial, prevenção de fraudes e eficiência operacional"</span>
+          </div>
+        </div>
+        <div class="exec-card-body">
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>"RPS +76% vs 2T25 — crescimento puxado pelo Meu+"</h5>
+              <p>O relatório 2T26 aponta o Meu+ como principal motor do crescimento de RPS para R$ 363M. A lógica é clara: mais penetração de produtos Meu+ por cliente ativo = mais RPS sem novos clientes. Personalização é o acelerador desta equação.</p>
+              <span class="sf-match">Salesforce Personalization → next best offer por IA para cada perfil do público 50+</span>
+            </div>
+          </div>
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>Redução de CAC via canal digital — 78% das originações sem agência</h5>
+              <p>Com quase 80% das originações de crédito já em canal digital, o próximo passo é usar esse canal para vender mais Meu+ ao mesmo cliente sem custo de aquisição. Personalização transforma cada sessão digital em oportunidade de cross-sell.</p>
+              <span class="sf-match">Salesforce Personalization → cross-sell zero CAC na jornada digital existente</span>
+            </div>
+          </div>
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>Ecossistema voltado ao público 50+ — mercado de R$ 2 trilhões/ano</h5>
+              <p>O banco identificou o público 50+ como segmento estratégico em mercado estimado em R$ 2 trilhões/ano na economia brasileira. Personalizar ofertas de saúde, bem-estar, odontologia e tecnologia por perfil de cliente aumenta penetração no maior mercado do banco.</p>
+              <span class="sf-match">Salesforce Personalization → segmentação comportamental no público 50+</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exec-card">
+        <div class="exec-card-header">
+          <div class="exec-avatar">CTO</div>
+          <div class="exec-info">
+            <h4>Tecnologia &amp; Operações — dados 2T26</h4>
+            <span>"Ativo total de R$ 38,9bi — Basileia 17,2% — infraestrutura para crescimento"</span>
+          </div>
+        </div>
+        <div class="exec-card-body">
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>Consignado Privado: crescimento de R$ 87M para R$ 3,0bi (+3336%)</h5>
+              <p>O banco abriu um produto novo em escala explosiva — o Consignado Privado cresceu 3336% em 12 meses. Novos produtos exigem onboarding personalizado por perfil de cliente. SDK mobile integra ao app existente sem refatorar core bancário.</p>
+              <span class="sf-match">Salesforce Personalization → onboarding e ativação de novos produtos sem reengenharia</span>
+            </div>
+          </div>
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>Segurança, LGPD e dados sob controle do banco</h5>
+              <p>Dados comportamentais processados como first-party — nunca compartilhados com terceiros. Infraestrutura Salesforce com certificações ISO 27001, SOC 2 Type II e aderência à LGPD.</p>
+              <span class="sf-match">Salesforce Personalization → dados no ambiente controlado pelo Mercantil</span>
+            </div>
+          </div>
+          <div class="exec-priority">
+            <div class="exec-priority-dot"></div>
+            <div class="exec-priority-content">
+              <h5>Plataforma que escala com o crescimento da base</h5>
+              <p>Arquitetura cloud-native que processa de 1M a 3B decisões/ano sem mudança de contrato ou reengenharia. Bajaj Finance usa a mesma plataforma com 75M de clientes ativos.</p>
+              <span class="sf-match">Salesforce Personalization → escala de 1M a 3B decisões na mesma plataforma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SIMULATOR -->
+<section id="simulator">
+  <div class="sec-inner">
+    <h2 class="sec-title">Simule o potencial de ROI para o Banco Mercantil</h2>
+    <p class="sec-intro">
+      Ajuste os parâmetros com os números do seu cenário. Os benchmarks de uplift são baseados em resultados
+      publicados de instituições financeiras com perfil comparável.
+    </p>
+
+    <div class="simulator-layout">
+      <div class="sim-controls">
+        <h3>Parâmetros do negócio</h3>
+
+        <div class="sim-control">
+          <label>Clientes ativos no app / mês <span id="v-users">1.500.000</span></label>
+          <input type="range" id="sl-users" min="500000" max="5000000" step="100000" value="1500000" oninput="update()">
+          <p class="hint">Visitantes únicos mensais no canal digital — app + internet banking</p>
+        </div>
+
+        <div class="sim-control">
+          <label>Ticket médio de produto (R$) <span id="v-ticket">R$ 8.000</span></label>
+          <input type="range" id="sl-ticket" min="2000" max="30000" step="500" value="8000" oninput="update()">
+          <p class="hint">Consignado médio; suba para portabilidade (~R$18k) ou refinanciamento (~R$12k)</p>
+        </div>
+
+        <div class="sim-control">
+          <label>Conversão atual estimada <span id="v-conv">1,2%</span></label>
+          <input type="range" id="sl-conv" min="0.3" max="5" step="0.1" value="1.2" oninput="update()">
+          <p class="hint">Benchmark apps de crédito sem personalização: 0.8%–2.0%</p>
+        </div>
+
+        <div class="sim-control">
+          <label>Uplift de conversão com Personalization <span id="v-uplift">+18%</span></label>
+          <input type="range" id="sl-uplift" min="5" max="40" step="1" value="18" oninput="update()">
+          <p class="hint">Conservador +10%, moderado +18–25%, agressivo +30–40% (ref. Fisher &amp; Paykel)</p>
+        </div>
+
+        <div class="sim-control">
+          <label>Margem líquida do produto <span id="v-margin">3,0%</span></label>
+          <input type="range" id="sl-margin" min="1" max="8" step="0.5" value="3" oninput="update()">
+          <p class="hint">Spread líquido de consignado; ajuste para seguros (~15%) ou CDB (~0.5%)</p>
+        </div>
+
+        <div class="sim-result">
+          <h4>Resultado estimado — Ano 1</h4>
+          <div class="sim-row"><span class="lbl">Conversões mensais (situação atual)</span><span class="val" id="r-base">18.000 / mês</span></div>
+          <div class="sim-row"><span class="lbl">Conversões mensais (com Personalization)</span><span class="val pos" id="r-up">21.240 / mês</span></div>
+          <div class="sim-row"><span class="lbl">Incremento mensal de conversões</span><span class="val pos" id="r-inc">3.240 / mês</span></div>
+          <div class="sim-row"><span class="lbl">Receita incremental estimada / ano</span><span class="val pos" id="r-rev">R$ 9.331.200</span></div>
+          <div class="sim-row"><span class="lbl">Custo estimado da solução / ano</span><span class="val neg" id="r-cost">US$ 90.000 (R$ 463.500)</span></div>
+          <div class="sim-row"><span class="lbl">ROI estimado (Ano 1)</span><span class="val pos big" id="r-roi">1913% a.a.</span></div>
+          <div class="sim-row"><span class="lbl">Payback estimado</span><span class="val pos" id="r-pb">1 meses</span></div>
+        </div>
+      </div>
+
+      <div class="chart-panel">
+        <h3>Retorno acumulado vs. investimento — 36 meses</h3>
+        <div class="chart-wrap">
+          <canvas id="roiChart" width="928" height="640" style="display: block; box-sizing: border-box; height: 320px; width: 464px;"></canvas>
+        </div>
+        <p class="chart-note">
+          Curva assume crescimento de base ativa de +8% a.a. e ramp-up de uplift em 6 meses.
+          Linha dourada tracejada = investimento acumulado. Área azul = retorno incremental acumulado.
+          O ponto onde as curvas se cruzam é o payback.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section id="cases">
+  <div class="sec-inner">
+    <h2 class="sec-title">Referências publicadas em serviços financeiros</h2>
+    <p class="sec-intro">
+      Resultados publicados pela Salesforce em instituições com perfil comparável ao Banco Mercantil —
+      ordenados por relevância para o contexto brasileiro de consignado e crédito ao consumidor.
+    </p>
+
+    <table class="cases-table">
+      <thead>
+        <tr>
+          <th>Instituição</th>
+          <th>Segmento</th>
+          <th>Resultado publicado</th>
+          <th>Paralelo com o Mercantil</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Agibank</td>
+          <td>Banco digital, crédito consignado, Brasil</td>
+          <td><span class="pill">+80% deflexão de suporte</span><br>Redução de chamadas via canal digital personalizado</td>
+          <td>Modelo de negócio idêntico: consignado INSS digital no Brasil. Case mais direto disponível publicamente.<div class="rel">Relevância: altíssima</div></td>
+        </tr>
+        <tr>
+          <td>CaixaBank</td>
+          <td>Banco de varejo, Espanha</td>
+          <td><span class="pill">+20% produtividade de gerentes</span><br>Next Best Offer em painel unificado de relacionamento</td>
+          <td>Gerentes de varejo com base de aposentados e servidores — paralelo direto com modelo Mercantil.<div class="rel">Relevância: alta</div></td>
+        </tr>
+        <tr>
+          <td>Bajaj Finance</td>
+          <td>NBFC crédito pessoal / consignado, Índia</td>
+          <td><span class="pill">3 bilhões de decisões/ano</span><br>Personalização em escala para 75M clientes</td>
+          <td>Maior case de escala em crédito ao consumidor. Mercantil tem base 7x menor — plataforma tem sobra de capacidade.<div class="rel">Relevância: alta (escala + crédito pessoal)</div></td>
+        </tr>
+        <tr>
+          <td>Fisher &amp; Paykel</td>
+          <td>Varejo premium, Oceania / global</td>
+          <td><span class="pill">+33% conversão</span> <span class="pill">+40% page views</span><br>Benchmark de uplift mais citado pela Salesforce</td>
+          <td>Perfil diferente (produto físico), mas mesmo motor. Referência para expectativa de uplift de conversão.<div class="rel">Relevância: média-alta (benchmark de uplift)</div></td>
+        </tr>
+        <tr>
+          <td>Rawlings</td>
+          <td>E-commerce esportivo, EUA</td>
+          <td><span class="pill">+10% CTR</span><br>Campanhas 75% mais rápidas de configurar e lançar</td>
+          <td>Referência de eficiência operacional de marketing. Relevante para equipe de campanhas Mercantil.<div class="rel">Relevância: média (agilidade de marketing)</div></td>
+        </tr>
+        <tr>
+          <td>Titan / Tanishq</td>
+          <td>Varejo de alto valor, Índia</td>
+          <td><span class="pill">+5.5% conversão de leads</span><br>Personalização de jornada para produto de alto ticket e baixa frequência</td>
+          <td>Paralelo com consignado: produto de alto ticket, decisão demorada, ciclo longo — personalização de jornada faz diferença.<div class="rel">Relevância: média (ciclo de decisão)</div></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="sec-inner">
+    <h2 class="sec-title">Modelo de contratação recomendado</h2>
+    <p class="sec-intro">
+      Dois modelos disponíveis. Para o perfil do Mercantil — base de 10M clientes com ~1.5M ativos mensais no app —
+      a lógica de escolha é clara: começar leve, provar ROI, escalar com evidência.
+    </p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card rec">
+        <div class="rec-badge">Recomendado — piloto</div>
+        <h4>Flex Credits (Data Services Card)</h4>
+        <div class="price">~US$ 90.000 <span>/ ano</span></div>
+        <p class="price-note">
+          18 milhões de créditos — equivale a 1 decisão personalizada por visita para os 1.5M usuários mensais ativos.
+          Créditos não expiram dentro do contrato. Expansão por crédito adicional sem renegociação.
+        </p>
+        <ul>
+          <li>Custo previsível, independente do tamanho total da base</li>
+          <li>Ideal para fase de piloto com caso de uso único e ROI mensurável</li>
+          <li>Sem custo por perfil armazenado — paga apenas por decisão tomada</li>
+          <li>Escala de créditos disponível sem renegociação de contrato</li>
+          <li>Time-to-value mais rápido — um caso de uso, resultado claro</li>
+          <li>Modelo híbrido possível: Flex para ativos + Profiles para base total</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <h4>Data 360 Profiles</h4>
+        <div class="price">US$ 240–420 <span>/ 100k perfis / ano</span></div>
+        <p class="price-note">
+          Para 10M perfis = US$ 2.4M–4.2M/ano. Custo proporcional à base cadastrada,
+          não à frequência de uso. Faz sentido quando &gt;40% da base está ativa mensalmente.
+        </p>
+        <ul>
+          <li>Unificação completa de identidade para todos os 10M clientes</li>
+          <li>Histórico de comportamento persistido por perfil — visão 360 graus</li>
+          <li>Adequado para estratégia omnichannel madura (app + web + ATM + gerente)</li>
+          <li>Melhor TCO a longo prazo quando base ativa ultrapassa 40–50% do total</li>
+          <li>Inclui Data Cloud — unifica fontes externas ao Salesforce</li>
+          <li>Contratação evolutiva: começa com Flex e migra quando ROI estiver comprovado</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pricing-rec">
+      <div style="font-size:20px;margin-top:2px;flex-shrink:0;">💡</div>
+      <p>
+        <strong>Recomendação para o Mercantil:</strong> iniciar com <strong>Flex Credits (~US$ 90k/ano)</strong>
+        focado em carrinho abandonado no canal digital e Next Best Offer no Meu+ e para gerentes.
+        Com ROI comprovado em 6–9 meses, expandir para <strong>Data 360 Profiles</strong> cobrindo
+        toda a base de 10M em estratégia omnichannel (app + site + ATM + gerente).
+        Modelo híbrido — Flex para clientes ativos + Profiles para segmento premium — disponível via Deal Desk.
+        <strong>Investimento inicial de piloto: &lt; 0.3% da receita de serviços anual do Mercantil.</strong>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="sec-inner">
+    <h2 class="sec-title">Roteiro de implementação em 3 fases sequenciais</h2>
+    <p class="sec-intro">
+      Estruturado para mitigar riscos de descontinuidade operacional e adequação regulatória (SARB 27).
+      Cada fase entrega resultados mensuráveis antes da próxima começar.
+    </p>
+
+    <!-- 3-phase roadmap -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:40px;">
+
+      <div style="background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;">
+        <div style="background:var(--navy);padding:16px 20px;display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:rgba(255,255,255,0.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;">1</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">Fundação Digital</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.6);">Semanas 1–8 — SDK + recuperação de abandono</div>
+          </div>
+        </div>
+        <div style="padding:20px;">
+          <p style="font-size:13px;color:var(--ink-muted);line-height:1.65;margin-bottom:14px;">Instalação e calibração do Mobile SDK (iOS/Android) e do Web SDK no portal bancário e na loja Meu+. Mapeamento exaustivo de eventos: navegação, cliques, etapas de simulação e carrinhos de assistências.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">Identity Resolution: sessões anônimas → CPF + conta-corrente</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">Casos de uso: recuperação de abandono na biometria via push + WhatsApp Mel</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">Jornadas contextuais: saldo ocioso → CDB + abandono Meu+ → modal dinâmico</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding:8px 12px;background:var(--cloud);border-radius:6px;font-size:11px;color:var(--blue);font-weight:600;">Resultado esperado: primeiras conversões recuperadas em 30 dias de produção</div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;">
+        <div style="background:var(--blue);padding:16px 20px;display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;">2</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">Expansão à Força de Vendas</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7);">Semanas 9–16 — NBA no FSC + agência</div>
+          </div>
+        </div>
+        <div style="padding:20px;">
+          <p style="font-size:13px;color:var(--ink-muted);line-height:1.65;margin-bottom:14px;">Integração da inteligência comportamental digital com as agências bancárias. As regras de Next Best Action geradas pelo motor ficam disponíveis no Financial Services Cloud — os gerentes agem com intenção digital como contexto.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#fff;border:1.5px solid var(--blue);flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">Painel NBA no FSC: gerente recebe dossiê de intenção antes de atender</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#fff;border:1.5px solid var(--blue);flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">Finalização presencial de propostas paradas na biometria — mesmos prazos e taxas</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#fff;border:1.5px solid var(--blue);flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">Comercialização consultiva de Meu+ combos e produtos de previdência e CDB</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding:8px 12px;background:var(--cloud);border-radius:6px;font-size:11px;color:var(--blue);font-weight:600;">Resultado esperado: redução de 1,5–2,2 p.p. na portabilidade de saída INSS</div>
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden;">
+        <div style="background:#1B6B45;padding:16px 20px;display:flex;align-items:center;gap:12px;">
+          <div style="width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;">3</div>
+          <div>
+            <div style="font-size:13px;font-weight:700;color:#fff;">Omnichannel Completo — ATMs</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.7);">Semanas 17–24 — headless API nos terminais</div>
+          </div>
+        </div>
+        <div style="padding:20px;">
+          <p style="font-size:13px;color:var(--ink-muted);line-height:1.65;margin-bottom:14px;">Conexão desacoplada (headless) dos caixas eletrônicos via Server-Side APIs integradas aos sistemas legados dos terminais. A/B testing contínuo de design de telas e vocabulário para a terceira idade.</p>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#1B6B45;flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">Server-Side REST API: oferta contextual em &lt;300ms na tela pós-saque</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#1B6B45;flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">Contratação de crédito pré-aprovado via biometria do próprio terminal</div>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <div style="width:6px;height:6px;border-radius:50%;background:#1B6B45;flex-shrink:0;margin-top:6px;"></div>
+              <div style="font-size:12px;color:var(--ink-muted);">SARB 27 compliance nativo: frequency capping + opt-out + suitability dinâmico</div>
+            </div>
+          </div>
+          <div style="margin-top:14px;padding:8px 12px;background:var(--cloud);border-radius:6px;font-size:11px;color:var(--blue);font-weight:600;">Resultado: ativo físico mais rentável — mesmo CAPEX, mais conversão</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SARB 27 compliance callout -->
+    <div style="background:var(--bg-alt);border:1px solid var(--line);border-left:4px solid var(--navy);border-radius:8px;padding:20px 24px;">
+      <div style="font-size:11px;font-weight:700;color:var(--navy);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">Conformidade regulatória nativa — SARB Febraban nº 27/2023</div>
+      <p style="font-size:13px;color:var(--ink-muted);line-height:1.65;margin:0;">
+        A arquitetura do Salesforce Personalization integra <strong>frequency capping algorítmico</strong>: após 3 exibições consecutivas de uma oferta sem conversão ou interação, a campanha é silenciada em todos os canais por 30 dias obrigatórios.
+        O motor consulta a plataforma "Não Me Perturbe" e listas de opt-out antes de qualquer disparo outbound.
+        Propostas de crédito são <strong>suprimidas automaticamente</strong> quando o limite de comprometimento de renda é atingido —
+        substituídas por conteúdo de Meu+ Educação e consultoria previdenciária.
+        Resultado: proteção regulatória ativa, sem nenhuma intervenção manual da equipe de compliance do Mercantil.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>
+    Esta análise integra: (1) tese de posicionamento do Salesforce Personalization para o Banco Mercantil; (2) relatórios de resultados 4T25 e 2T26 do Banco Mercantil; (3) decks FY27 Marketing Cloud — Product Features e Add-ons; (4) benchmarks públicos de instituições financeiras com perfil comparável.
+    Os impactos quantificados são projeções baseadas em modelagem econômico-financeira e benchmarks de mercado — não constituem garantia de resultado.
+    Conformidade SARB Febraban nº 27/2023 integrada nativamente na arquitetura descrita.
+    Preparado por Salesforce Brasil — <a href="https://salesforce.com/br">salesforce.com/br</a>
+  </p>
+</footer>
+
+<script>
+// ── CHANNEL TABS ──
+function showTab(id, btn) {
+  document.querySelectorAll('.channel-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.channel-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── ROI SIMULATOR ──
+const fmt   = n => new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(n);
+const fmtR  = n => 'R$ ' + new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(n);
+const fmtUS = n => 'US$ ' + new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 0 }).format(n);
+
+const ctx = document.getElementById('roiChart').getContext('2d');
+const roiChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: Array.from({length: 37}, (_, i) => i === 0 ? 'Início' : `M${i}`),
+    datasets: [
+      {
+        label: 'Retorno incremental acumulado',
+        data: [],
+        borderColor: '#0176D3',
+        backgroundColor: 'rgba(1,118,211,0.07)',
+        fill: true,
+        tension: 0.4,
+        borderWidth: 2.5,
+        pointRadius: 0,
+        pointHoverRadius: 5
+      },
+      {
+        label: 'Investimento acumulado',
+        data: [],
+        borderColor: '#C4922A',
+        borderDash: [5, 4],
+        fill: false,
+        tension: 0,
+        borderWidth: 2,
+        pointRadius: 0,
+        pointHoverRadius: 5
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      legend: {
+        position: 'bottom',
+        labels: { font: { size: 12 }, padding: 16, boxWidth: 18 }
+      },
+      tooltip: {
+        callbacks: {
+          label: c => `${c.dataset.label}: ${fmtR(c.parsed.y)}`
+        }
+      }
+    },
+    scales: {
+      x: {
+        ticks: { font: { size: 11 }, maxTicksLimit: 13 },
+        grid: { color: 'rgba(0,0,0,0.04)' }
+      },
+      y: {
+        ticks: {
+          font: { size: 11 },
+          callback: v => v >= 1000000 ? 'R$ ' + (v/1000000).toFixed(1) + 'M' : 'R$ ' + (v/1000).toFixed(0) + 'k'
+        },
+        grid: { color: 'rgba(0,0,0,0.04)' }
+      }
+    }
+  }
+});
+
+function update() {
+  const users    = +document.getElementById('sl-users').value;
+  const ticket   = +document.getElementById('sl-ticket').value;
+  const conv     = +document.getElementById('sl-conv').value / 100;
+  const uplift   = +document.getElementById('sl-uplift').value / 100;
+  const margin   = +document.getElementById('sl-margin').value / 100;
+
+  document.getElementById('v-users').textContent  = fmt(users);
+  document.getElementById('v-ticket').textContent = 'R$ ' + fmt(ticket);
+  document.getElementById('v-conv').textContent   = (+document.getElementById('sl-conv').value).toFixed(1).replace('.', ',') + '%';
+  document.getElementById('v-uplift').textContent = '+' + document.getElementById('sl-uplift').value + '%';
+  document.getElementById('v-margin').textContent = (+document.getElementById('sl-margin').value).toFixed(1).replace('.', ',') + '%';
+
+  const baseConv   = Math.round(users * conv);
+  const upConv     = Math.round(users * conv * (1 + uplift));
+  const incConv    = upConv - baseConv;
+  const annRevenue = incConv * ticket * margin * 12;
+
+  const usdBrl = 5.15;
+  let costUSD = 90000;
+  if (users > 2000000) costUSD = 90000 + Math.floor((users - 2000000) / 500000) * 18000;
+  const costBRL = costUSD * usdBrl;
+
+  const roi = (annRevenue - costBRL) / costBRL * 100;
+
+  // Payback in months
+  const monthlyRevInc = incConv * ticket * margin;
+  const monthlyInvest = costBRL / 12;
+  let pbMonth = null;
+  let cumR = 0, cumI = 0;
+  for (let m = 1; m <= 36; m++) {
+    const ramp = Math.min(1, m / 6);
+    cumR += monthlyRevInc * ramp;
+    cumI += monthlyInvest;
+    if (pbMonth === null && cumR >= cumI) { pbMonth = m; break; }
+  }
+
+  document.getElementById('r-base').textContent = fmt(baseConv) + ' / mês';
+  document.getElementById('r-up').textContent   = fmt(upConv) + ' / mês';
+  document.getElementById('r-inc').textContent  = fmt(incConv) + ' / mês';
+  document.getElementById('r-rev').textContent  = fmtR(annRevenue);
+  document.getElementById('r-cost').textContent = fmtUS(costUSD) + ' (' + fmtR(costBRL) + ')';
+  document.getElementById('r-roi').textContent  = roi.toFixed(0) + '% a.a.';
+  document.getElementById('r-pb').textContent   = pbMonth ? pbMonth + ' meses' : '> 36 meses';
+
+  // Chart data
+  const retData = [], invData = [];
+  let cumRet = 0, cumInv = 0;
+  for (let m = 0; m <= 36; m++) {
+    if (m === 0) { retData.push(0); invData.push(0); continue; }
+    const ramp = Math.min(1, m / 6);
+    const growth = Math.pow(1.0065, m);
+    cumRet += monthlyRevInc * ramp * growth;
+    cumInv += monthlyInvest;
+    retData.push(Math.round(cumRet));
+    invData.push(Math.round(cumInv));
+  }
+
+  roiChart.data.datasets[0].data = retData;
+  roiChart.data.datasets[1].data = invData;
+  roiChart.update('none');
+}
+
+update();
+</script>
+
+
+</body></html>
