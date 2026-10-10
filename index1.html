@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<!-- saved from url=(0209)file:///Users/gustavo.rocha/Library/Application%20Support/Claude-3p/local-agent-mode-sessions/3ef99d4a-b59d-4acb-a62a-819f8cfcbecd/00000000-0000-4000-8000-000000000001/77b390c0/outputs/app_mercantil_proto.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protótipo — App Mercantil × Salesforce Personalization</title>
+<link rel="preconnect" href="https://fonts.googleapis.com/">
+<link href="./index1_files/css2" rel="stylesheet">
+<style>
+:root {
+  --royal: #2B3EE6;
+  --royal-dark: #1E2DB8;
+  --royal-light: #EEF0FF;
+  --royal-mid: #D0D5FB;
+  --orange: #F97316;
+  --orange-light: #FFF0E6;
+  --lavender: #F0F2FF;
+  --ink: #0D0D0D;
+  --ink-2: #3D3D3D;
+  --ink-3: #7A7A8C;
+  --line: #EBEBF0;
+  --bg: #F2F3F8;
+  --white: #FFFFFF;
+  --green: #16A34A;
+  --red: #DC2626;
+  --gold: #F0C040;
+  --navy-sf: #032D60;  /* Salesforce navy for the "with personalization" signal */
+  --card-r: 16px;
+  --card-shadow: 0 1px 8px rgba(0,0,0,0.07), 0 0 0 1px rgba(0,0,0,0.04);
+  --phone-w: 320px;
+  --phone-h: 650px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; }
+
+/* ── SHELL ── */
+.shell { display: grid; grid-template-columns: 210px 1fr 252px; grid-template-rows: 52px 1fr; min-height: 100vh; }
+
+/* ── TOPBAR ── */
+.topbar { grid-column: 1/-1; background: #fff; border-bottom: 1px solid var(--line); display: flex; align-items: center; padding: 0 20px; gap: 14px; }
+.tb-logo-wrap { display: flex; align-items: center; gap: 7px; }
+.tb-logo-text { font-size: 13px; font-weight: 800; color: var(--ink); letter-spacing: -0.3px; }
+.tb-logo-text span { color: var(--royal); }
+.tb-div { width: 1px; height: 18px; background: var(--line); }
+.tb-sub { font-size: 11px; color: var(--ink-3); }
+.tb-sp { flex: 1; }
+.tb-badge { font-size: 11px; font-weight: 700; color: #fff; background: var(--navy-sf); padding: 4px 12px; border-radius: 20px; }
+.tb-badge span { color: var(--gold); }
+
+/* ── SIDEBAR ── */
+.sidebar { background: #fff; border-right: 1px solid var(--line); padding: 16px 0; display: flex; flex-direction: column; gap: 0; overflow-y: auto; }
+.sl-group { padding: 14px 0 4px; }
+.sl-group:first-child { padding-top: 4px; }
+.sl-label { font-size: 9px; font-weight: 700; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; padding: 0 16px; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+.sl-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+.sl-group-divider { height: 1px; background: var(--line); margin: 8px 16px; }
+.sb-num-pv { background: var(--navy-sf) !important; color: var(--gold) !important; font-size: 10px; }
+.sb-btn.sb-pv.active { background: #EEF0FF; }
+.sb-btn.sb-pv.active .sb-title { color: var(--navy-sf); font-weight: 700; }
+.sb-btn.sb-pv.active .sb-num-pv { background: var(--navy-sf) !important; }
+.sb-num-intro { background: var(--orange) !important; color: #fff !important; font-size: 11px; font-style: italic; font-weight: 900; }
+.sb-btn.sb-intro.active { background: #FFF0E6; }
+.sb-btn.sb-intro.active .sb-title { color: var(--orange); font-weight: 700; }
+
+/* ── SPLASH INTRO ── */
+.splash-intro-wrap { display: none; width: 100%; max-width: 780px; flex-direction: column; gap: 12px; }
+.splash-intro-wrap.visible { display: flex; }
+.si-hero { background: linear-gradient(150deg, #1a1a2e 0%, #0D2F6E 60%, #032D60 100%); border-radius: 16px 16px 0 0; padding: 32px 40px 24px; }
+.si-eyebrow { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.45); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 8px; }
+.si-headline { font-size: 22px; font-weight: 900; color: #fff; line-height: 1.22; letter-spacing: -.3px; margin-bottom: 10px; }
+.si-headline em { color: var(--gold); font-style: normal; }
+.si-lead { font-size: 12px; color: rgba(255,255,255,.72); line-height: 1.7; max-width: 560px; }
+.si-kpis { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--orange); }
+.si-kpi { padding: 16px 14px; text-align: center; border-right: 1px solid var(--line); }
+.si-kpi:last-child { border-right: none; }
+.si-kpi-val { font-size: 24px; font-weight: 900; color: var(--ink); letter-spacing: -1px; line-height: 1; }
+.si-kpi-val span { font-size: 12px; font-weight: 700; color: var(--ink-3); }
+.si-kpi-lbl { font-size: 9px; color: var(--ink-3); margin-top: 3px; line-height: 1.4; }
+.si-body { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.si-card { background: #fff; border-radius: 12px; padding: 18px 18px; border: 1px solid var(--line); }
+.si-card-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.si-card-icon svg { width: 16px; height: 16px; }
+.si-card-title { font-size: 12px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
+.si-card-body { font-size: 11px; color: var(--ink-3); line-height: 1.6; }
+.si-card-body strong { color: var(--ink-2); }
+.si-card-stat { margin-top: 10px; padding: 8px 10px; border-radius: 8px; background: var(--bg); display: flex; align-items: baseline; gap: 6px; }
+.si-stat-val { font-size: 18px; font-weight: 900; color: var(--royal); letter-spacing: -.5px; }
+.si-stat-lbl { font-size: 10px; color: var(--ink-3); }
+.si-paradox { background: #fff; border-radius: 12px; border: 1px solid var(--line); overflow: hidden; }
+.si-paradox-hdr { background: linear-gradient(90deg, #F97316, #F59F0A); padding: 12px 18px; display: flex; align-items: center; gap: 8px; }
+.si-paradox-hdr-t { font-size: 12px; font-weight: 800; color: #fff; }
+.si-paradox-body { padding: 14px 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.si-paradox-col-lbl { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px; }
+.si-paradox-col-lbl.antes { color: #C23934; }
+.si-paradox-col-lbl.depois { color: var(--green); }
+.si-paradox-item { font-size: 10px; color: var(--ink-2); display: flex; gap: 5px; margin-bottom: 5px; line-height: 1.4; }
+.si-paradox-item::before { content: '•'; color: var(--ink-3); flex-shrink: 0; }
+.si-paradox-item.after::before { content: '→'; color: var(--royal); font-weight: 700; }
+.si-thesis { background: linear-gradient(135deg, #032D60, #2B3EE6); border-radius: 12px; padding: 18px 20px; display: flex; align-items: flex-start; gap: 16px; }
+.si-thesis-ico { width: 40px; height: 40px; background: rgba(255,255,255,.12); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.si-thesis-ico svg { width: 20px; height: 20px; }
+.si-thesis-t { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 5px; }
+.si-thesis-b { font-size: 11px; color: rgba(255,255,255,.75); line-height: 1.65; }
+.si-thesis-b em { color: var(--gold); font-style: normal; font-weight: 700; }
+.sb-btn { display: flex; align-items: flex-start; gap: 9px; padding: 9px 16px; cursor: pointer; border: none; background: none; width: 100%; text-align: left; transition: background 0.12s; border-radius: 0; }
+.sb-btn:hover { background: #F7F8FF; }
+.sb-btn.active { background: var(--royal-light); }
+.sb-btn.active .sb-num { background: var(--royal); color: #fff; }
+.sb-btn.active .sb-title { color: var(--royal); font-weight: 700; }
+.sb-num { width: 22px; height: 22px; border-radius: 50%; background: var(--line); font-size: 10px; font-weight: 700; color: var(--ink-3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.sb-title { font-size: 11px; color: var(--ink-3); line-height: 1.4; }
+.sb-nav { margin-top: auto; padding: 14px 16px; display: flex; gap: 8px; }
+.nb { flex: 1; padding: 9px 0; border-radius: 8px; border: 1.5px solid var(--line); background: #fff; font-size: 12px; font-weight: 600; color: var(--ink-3); cursor: pointer; transition: all 0.12s; }
+.nb:hover:not(:disabled) { border-color: var(--royal); color: var(--royal); }
+.nb:disabled { opacity: 0.3; cursor: default; }
+.nb.p { background: var(--royal); border-color: var(--royal); color: #fff; }
+.nb.p:hover:not(:disabled) { background: var(--royal-dark); }
+
+/* ── CENTER ── */
+.center { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 28px 20px; gap: 16px; }
+.scene-hdr { text-align: center; }
+.scene-hdr h2 { font-size: 16px; font-weight: 800; color: var(--ink); }
+.scene-hdr p { font-size: 12px; color: var(--ink-3); margin-top: 3px; }
+
+/* ── TOGGLE ── */
+.tog-bar { display: flex; background: var(--line); border-radius: 8px; padding: 3px; gap: 3px; }
+.tog { padding: 7px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 11px; font-weight: 600; background: transparent; color: var(--ink-3); transition: all 0.18s; white-space: nowrap; }
+.tog.sem-on { background: #fff; color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,0.09); }
+.tog.com-on { background: var(--navy-sf); color: var(--gold); box-shadow: 0 2px 8px rgba(3,45,96,0.28); }
+
+/* ── PHONE ── */
+.phone-wrap { position: relative; }
+.phone-pulse { position: absolute; inset: -5px; border-radius: 42px; border: 2px solid var(--gold); opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.phone-wrap.on .phone-pulse { opacity: 1; animation: pr 2.4s ease-in-out infinite; }
+@keyframes pr { 0%,100%{ box-shadow:0 0 0 0 rgba(240,192,64,.45);} 55%{box-shadow:0 0 0 8px rgba(240,192,64,0);} }
+.phone { width: var(--phone-w); height: var(--phone-h); background: #111; border-radius: 38px; padding: 10px; box-shadow: 0 28px 64px rgba(0,0,0,.28), 0 4px 14px rgba(0,0,0,.18); position: relative; }
+.phone-inner { width: 100%; height: 100%; background: #fff; border-radius: 30px; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+/* dynamic island */
+.dyn-island { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 80px; height: 22px; background: #111; border-radius: 12px; z-index: 30; }
+
+/* ── SCREEN ── */
+.screen { display: none; flex-direction: column; height: 100%; overflow: hidden; position: absolute; inset: 0; background: #fff; }
+.screen.active { display: flex; }
+
+/* STATUS BAR */
+.sbar { height: 42px; display: flex; align-items: flex-end; justify-content: space-between; padding: 0 18px 4px; flex-shrink: 0; }
+.sbar-time { font-size: 12px; font-weight: 700; color: var(--ink); }
+.sbar-icons { display: flex; gap: 5px; align-items: center; }
+.sbar-icons svg { width: 14px; height: 14px; }
+
+/* APP TOP ROW (logo + icons) */
+.app-top { display: flex; align-items: center; justify-content: space-between; padding: 6px 16px 0; flex-shrink: 0; }
+.merc-logo { display: flex; align-items: center; gap: 6px; }
+.merc-logo-text { font-size: 11px; font-weight: 900; color: var(--royal); letter-spacing: 0.5px; text-transform: uppercase; }
+.top-icons { display: flex; gap: 14px; align-items: center; }
+.top-icons svg { width: 20px; height: 20px; stroke: var(--ink-2); stroke-width: 1.8; fill: none; }
+.notif-dot { position: relative; }
+.notif-dot::after { content:''; position:absolute; top:-1px; right:-1px; width:7px; height:7px; background:var(--royal); border-radius:50%; border:1.5px solid #fff; }
+
+/* GREETING */
+.greeting { padding: 12px 16px 4px; flex-shrink: 0; }
+.greeting-name { font-size: 22px; font-weight: 800; color: var(--ink); line-height: 1.15; }
+.greeting-icons { display: flex; align-items: center; gap: 14px; }
+
+/* SCROLL AREA */
+.sa { flex: 1; overflow-y: auto; padding: 10px 12px 8px; display: flex; flex-direction: column; gap: 10px; scrollbar-width: none; }
+.sa::-webkit-scrollbar { display: none; }
+
+/* OFFER BANNER */
+.banner { border-radius: var(--card-r); padding: 16px; background: var(--lavender); display: flex; align-items: center; justify-content: space-between; gap: 8px; overflow: hidden; position: relative; min-height: 110px; }
+.banner-left { flex: 1; }
+.banner-title { font-size: 16px; font-weight: 800; color: var(--royal); line-height: 1.2; margin-bottom: 6px; }
+.banner-sub { font-size: 11px; color: var(--ink-2); line-height: 1.4; margin-bottom: 10px; }
+.banner-cta { font-size: 12px; font-weight: 700; color: var(--royal); }
+.banner-img { width: 90px; height: 90px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 36px; }
+.banner-img.orange { background: linear-gradient(135deg, #FB923C, #F97316); }
+.banner-img.blue { background: linear-gradient(135deg, #60A5FA, #2B3EE6); }
+.banner-pers-tag { position: absolute; top: 8px; right: 8px; font-size: 8px; font-weight: 800; background: var(--navy-sf); color: var(--gold); padding: 2px 7px; border-radius: 10px; }
+
+/* ACCOUNT CARD */
+.acc-card { background: #fff; border-radius: var(--card-r); padding: 14px 16px; box-shadow: var(--card-shadow); }
+.acc-row1 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.acc-name { font-size: 13px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 4px; }
+.acc-name svg { width: 14px; height: 14px; stroke: var(--royal); fill: none; stroke-width: 2; }
+.acc-link { font-size: 12px; font-weight: 600; color: var(--royal); }
+.acc-bal-label { font-size: 11px; color: var(--ink-3); margin-bottom: 2px; display: flex; align-items: center; gap: 5px; }
+.acc-bal { font-size: 22px; font-weight: 800; color: var(--ink); margin-bottom: 12px; }
+/* Quick actions */
+.qas { display: flex; justify-content: space-between; }
+.qa { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.qa-ic { width: 38px; height: 38px; border-radius: 50%; background: var(--royal-light); display: flex; align-items: center; justify-content: center; }
+.qa-ic svg { width: 18px; height: 18px; stroke: var(--royal); fill: none; stroke-width: 1.8; }
+.qa-lb { font-size: 9px; color: var(--ink-2); font-weight: 500; text-align: center; }
+
+/* SECTION HEADER */
+.sec-row { display: flex; justify-content: space-between; align-items: center; padding: 2px 0; }
+.sec-row .sec-t { font-size: 13px; font-weight: 700; color: var(--ink); }
+.sec-row .sec-l { font-size: 12px; font-weight: 600; color: var(--royal); }
+
+/* MEU+ GRID */
+.meu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.meu-item { border-radius: 12px; padding: 11px; background: #FAFAFA; border: 1.5px solid var(--line); display: flex; flex-direction: column; gap: 3px; position: relative; }
+.meu-item.feat { border-color: var(--royal); background: var(--royal-light); }
+.meu-item.feat.top { grid-column: 1/-1; flex-direction: row; align-items: center; gap: 12px; }
+.feat-tag { font-size: 8px; font-weight: 800; background: var(--royal); color: #fff; padding: 2px 7px; border-radius: 8px; align-self: flex-start; }
+.meu-emo { font-size: 20px; }
+.meu-nm { font-size: 11px; font-weight: 700; color: var(--ink); }
+.meu-pr { font-size: 10px; color: var(--ink-3); }
+.rank-badge { margin-left: auto; font-size: 18px; font-weight: 900; color: var(--royal); }
+.pers-label { font-size: 10px; color: var(--ink-3); margin-bottom: 2px; font-style: italic; }
+
+/* SIMULATION SCREEN */
+.sim-header { background: #fff; padding: 10px 16px 12px; flex-shrink: 0; }
+.sim-nav { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.sim-back { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.sim-back svg { width: 18px; height: 18px; stroke: var(--royal); fill: none; stroke-width: 2.5; }
+.sim-title { font-size: 13px; font-weight: 700; color: var(--ink); flex: 1; text-align: center; }
+.steps-row { display: flex; align-items: center; justify-content: center; gap: 0; margin-top: 4px; }
+.step-ic { width: 30px; height: 30px; border-radius: 50%; background: var(--royal); display: flex; align-items: center; justify-content: center; }
+.step-ic.inactive { background: #E5E7EB; }
+.step-ic svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.5; }
+.step-line { width: 32px; height: 2px; background: #E5E7EB; }
+.step-lbs { display: flex; justify-content: center; gap: 0; margin-top: 4px; font-size: 9px; color: var(--ink-3); }
+.step-lbs span { width: 62px; text-align: center; }
+.step-lbs span.active-lb { color: var(--royal); font-weight: 700; }
+
+.sim-field-label { font-size: 11px; color: var(--ink-3); padding: 0 16px; margin-top: 14px; margin-bottom: 4px; }
+.sim-field { margin: 0 12px; background: #fff; border-radius: 12px; border: 1.5px solid var(--line); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: var(--card-shadow); }
+.sim-val { font-size: 18px; font-weight: 800; color: var(--ink); }
+.sim-edit { font-size: 12px; font-weight: 700; color: var(--royal); }
+.sim-bottom { padding: 10px 12px 12px; flex-shrink: 0; }
+.sim-parcela { background: var(--royal-light); border-radius: 10px; padding: 11px 14px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.sim-parc-lbl { font-size: 11px; color: var(--ink-3); }
+.sim-parc-btn { background: var(--royal); color: #fff; font-size: 11px; font-weight: 700; padding: 6px 14px; border-radius: 20px; }
+.btn-continuar { width: 100%; background: var(--royal); color: #fff; font-size: 14px; font-weight: 700; padding: 14px; border-radius: 12px; border: none; cursor: pointer; }
+
+/* LOCK / PUSH */
+.lock-bg { position: absolute; inset: 0; background: linear-gradient(160deg, #0D1B3E 0%, #1A3A6B 55%, #2B3EE6 100%); display: flex; flex-direction: column; align-items: center; padding-top: 50px; border-radius: 30px; }
+.lock-time { font-size: 44px; font-weight: 800; color: #fff; }
+.lock-date { font-size: 12px; color: rgba(255,255,255,0.55); margin-top: 2px; }
+.push { position: absolute; top: 46px; left: 10px; right: 10px; background: rgba(255,255,255,0.94); backdrop-filter: blur(12px); border-radius: 14px; padding: 11px 12px; display: flex; gap: 10px; z-index: 20; box-shadow: 0 4px 20px rgba(0,0,0,.18); animation: sd .4s cubic-bezier(.22,1,.36,1); }
+@keyframes sd { from{transform:translateY(-55px);opacity:0} to{transform:translateY(0);opacity:1} }
+.push-ico { width: 32px; height: 32px; border-radius: 8px; background: var(--royal); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.push-content { flex: 1; }
+.push-app { font-size: 9px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .04em; display: flex; justify-content: space-between; }
+.push-ttl { font-size: 12px; font-weight: 700; color: var(--ink); }
+.push-bdy { font-size: 11px; color: var(--ink-3); line-height: 1.35; }
+.modal-ov { position: absolute; inset: 0; background: rgba(0,0,0,.4); backdrop-filter: blur(3px); display: flex; align-items: flex-end; z-index: 15; border-radius: 30px; }
+.modal { background: #fff; border-radius: 22px 22px 30px 30px; padding: 18px 16px 16px; width: 100%; }
+.modal-handle { width: 36px; height: 4px; background: var(--line); border-radius: 2px; margin: 0 auto 14px; }
+.modal-emo { font-size: 26px; margin-bottom: 8px; }
+.modal-t { font-size: 14px; font-weight: 800; color: var(--ink); margin-bottom: 6px; line-height: 1.25; }
+.modal-b { font-size: 12px; color: var(--ink-3); line-height: 1.5; margin-bottom: 14px; }
+.modal-acts { display: flex; flex-direction: column; gap: 8px; }
+.modal-btn { padding: 12px; border-radius: 10px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; text-align: center; }
+.modal-btn.pr { background: var(--royal); color: #fff; }
+.modal-btn.sc { background: #F1F5F9; color: var(--ink-3); }
+
+/* ABANDONED EMPTY STATE */
+.empty-state { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px 20px; text-align: center; }
+.empty-emo { font-size: 38px; margin-bottom: 14px; }
+.empty-t { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.empty-b { font-size: 12px; color: var(--ink-3); line-height: 1.6; }
+.empty-note { margin-top: 16px; font-size: 11px; color: var(--ink-3); padding: 12px; background: #F8FAFC; border-radius: 10px; border: 1px solid var(--line); line-height: 1.5; }
+
+/* FSC */
+.fsc-hdr { background: #0B2D59; padding: 8px 14px 12px; flex-shrink: 0; }
+.fsc-lbl { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .08em; }
+.fsc-name { font-size: 15px; font-weight: 800; color: #fff; margin-top: 2px; }
+.fsc-sub2 { font-size: 10px; color: rgba(255,255,255,.45); }
+.intel-card { background: #fff; border-radius: 12px; padding: 12px 14px; border-left: 3px solid var(--royal); box-shadow: var(--card-shadow); }
+.intel-lbl { font-size: 9px; font-weight: 700; color: var(--royal); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+.intel-row { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; border-bottom: 1px solid #F1F5F9; font-size: 11px; color: var(--ink); line-height: 1.4; }
+.intel-row:last-child { border-bottom: none; }
+.idot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 3px; }
+.idot.r { background: var(--red); }
+.idot.a { background: var(--orange); }
+.idot.g { background: var(--green); }
+.nbo-card { background: linear-gradient(135deg, #0B2D59, #2B3EE6); border-radius: 12px; padding: 12px 14px; }
+.nbo-lbl { font-size: 9px; font-weight: 700; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 6px; }
+.nbo-offer { font-size: 13px; font-weight: 800; color: #fff; margin-bottom: 4px; }
+.nbo-why { font-size: 10px; color: rgba(255,255,255,.7); line-height: 1.45; }
+.nbo-conf { display: inline-block; background: var(--gold); color: #0B2D59; font-size: 9px; font-weight: 800; padding: 2px 8px; border-radius: 8px; margin-top: 8px; }
+.suggestion-card { padding: 11px 13px; background: #EEF6FF; border: 1px solid #BFDBFE; border-radius: 10px; font-size: 11px; color: #1E40AF; line-height: 1.5; }
+.missing-card { padding: 11px 13px; background: #FEF9EC; border: 1px solid #FDE68A; border-radius: 10px; font-size: 11px; color: #92400E; line-height: 1.5; }
+
+/* BOTTOM NAV */
+.bnav { padding: 8px 6px 12px; background: #fff; display: flex; justify-content: space-around; border-top: 1px solid var(--line); flex-shrink: 0; }
+.bn { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.bn-ic { font-size: 18px; }
+.bn-lb { font-size: 8px; color: var(--ink-3); }
+.bn.active .bn-lb { color: var(--royal); font-weight: 700; }
+
+/* STEP DOTS */
+.step-dots { display: flex; gap: 6px; justify-content: center; }
+.sdot { width: 7px; height: 7px; border-radius: 50%; background: var(--line); transition: all .2s; }
+.sdot.active { background: var(--royal); width: 18px; border-radius: 4px; }
+
+/* CONTEXT PANEL */
+.ctx-panel { background: #fff; border-left: 1px solid var(--line); padding: 20px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; }
+.ctx-hdr { font-size: 9px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .1em; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+.ctx-panels { display: none; flex-direction: column; gap: 12px; }
+.ctx-panels.show { display: flex; }
+.ctx-section { display: flex; flex-direction: column; gap: 6px; }
+.ctx-st { font-size: 11px; font-weight: 700; color: var(--ink); }
+.ctx-ev { display: flex; align-items: flex-start; gap: 8px; padding: 8px 10px; background: #F8FAFC; border-radius: 8px; }
+.ctx-ev-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 3px; flex-shrink: 0; }
+.ctx-ev-dot.b { background: var(--royal); }
+.ctx-ev-dot.g { background: var(--gold); }
+.ctx-ev-dot.r { background: var(--red); }
+.ctx-ev-dot.gr { background: var(--green); }
+.ctx-ev-txt { font-size: 11px; color: var(--ink-3); line-height: 1.45; }
+.ctx-ev-txt strong { color: var(--ink); font-weight: 600; }
+.ctx-dec { padding: 10px 12px; background: #EEF6FF; border: 1px solid #BFDBFE; border-radius: 8px; font-size: 11px; color: #1E40AF; line-height: 1.5; }
+.ctx-dec strong { font-weight: 700; }
+.ctx-sem { padding: 10px 12px; background: #F8FAFC; border: 1px solid var(--line); border-radius: 8px; font-size: 11px; color: var(--ink-3); line-height: 1.5; }
+
+/* MERCANTIL LOGO SVG */
+.merc-svg { width: 90px; height: 18px; }
+
+/* ══ BROWSER FRAME + FSC LIGHTNING EXPERIENCE ══ */
+/* Layout fiel aos screenshots: nav azul → barra branca de app/record tabs → sub-tabs record → body 3 colunas */
+.browser-frame { display:none; flex-direction:column; width:920px; height:620px; border-radius:6px; overflow:hidden; box-shadow:0 40px 100px rgba(0,0,0,.45),0 8px 24px rgba(0,0,0,.3); font-family:'Salesforce Sans',Arial,sans-serif; font-size:13px; background:#f3f2f2; }
+.browser-frame.visible { display:flex; }
+
+/* ── Barra Chrome do browser (macOS style) ── */
+.br-chrome { height:34px; background:#e0e1e3; display:flex; align-items:flex-end; padding:0 10px 0; flex-shrink:0; }
+.br-dots { display:flex; gap:5px; align-items:center; padding-bottom:7px; margin-right:10px; }
+.br-dot { width:11px; height:11px; border-radius:50%; }
+.br-dot.r{background:#FF5F57;}.br-dot.y{background:#FEBC2E;}.br-dot.g{background:#28C840;}
+.br-tabs { display:flex; align-items:flex-end; flex:1; }
+.br-tab { height:26px; background:#fff; border-radius:7px 7px 0 0; padding:0 10px; display:flex; align-items:center; gap:6px; max-width:240px; border:1px solid #c4c7cc; border-bottom:none; }
+.br-tab-icon { width:13px; height:13px; flex-shrink:0; }
+.br-tab-title { font-size:11px; color:#202124; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1; }
+.br-tab-x { font-size:13px; color:#888; }
+.br-newtab { padding:0 8px 6px; color:#555; font-size:16px; }
+/* Omnirow */
+.br-omnirow { height:36px; background:#fff; border-bottom:1px solid #DADCE0; display:flex; align-items:center; padding:0 8px; gap:3px; flex-shrink:0; }
+.br-nav { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; color:#555; }
+.br-omnibox { flex:1; background:#f1f3f4; border-radius:20px; height:24px; display:flex; align-items:center; padding:0 12px; gap:6px; max-width:580px; margin:0 auto; }
+.br-lock { font-size:10px; color:#5f6368; }
+.br-omni-url { font-size:11px; color:#3c4043; white-space:nowrap; overflow:hidden; }
+.br-omni-url b { font-weight:600; color:#202124; }
+.br-ext { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:14px; color:#555; }
+
+/* ── SF GLOBAL NAV (azul escuro, logo nuvem, busca centralizada) ── */
+.sf-gnav { background:#032D60; height:44px; display:flex; align-items:center; padding:0 6px; flex-shrink:0; gap:0; }
+.sf-cloud { width:32px; height:44px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.sf-cloud svg { width:24px; height:18px; }
+.sf-search { flex:1; display:flex; justify-content:center; }
+.sf-search-box { background:#fff; border-radius:3px; height:24px; display:flex; align-items:center; padding:0 9px; gap:6px; width:320px; }
+.sf-search-icon { width:12px; height:12px; stroke:#706E6B; flex-shrink:0; fill:none; }
+.sf-search-ph { font-size:12px; color:#706E6B; }
+.sf-gnav-icons { display:flex; align-items:center; gap:1px; flex-shrink:0; }
+.sf-gico { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+.sf-gico svg { width:15px; height:15px; stroke:rgba(255,255,255,.8); fill:none; }
+.sf-gico-sq { width:28px; height:20px; border:1px solid rgba(255,255,255,.4); border-radius:3px; display:flex; align-items:center; justify-content:center; gap:2px; margin:0 2px; }
+.sf-gico-sq svg { width:12px; height:12px; stroke:rgba(255,255,255,.8); fill:none; }
+.sf-gico-sq span { font-size:9px; color:rgba(255,255,255,.7); }
+.sf-gnav-ava { width:26px; height:26px; border-radius:50%; background:#5A96B8; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#fff; margin-left:2px; }
+.sf-pers-badge { font-size:9px; font-weight:700; color:#F0C040; background:rgba(240,192,64,.12); border:1px solid rgba(240,192,64,.35); padding:2px 6px; border-radius:10px; margin-right:4px; white-space:nowrap; }
+
+/* ── APP NAV BAR (branca, abaixo do global nav) ── */
+/* Estrutura: waffle | app name | Home ▾ | Files | Chatter | "Accounts ▾" | + | [record tab ×] */
+.sf-appnav { background:#fff; height:38px; display:flex; align-items:center; padding:0; border-bottom:1px solid #DDDBDA; flex-shrink:0; }
+.sf-an-waffle { width:40px; height:38px; display:flex; align-items:center; justify-content:center; border-right:1px solid #DDDBDA; flex-shrink:0; cursor:pointer; }
+.sf-an-waffle-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; width:12px; height:12px; }
+.sf-an-waffle-grid span { background:#706E6B; border-radius:1px; display:block; }
+.sf-an-appname { font-size:13px; color:#3E3E3C; font-weight:400; padding:0 10px; white-space:nowrap; border-right:1px solid #DDDBDA; height:100%; display:flex; align-items:center; }
+.sf-an-items { display:flex; align-items:stretch; flex:1; height:100%; overflow:hidden; }
+.sf-an-item { display:flex; align-items:center; gap:4px; padding:0 10px; font-size:13px; color:#3E3E3C; cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; }
+.sf-an-item:hover { color:#0176D3; }
+.sf-an-item.active-obj { color:#0176D3; border-bottom-color:#0176D3; }
+.sf-an-dd { font-size:10px; color:#706E6B; }
+.sf-an-plus { padding:0 8px; font-size:18px; color:#706E6B; display:flex; align-items:center; border-left:1px solid #DDDBDA; height:100%; }
+/* Record tab (com ícone e ×) */
+.sf-an-rectab { display:flex; align-items:center; gap:5px; padding:0 10px; font-size:13px; color:#3E3E3C; cursor:pointer; border-bottom:3px solid #0176D3; background:#EFF5FB; height:100%; border-right:1px solid #DDDBDA; }
+.sf-an-rectab-ico { width:16px; height:16px; flex-shrink:0; }
+.sf-an-rectab-lbl { font-size:13px; color:#0176D3; white-space:nowrap; max-width:140px; overflow:hidden; text-overflow:ellipsis; }
+.sf-an-rectab-x { font-size:14px; color:#706E6B; margin-left:3px; }
+
+/* ── RECORD SUB-TABS (segunda linha após appnav) ── */
+.sf-rectabs { background:#f3f2f2; border-bottom:1px solid #c9c7c5; display:flex; align-items:flex-end; padding:0 12px; height:30px; flex-shrink:0; gap:0; overflow:hidden; }
+.sf-rtab { display:flex; align-items:center; gap:4px; padding:0 12px; height:25px; font-size:12px; color:#3E3E3C; cursor:pointer; background:#fff; border:1px solid #c9c7c5; border-bottom:none; border-radius:4px 4px 0 0; margin-right:2px; white-space:nowrap; }
+.sf-rtab.active { background:#fff; color:#032D60; font-weight:600; border-bottom:2px solid #0176D3; }
+.sf-rtab-x { font-size:11px; color:#999; margin-left:4px; }
+
+/* ── BODY: 3 colunas ── */
+.sf-recbody { display:flex; flex:1; overflow:hidden; }
+
+/* Coluna esquerda — CLIENT card */
+.sf-sidebar { width:220px; flex-shrink:0; overflow-y:auto; background:#fff; border-right:1px solid #DDDBDA; scrollbar-width:none; }
+.sf-sidebar::-webkit-scrollbar { display:none; }
+.sf-cli-card { padding:12px 12px 0; }
+.sf-cli-hdr { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.sf-cli-ico { width:36px; height:36px; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.sf-cli-lbl { font-size:10px; color:#706E6B; text-transform:uppercase; letter-spacing:.06em; font-weight:400; }
+.sf-cli-name { font-size:16px; font-weight:700; color:#080707; line-height:1.2; }
+.sf-cli-body { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+.sf-cfield { display:flex; flex-direction:column; gap:1px; padding:5px 0; border-bottom:1px solid #f3f2f2; }
+.sf-cfield:nth-last-child(-n+2) { border-bottom:none; }
+.sf-cfield-lbl { font-size:10px; color:#706E6B; }
+.sf-cfield-val { font-size:11px; color:#3E3E3C; font-weight:500; }
+.sf-cfield-val.link { color:#0176D3; cursor:pointer; }
+.sf-cfield-val.alert { color:#C23934; font-weight:700; }
+/* Seção colapsável lateral */
+.sf-clisec { border-top:1px solid #DDDBDA; }
+.sf-clisec-hdr { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; cursor:pointer; }
+.sf-clisec-hdr-l { display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:#3E3E3C; }
+.sf-clisec-ico { width:20px; height:20px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.sf-clisec-dd { font-size:11px; color:#706E6B; }
+.sf-clisec-body { padding:0 12px 10px; }
+.sf-clisec-grid { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+
+/* Coluna central */
+.sf-center { flex:1; overflow-y:auto; display:flex; flex-direction:column; scrollbar-width:none; background:#f3f2f2; }
+.sf-center::-webkit-scrollbar { display:none; }
+.sf-center-tabs { background:#fff; border-bottom:1px solid #DDDBDA; display:flex; padding:0 14px; flex-shrink:0; }
+.sf-ctab { padding:10px 14px; font-size:13px; color:#706E6B; cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; }
+.sf-ctab.active { color:#080707; border-bottom-color:#0176D3; font-weight:600; }
+.sf-center-body { padding:12px; display:flex; flex-direction:column; gap:10px; }
+/* Financial Summary block */
+.sf-fin-summary { background:#fff; border:1px solid #DDDBDA; border-radius:3px; padding:12px 14px; }
+.sf-fin-summary-t { font-size:16px; font-weight:400; color:#3E3E3C; margin-bottom:12px; }
+.sf-fin-row { display:flex; gap:32px; }
+.sf-fin-f { display:flex; flex-direction:column; gap:2px; }
+.sf-fin-lbl { font-size:10px; color:#706E6B; text-transform:uppercase; letter-spacing:.04em; }
+.sf-fin-val { font-size:12px; color:#3E3E3C; font-weight:500; }
+/* Account section card */
+.sf-acc-card { background:#fff; border:1px solid #DDDBDA; border-radius:3px; overflow:hidden; }
+.sf-acc-hdr { display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-bottom:1px solid #f3f2f2; }
+.sf-acc-hdr-l { display:flex; align-items:center; gap:8px; }
+.sf-acc-ico { width:24px; height:24px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.sf-acc-title { font-size:14px; color:#3E3E3C; }
+.sf-acc-new { font-size:13px; color:#0176D3; cursor:pointer; font-weight:400; }
+/* Table */
+.sf-tbl-hdr { display:grid; padding:6px 14px; background:#f3f2f2; border-bottom:1px solid #DDDBDA; }
+.sf-tbl-row { display:grid; padding:8px 14px; border-bottom:1px solid #f3f2f2; align-items:center; }
+.sf-tbl-row:last-child { border-bottom:none; }
+.sf-tbl-cell { font-size:12px; color:#706E6B; text-transform:uppercase; letter-spacing:.04em; font-weight:600; }
+.sf-tbl-row .sf-tbl-cell { color:#3E3E3C; text-transform:none; letter-spacing:0; font-weight:400; }
+.sf-tbl-row .sf-tbl-cell:first-child { color:#0176D3; cursor:pointer; }
+.sf-tbl-expand { width:16px; height:16px; border-radius:3px; border:1px solid #DDDBDA; display:flex; align-items:center; justify-content:center; font-size:10px; color:#706E6B; }
+/* 4-col para contas: expand | conta | tipo | titular | saldo */
+.sf-tbl-5 { grid-template-columns:20px 2fr 1fr 1fr 1fr; gap:8px; }
+
+/* Coluna direita — Activity panel */
+.sf-activity { width:250px; flex-shrink:0; border-left:1px solid #DDDBDA; background:#fff; display:flex; flex-direction:column; overflow:hidden; }
+.sf-act-tabs { display:flex; border-bottom:1px solid #DDDBDA; }
+.sf-act-tab { flex:1; text-align:center; padding:10px 0; font-size:13px; color:#706E6B; cursor:pointer; border-bottom:3px solid transparent; }
+.sf-act-tab.active { color:#0176D3; border-bottom-color:#0176D3; font-weight:600; }
+/* Composer — Task / Log Call / Email buttons (fiel ao fsc4) */
+.sf-act-btns { display:flex; gap:0; padding:10px 12px 6px; border-bottom:1px solid #f3f2f2; }
+.sf-act-btn { flex:1; text-align:center; padding:6px; font-size:12px; color:#706E6B; cursor:pointer; border:1px solid #DDDBDA; background:#fff; }
+.sf-act-btn:first-child { border-radius:4px 0 0 4px; }
+.sf-act-btn:last-child { border-radius:0 4px 4px 0; border-left:none; }
+.sf-act-btn.active { color:#0176D3; background:#EFF5FB; border-color:#0176D3; }
+/* Subject/note input */
+.sf-act-subject { margin:8px 12px; border:1px solid #DDDBDA; border-radius:3px; padding:6px 8px; font-size:12px; color:#706E6B; display:block; }
+.sf-act-addrow { display:flex; align-items:center; justify-content:space-between; padding:0 12px 10px; border-bottom:1px solid #DDDBDA; }
+.sf-act-search { flex:1; border:1px solid #DDDBDA; border-radius:3px; padding:5px 8px; font-size:12px; color:#706E6B; margin-right:6px; }
+.sf-act-addbtn { background:#0176D3; color:#fff; font-size:12px; font-weight:700; padding:5px 14px; border-radius:3px; cursor:pointer; white-space:nowrap; }
+/* Activity filters */
+.sf-act-body { flex:1; overflow-y:auto; scrollbar-width:none; }
+.sf-act-body::-webkit-scrollbar { display:none; }
+.sf-act-filter-row { display:flex; align-items:center; justify-content:space-between; padding:8px 12px; border-bottom:1px solid #f3f2f2; }
+.sf-act-filter-lbl { font-size:12px; color:#706E6B; }
+.sf-act-filter-tabs { display:flex; gap:0; }
+.sf-act-filter-tab { font-size:11px; padding:3px 8px; color:#706E6B; border:1px solid #DDDBDA; cursor:pointer; background:#fff; }
+.sf-act-filter-tab:first-child { border-radius:3px 0 0 3px; }
+.sf-act-filter-tab:last-child { border-radius:0 3px 3px 0; border-left:none; }
+.sf-act-filter-tab.active { color:#0176D3; background:#EFF5FB; }
+/* Next Steps */
+.sf-nxt-section { padding:10px 12px 4px; border-bottom:1px solid #f3f2f2; }
+.sf-nxt-lbl { font-size:11px; font-weight:700; color:#3E3E3C; text-transform:uppercase; letter-spacing:.04em; margin-bottom:8px; }
+.sf-nxt-item { display:flex; gap:8px; align-items:flex-start; margin-bottom:10px; }
+.sf-nxt-ico { width:28px; height:28px; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.sf-nxt-ico svg { width:14px; height:14px; }
+.sf-nxt-content { flex:1; }
+.sf-nxt-title { font-size:12px; color:#0176D3; line-height:1.4; cursor:pointer; }
+.sf-nxt-sub { font-size:11px; color:#706E6B; margin-top:2px; }
+.sf-nxt-check { width:16px; height:16px; border:1px solid #DDDBDA; border-radius:2px; flex-shrink:0; margin-top:2px; }
+/* LWC Personalization */
+.sf-lwc { border-top:3px solid #0176D3; }
+.sf-lwc-hdr { background:#032D60; padding:8px 12px; display:flex; align-items:center; justify-content:space-between; }
+.sf-lwc-t { font-size:12px; font-weight:700; color:#fff; }
+.sf-lwc-badge { font-size:9px; font-weight:700; color:#F0C040; }
+.sf-lwc-sigs { padding:0 12px; }
+.sf-lwc-row { display:flex; gap:7px; align-items:flex-start; padding:6px 0; border-bottom:1px solid #f3f2f2; font-size:11px; color:#3E3E3C; line-height:1.4; }
+.sf-lwc-row:last-child { border-bottom:none; }
+.sf-pdot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:3px; }
+.sf-pdot.r{background:#C23934;}.sf-pdot.o{background:#DD7A01;}.sf-pdot.g{background:#2E844A;}
+.sf-lwc-nbo { padding:8px 12px; background:#EFF5FB; border-top:1px solid #DDDBDA; }
+.sf-lwc-nbo-lbl { font-size:10px; font-weight:700; color:#706E6B; text-transform:uppercase; letter-spacing:.05em; margin-bottom:3px; }
+.sf-lwc-nbo-offer { font-size:12px; font-weight:700; color:#032D60; margin-bottom:2px; }
+.sf-lwc-nbo-why { font-size:11px; color:#3E3E3C; line-height:1.4; margin-bottom:6px; }
+.sf-lwc-nbo-row { display:flex; align-items:center; gap:7px; }
+.sf-conf { background:#2E844A; color:#fff; font-size:10px; font-weight:700; padding:2px 7px; border-radius:10px; }
+.sf-nbo-btn { background:#0176D3; color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:3px; cursor:pointer; }
+.sf-lwc-abord { padding:8px 12px; background:#fff; border-top:1px solid #DDDBDA; font-size:11px; color:#032D60; line-height:1.5; }
+
+/* ── IN-APP CHAT (Cenário 5) ── */
+.chat-hdr { background: var(--royal); padding: 10px 14px 12px; flex-shrink: 0; display: flex; align-items: center; gap: 8px; }
+.chat-hdr-back svg { width: 18px; height: 18px; stroke: rgba(255,255,255,.7); fill: none; stroke-width: 2.5; }
+.chat-hdr-info { flex: 1; }
+.chat-hdr-name { font-size: 13px; font-weight: 700; color: #fff; }
+.chat-hdr-sub { font-size: 10px; color: rgba(255,255,255,.6); }
+.chat-hdr-ava { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,255,255,.2); display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.chat-body { flex: 1; overflow-y: auto; padding: 10px 10px 0; display: flex; flex-direction: column; gap: 8px; scrollbar-width: none; }
+.chat-body::-webkit-scrollbar { display: none; }
+.msg { display: flex; flex-direction: column; gap: 2px; }
+.msg.bot { align-items: flex-start; }
+.msg.user { align-items: flex-end; }
+.msg-bubble { padding: 8px 11px; border-radius: 14px; font-size: 11px; line-height: 1.5; max-width: 82%; }
+.msg.bot .msg-bubble { background: #F1F3F9; color: var(--ink); border-bottom-left-radius: 4px; }
+.msg.user .msg-bubble { background: var(--royal); color: #fff; border-bottom-right-radius: 4px; }
+.msg-time { font-size: 8px; color: var(--ink-3); padding: 0 4px; }
+.chat-card { background: #fff; border: 1.5px solid var(--royal-mid); border-radius: 12px; padding: 10px 12px; max-width: 82%; }
+.chat-card-t { font-size: 11px; font-weight: 700; color: var(--royal); margin-bottom: 4px; }
+.chat-card-b { font-size: 10px; color: var(--ink-3); line-height: 1.45; margin-bottom: 8px; }
+.chat-card-btn { font-size: 11px; font-weight: 700; color: var(--royal); }
+.chat-pers-card { background: linear-gradient(135deg, #0D2F6E, #2B3EE6); border-radius: 12px; padding: 10px 12px; max-width: 82%; }
+.chat-pers-lbl { font-size: 8px; font-weight: 700; color: rgba(255,255,255,.5); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+.chat-pers-t { font-size: 11px; font-weight: 800; color: #fff; margin-bottom: 3px; }
+.chat-pers-b { font-size: 9px; color: rgba(255,255,255,.7); line-height: 1.45; }
+.chat-pers-amt { font-size: 18px; font-weight: 900; color: var(--gold); margin: 3px 0 2px; }
+.chat-input-row { padding: 8px 10px; background: #fff; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.chat-input { flex: 1; background: #F3F4F6; border-radius: 18px; padding: 7px 12px; font-size: 11px; color: var(--ink-3); }
+.chat-send-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--royal); display: flex; align-items: center; justify-content: center; }
+.chat-send-btn svg { width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.5; }
+
+/* ── CENÁRIO 6: CAMPANHAS EMAIL + SMS ── */
+.camp-wrap { display: none; width: 100%; max-width: 820px; flex-direction: column; gap: 20px; }
+.camp-wrap.visible { display: flex; align-items: center; }
+.camp-section-lbl { font-size: 9px; font-weight: 800; color: var(--ink-3); letter-spacing: .12em; text-transform: uppercase; margin-bottom: 2px; }
+.camp-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.camp-col-hdr { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.camp-col-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 20px; }
+.camp-col-badge.sem { background: #EBEBF0; color: #7A7A8C; }
+
+/* ── EMAIL PHONE MOCKUP ── */
+.email-phone { width: 320px; border-radius: 36px; background: #1C1C1E; box-shadow: 0 8px 40px rgba(0,0,0,0.28), 0 0 0 1px rgba(255,255,255,.07); overflow: hidden; }
+.ep-notch { height: 30px; background: #1C1C1E; display: flex; align-items: center; justify-content: center; }
+.ep-notch-pill { width: 72px; height: 8px; background: #000; border-radius: 10px; }
+.ep-status { background: #fff; display: flex; justify-content: space-between; align-items: center; padding: 4px 14px; font-size: 9px; font-weight: 600; color: #1C1C1E; }
+.ep-status-icons { display: flex; gap: 4px; align-items: center; }
+/* Mail app header */
+.ep-mail-header { background: #fff; padding: 10px 14px 8px; border-bottom: 1px solid #EBEBF0; }
+.ep-mail-back { font-size: 11px; color: #007AFF; margin-bottom: 6px; display: flex; align-items: center; gap: 3px; }
+.ep-mail-subject { font-size: 14px; font-weight: 700; color: #1C1C1E; line-height: 1.3; }
+.ep-mail-from { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+.ep-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; flex-shrink: 0; }
+.ep-avatar.sem { background: #003358; color: #fff; }
+.ep-avatar.com { background: linear-gradient(135deg,#003358,#2B3EE6); color: #fff; }
+.ep-from-info { flex: 1; min-width: 0; }
+.ep-from-name { font-size: 10px; font-weight: 700; color: #1C1C1E; }
+.ep-from-addr { font-size: 9px; color: #8E8E93; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ep-mail-time { font-size: 9px; color: #8E8E93; flex-shrink: 0; }
+/* Mail body scroll area */
+.ep-mail-body { background: #fff; padding: 0; overflow-y: auto; max-height: 420px; }
+/* Email header banner */
+.ep-banner { height: 56px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.ep-banner.sem { background: #003358; }
+.ep-banner.com { background: linear-gradient(135deg,#003358,#2B3EE6); }
+.ep-banner-logo { display: flex; align-items: center; gap: 6px; }
+.ep-banner-logomark { width: 22px; height: 22px; background: #F97316; border-radius: 4px; display: flex; align-items: center; justify-content: center; }
+.ep-banner-logomark svg { fill: #fff; }
+.ep-banner-name { font-size: 11px; font-weight: 800; color: #fff; letter-spacing: .05em; }
+.ep-banner-sub { font-size: 8px; font-weight: 400; color: rgba(255,255,255,.65); margin-top: 1px; }
+.ep-content { padding: 14px 14px 10px; }
+.ep-greeting { font-size: 12px; font-weight: 600; color: #1C1C1E; margin-bottom: 8px; }
+.ep-txt { font-size: 11px; color: #3D3D3D; line-height: 1.6; margin-bottom: 12px; }
+.ep-offer { border-radius: 8px; padding: 11px 12px; margin-bottom: 12px; }
+.ep-offer.sem { background: #F2F3F8; border: 1px solid #EBEBF0; }
+.ep-offer.com { background: #EEF0FF; border: 1.5px solid #D0D5FB; }
+.ep-offer-lbl { font-size: 8px; font-weight: 700; color: #7A7A8C; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
+.ep-offer-prod { font-size: 14px; font-weight: 800; color: #0D0D0D; }
+.ep-offer-prod.pers { color: #2B3EE6; }
+.ep-offer-det { font-size: 9px; color: #7A7A8C; margin-top: 2px; }
+.ep-offer-det.pers { color: #1E2DB8; font-weight: 600; }
+.ep-why { font-size: 10px; color: #7A7A8C; background: #FFF7E6; border-left: 3px solid #F97316; border-radius: 0 6px 6px 0; padding: 6px 9px; margin-bottom: 12px; line-height: 1.5; }
+.ep-cta { display: block; text-align: center; padding: 10px; border-radius: 8px; font-size: 12px; font-weight: 800; margin-bottom: 12px; }
+.ep-cta.sem { background: #003358; color: #fff; }
+.ep-cta.com { background: #2B3EE6; color: #fff; }
+.ep-footer-txt { font-size: 8px; color: #C7C7CC; text-align: center; padding: 8px 14px 14px; border-top: 1px solid #F2F3F8; line-height: 1.5; }
+/* delta note below phone */
+.ep-delta { background: #fff; border-radius: 8px; padding: 8px 10px; border: 1px solid var(--line); font-size: 10px; color: var(--ink-3); display: flex; align-items: flex-start; gap: 6px; margin-top: 12px; width: 320px; }
+.ep-delta strong { color: var(--ink-2); }
+.camp-col-badge.com { background: #032D60; color: #F0C040; }
+.camp-col-title { font-size: 12px; font-weight: 700; color: var(--ink-2); }
+
+/* Email mockup — legacy classes removed, replaced by ep-* */
+
+/* SMS mockup */
+.sms-phone { width: 100%; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: var(--card-shadow); }
+.sms-topbar { background: #1C1C1E; padding: 10px 14px; display: flex; align-items: center; gap: 8px; }
+.sms-contact { font-size: 11px; font-weight: 700; color: #fff; }
+.sms-sub { font-size: 9px; color: rgba(255,255,255,.5); }
+.sms-body { padding: 14px; background: #F2F3F8; min-height: 130px; display: flex; flex-direction: column; gap: 10px; }
+.sms-bubble { max-width: 88%; padding: 10px 13px; border-radius: 16px; font-size: 11px; line-height: 1.55; }
+.sms-bubble.mercantil { background: #E5E5EA; color: #1C1C1E; border-bottom-left-radius: 4px; align-self: flex-start; }
+.sms-link { color: #0176D3; font-weight: 700; display: block; margin-top: 4px; font-size: 10px; }
+.sms-tag { font-size: 8px; font-weight: 700; padding: 2px 7px; border-radius: 10px; display: inline-block; margin-bottom: 5px; }
+.sms-tag.sem { background: #EBEBF0; color: #7A7A8C; }
+.sms-tag.com { background: #032D60; color: #F0C040; }
+.sms-delta { background: #fff; border-radius: 8px; padding: 8px 10px; border: 1px solid var(--line); font-size: 10px; color: var(--ink-3); display: flex; align-items: flex-start; gap: 6px; }
+.sms-delta strong { color: var(--ink-2); }
+
+/* ── SPLASH PROPOSTA DE VALOR ── */
+.splash-wrap { display: none; width: 100%; max-width: 780px; flex-direction: column; gap: 0; }
+.splash-wrap.visible { display: flex; }
+.splash-hero { background: linear-gradient(135deg, #032D60 0%, #0D2F6E 50%, #2B3EE6 100%); border-radius: 16px 16px 0 0; padding: 36px 40px 28px; text-align: center; }
+.splash-eyebrow { font-size: 10px; font-weight: 700; color: rgba(255,255,255,.55); letter-spacing: .14em; text-transform: uppercase; margin-bottom: 10px; }
+.splash-headline { font-size: 26px; font-weight: 900; color: #fff; line-height: 1.2; margin-bottom: 8px; letter-spacing: -.4px; }
+.splash-headline span { color: var(--gold); }
+.splash-sub { font-size: 13px; color: rgba(255,255,255,.7); line-height: 1.6; max-width: 520px; margin: 0 auto; }
+.splash-kpis { display: grid; grid-template-columns: repeat(4, 1fr); background: #fff; border: 1px solid var(--line); border-top: none; }
+.splash-kpi { padding: 20px 16px; text-align: center; border-right: 1px solid var(--line); }
+.splash-kpi:last-child { border-right: none; }
+.splash-kpi-val { font-size: 28px; font-weight: 900; color: var(--royal); letter-spacing: -1px; line-height: 1; }
+.splash-kpi-val span { font-size: 14px; font-weight: 700; }
+.splash-kpi-lbl { font-size: 10px; color: var(--ink-3); margin-top: 4px; line-height: 1.4; }
+.splash-kpi-src { font-size: 8px; color: #bbb; margin-top: 2px; }
+.splash-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+.splash-pillar { background: #fff; border-radius: 12px; padding: 18px 16px; border: 1px solid var(--line); }
+.splash-pillar-icon { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.splash-pillar-icon svg { width: 18px; height: 18px; }
+.splash-pillar-title { font-size: 13px; font-weight: 800; color: var(--ink); margin-bottom: 6px; }
+.splash-pillar-body { font-size: 11px; color: var(--ink-3); line-height: 1.55; }
+.splash-pillar-items { margin-top: 8px; display: flex; flex-direction: column; gap: 4px; }
+.splash-item { font-size: 10px; color: var(--ink-2); display: flex; align-items: flex-start; gap: 5px; }
+.splash-item::before { content: '→'; color: var(--royal); font-weight: 700; flex-shrink: 0; }
+.splash-footer { margin-top: 12px; background: #fff; border-radius: 12px; padding: 16px 20px; border: 1px solid var(--line); display: flex; align-items: center; gap: 16px; }
+.splash-footer-txt { font-size: 12px; color: var(--ink-2); line-height: 1.6; flex: 1; }
+.splash-footer-txt strong { color: var(--ink); }
+.splash-cta-badge { background: var(--navy-sf); color: var(--gold); font-size: 11px; font-weight: 800; padding: 10px 20px; border-radius: 8px; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="tb-logo-wrap">
+    <!-- Mercantil logo inline SVG approximation -->
+    <svg class="merc-svg" viewBox="0 0 110 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- M icon mark -->
+      <path d="M2 16 L5 6 L8.5 12 L12 6 L15 16" stroke="#2B3EE6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+      <!-- BANCO MERCANTIL text -->
+      <text x="19" y="10" font-family="Inter,sans-serif" font-size="5.5" font-weight="700" fill="#8888AA" letter-spacing="0.5">BANCO</text>
+      <text x="19" y="17" font-family="Inter,sans-serif" font-size="8" font-weight="900" fill="#2B3EE6" letter-spacing="0.3">MERCANTIL</text>
+    </svg>
+  </div>
+  <div class="tb-div"></div>
+  <div class="tb-sub">Protótipo interativo — Salesforce Personalization</div>
+  <div class="tb-sp"></div>
+  <div class="tb-badge"><span>✦</span> Salesforce Personalization</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sl-group">
+    <div class="sl-label">Contexto</div>
+    <button class="sb-btn sb-intro active" data-scene="8" onclick="goScene(8)"><div class="sb-num sb-num-intro">i</div><div class="sb-title">O Mercantil e o imperativo da personalização</div></button>
+  </div>
+  <div class="sl-group">
+    <div class="sl-label">App</div>
+    <button class="sb-btn" data-scene="0" onclick="goScene(0)"><div class="sb-num">1</div><div class="sb-title">Home com ofertas contextuais</div></button>
+    <button class="sb-btn" data-scene="1" onclick="goScene(1)"><div class="sb-num">2</div><div class="sb-title">Recuperação de abandono</div></button>
+    <button class="sb-btn" data-scene="2" onclick="goScene(2)"><div class="sb-num">3</div><div class="sb-title">Meu+ com NBO personalizada</div></button>
+    <button class="sb-btn" data-scene="3" onclick="goScene(3)"><div class="sb-num">4</div><div class="sb-title">Chat in-app com recomendações</div></button>
+  </div>
+  <div class="sl-group">
+    <div class="sl-label">Campanhas</div>
+    <button class="sb-btn" data-scene="4" onclick="goScene(4)"><div class="sb-num">5</div><div class="sb-title">E-mail personalizado</div></button>
+    <button class="sb-btn" data-scene="5" onclick="goScene(5)"><div class="sb-num">6</div><div class="sb-title">SMS personalizado</div></button>
+  </div>
+  <div class="sl-group">
+    <div class="sl-label">Operação Dia a Dia</div>
+    <button class="sb-btn" data-scene="6" onclick="goScene(6)"><div class="sb-num">7</div><div class="sb-title">Gerente no FSC — console Lightning</div></button>
+  </div>
+  <div class="sl-group">
+    <div class="sl-label">Proposta de Valor</div>
+    <button class="sb-btn sb-pv" data-scene="7" onclick="goScene(7)"><div class="sb-num sb-num-pv">✦</div><div class="sb-title">Por que Salesforce Personalization?</div></button>
+  </div>
+  <div class="sb-nav">
+    <button class="nb" id="btn-prev" onclick="prevScene()">← Voltar</button>
+    <button class="nb p" id="btn-next" onclick="nextScene()" disabled="">Próximo →</button>
+  </div>
+</div>
+
+<!-- CENTER -->
+<div class="center">
+  <div class="scene-hdr">
+    <h2 id="scene-t">O Mercantil e o Imperativo da Personalização</h2>
+    <p id="scene-s">Contexto estratégico · base 10,2M · ROAE 41% · o próximo salto</p>
+  </div>
+
+  <div class="tog-bar" style="visibility: hidden;">
+    <button class="tog sem-on" id="tog-sem" onclick="setMode('sem')">Sem Personalization</button>
+    <button class="tog" id="tog-com" onclick="setMode('com')">✦ Com Personalization</button>
+  </div>
+
+  <div class="phone-wrap" id="pwrap" style="display: none;">
+    <div class="phone-pulse"></div>
+    <div class="phone">
+      <div class="phone-inner" id="pinner">
+        <div class="dyn-island"></div>
+
+        <!-- ══ S0 SEM: Home genérica ══ -->
+        <div class="screen active" id="s0-sem">
+          <div class="sbar"><span class="sbar-time">15:31</span><div class="sbar-icons">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M1 6l5 6 5-6"></path><path d="M12 6l5 6 5-6"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><rect x="2" y="7" width="18" height="11" rx="2"></rect><path d="M22 11v3"></path></svg>
+          </div></div>
+          <div class="app-top">
+            <div class="merc-logo">
+              <svg width="80" height="16" viewBox="0 0 110 20" fill="none">
+                <path d="M2 16 L5 6 L8.5 12 L12 6 L15 16" stroke="#2B3EE6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <text x="19" y="10" font-family="Inter,sans-serif" font-size="5.5" font-weight="700" fill="#8888AA" letter-spacing="0.5">BANCO</text>
+                <text x="19" y="17" font-family="Inter,sans-serif" font-size="8" font-weight="900" fill="#2B3EE6" letter-spacing="0.3">MERCANTIL</text>
+              </svg>
+            </div>
+            <div class="top-icons">
+              <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+              <div class="notif-dot"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
+            </div>
+          </div>
+          <div class="greeting" style="margin-bottom:8px;"><div class="greeting-name">Olá, Conrado</div></div>
+          <div class="sa">
+            <div class="banner">
+              <div class="banner-left">
+                <div class="banner-title">Conheça o Meu+</div>
+                <div class="banner-sub">Planos de assistência para você e sua família a partir de R$&nbsp;9,90/mês</div>
+                <div class="banner-cta">Contratar</div>
+              </div>
+              <div class="banner-img orange">🛡️</div>
+            </div>
+            <div class="acc-card">
+              <div class="acc-row1">
+                <div class="acc-name">Conta Digital <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                <div class="acc-link">Ver extrato</div>
+              </div>
+              <div class="acc-bal-label">Saldo em conta <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7A7A8C" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg></div>
+              <div class="acc-bal">R$ 7.892,24</div>
+              <div class="qas">
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m14.31 8-4 8M9.69 16l4-8"></path></svg></div><div class="qa-lb">Pix</div></div>
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M7 7h.01M12 7h.01M17 7h.01M7 12h.01M12 12h.01M17 12h.01M7 17h.01M12 17h.01M17 17h.01"></path></svg></div><div class="qa-lb">Pagar</div></div>
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L3 8m4-4 4 4M17 8v12m0 0 4-4m-4 4-4-4"></path></svg></div><div class="qa-lb">Transferir</div></div>
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div><div class="qa-lb">Cartões</div></div>
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg></div><div class="qa-lb">Recargas</div></div>
+              </div>
+            </div>
+            <div class="sec-row"><span class="sec-t">Mercantil Shop</span><span class="sec-l">Ver tudo</span></div>
+            <div style="display:flex;gap:8px;">
+              <div style="flex:1;height:64px;background:#F0F0F0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">📱</div>
+              <div style="flex:1;height:64px;background:#F0F0F0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">🛍️</div>
+              <div style="flex:1;height:64px;background:#F0F0F0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏠</div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bn active"><div class="bn-ic">🏠</div><div class="bn-lb">Início</div></div>
+            <div class="bn"><div class="bn-ic">💳</div><div class="bn-lb">Cartões</div></div>
+            <div class="bn"><div class="bn-ic">📊</div><div class="bn-lb">Investir</div></div>
+            <div class="bn"><div class="bn-ic">👤</div><div class="bn-lb">Perfil</div></div>
+          </div>
+        </div>
+
+        <!-- ══ S0 COM: Home personalizada ══ -->
+        <div class="screen" id="s0-com">
+          <div class="sbar"><span class="sbar-time">15:31</span><div class="sbar-icons">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M1 6l5 6 5-6"></path><path d="M12 6l5 6 5-6"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><rect x="2" y="7" width="18" height="11" rx="2"></rect><path d="M22 11v3"></path></svg>
+          </div></div>
+          <div class="app-top">
+            <div class="merc-logo">
+              <svg width="80" height="16" viewBox="0 0 110 20" fill="none">
+                <path d="M2 16 L5 6 L8.5 12 L12 6 L15 16" stroke="#2B3EE6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                <text x="19" y="10" font-family="Inter,sans-serif" font-size="5.5" font-weight="700" fill="#8888AA" letter-spacing="0.5">BANCO</text>
+                <text x="19" y="17" font-family="Inter,sans-serif" font-size="8" font-weight="900" fill="#2B3EE6" letter-spacing="0.3">MERCANTIL</text>
+              </svg>
+            </div>
+            <div class="top-icons">
+              <svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+              <div class="notif-dot"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div>
+            </div>
+          </div>
+          <div class="greeting" style="margin-bottom:8px;"><div class="greeting-name">Olá, Conrado</div></div>
+          <div class="sa">
+            <!-- Banner personalizado: crédito pré-aprovado -->
+            <div class="banner" style="background:linear-gradient(135deg,#0D2F6E,#2B3EE6);position:relative;">
+              <div class="banner-pers-tag" style="background:var(--gold);color:#0B2D59;">✦ Personalizado</div>
+              <div class="banner-left">
+                <div class="banner-title" style="color:#fff;font-size:14px;">Conrado, você tem</div>
+                <div style="font-size:22px;font-weight:900;color:#F0C040;line-height:1.1;margin-bottom:4px;">R$ 42.800</div>
+                <div style="font-size:10px;color:rgba(255,255,255,.75);margin-bottom:8px;">em crédito pré-aprovado e disponível agora</div>
+                <div style="font-size:12px;font-weight:700;color:#fff;display:flex;align-items:center;gap:4px;">Contratar <span style="font-size:10px;">→</span></div>
+              </div>
+              <div class="banner-img" style="background:rgba(255,255,255,.12);font-size:32px;">💳</div>
+            </div>
+            <div class="acc-card">
+              <div class="acc-row1">
+                <div class="acc-name">Conta Digital <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></div>
+                <div class="acc-link">Ver extrato</div>
+              </div>
+              <div class="acc-bal-label">Saldo em conta</div>
+              <div class="acc-bal">R$ 7.892,24</div>
+              <div class="qas">
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><path d="M9 17H5a2 2 0 0 0-2 2"></path><path d="M19 17h-4a2 2 0 0 1 2 2"></path><rect x="7" y="4" width="10" height="9" rx="1"></rect></svg></div><div class="qa-lb">Consign.</div></div>
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4l3 3"></path></svg></div><div class="qa-lb">Emprés.</div></div>
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div><div class="qa-lb">Cheque</div></div>
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><path d="m14.31 8-4 8M9.69 16l4-8"></path></svg></div><div class="qa-lb">Pix</div></div>
+                <div class="qa"><div class="qa-ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><path d="M7 7h.01M12 7h.01M17 7h.01M7 12h.01M12 12h.01M17 12h.01M7 17h.01M12 17h.01M17 17h.01"></path></svg></div><div class="qa-lb">Pagar</div></div>
+              </div>
+            </div>
+            <div class="sec-row"><span class="sec-t">Mercantil Shop</span><span class="sec-l">Ver tudo</span></div>
+            <div style="display:flex;gap:8px;">
+              <div style="flex:1;height:64px;background:#F0F0F0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">📱</div>
+              <div style="flex:1;height:64px;background:#F0F0F0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">🛍️</div>
+              <div style="flex:1;height:64px;background:#F0F0F0;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">🏠</div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="bn active"><div class="bn-ic">🏠</div><div class="bn-lb">Início</div></div>
+            <div class="bn"><div class="bn-ic">💳</div><div class="bn-lb">Cartões</div></div>
+            <div class="bn"><div class="bn-ic">📊</div><div class="bn-lb">Investir</div></div>
+            <div class="bn"><div class="bn-ic">👤</div><div class="bn-lb">Perfil</div></div>
+          </div>
+        </div>
+
+        <!-- ══ S1 SEM: Simulação abandonada ══ -->
+        <div class="screen" id="s1-sem">
+          <div class="sbar"><span class="sbar-time">15:32</span><div class="sbar-icons"><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M1 6l5 6 5-6"></path></svg><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path></svg><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><rect x="2" y="7" width="18" height="11" rx="2"></rect><path d="M22 11v3"></path></svg></div></div>
+          <div class="app-top">
+            <div class="merc-logo"><svg width="80" height="16" viewBox="0 0 110 20" fill="none"><path d="M2 16 L5 6 L8.5 12 L12 6 L15 16" stroke="#2B3EE6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path><text x="19" y="10" font-family="Inter,sans-serif" font-size="5.5" font-weight="700" fill="#8888AA" letter-spacing="0.5">BANCO</text><text x="19" y="17" font-family="Inter,sans-serif" font-size="8" font-weight="900" fill="#2B3EE6" letter-spacing="0.3">MERCANTIL</text></svg></div>
+            <div class="top-icons"><svg viewBox="0 0 24 24"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg><div class="notif-dot"><svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg></div></div>
+          </div>
+          <div class="greeting"><div class="greeting-name">Olá,<br>Conrado</div></div>
+          <div class="sim-header" style="padding:0 16px 12px;">
+            <div class="sim-nav">
+              <div class="sim-back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+              <div class="sim-title">Empréstimo<br>Consignado CLT</div>
+              <div style="width:28px;"></div>
+            </div>
+            <div class="steps-row">
+              <div class="step-ic"><svg viewBox="0 0 24 24"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></div>
+              <div class="step-line"></div>
+              <div class="step-ic inactive"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+              <div class="step-line"></div>
+              <div class="step-ic inactive"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            </div>
+            <div class="step-lbs"><span class="active-lb">1. Simulação</span><span>2. Contratação</span><span>3. Confirmação</span></div>
+          </div>
+          <div class="sa" style="padding:0;">
+            <div class="sim-field-label">Valor desejado</div>
+            <div class="sim-field"><span class="sim-val">R$ 15.000,00</span><span class="sim-edit">Editar</span></div>
+            <div class="sim-field-label">Prazo desejado</div>
+            <div class="sim-field"><span class="sim-val">24 meses</span><span class="sim-edit">Editar</span></div>
+          </div>
+          <div class="sim-bottom">
+            <div class="sim-parcela">
+              <span class="sim-parc-lbl">Parcela estimada</span>
+              <div class="sim-parc-btn">Melhor opção</div>
+            </div>
+            <button class="btn-continuar">Continuar</button>
+          </div>
+        </div>
+
+        <!-- ══ S1 COM: Push + Modal de recuperação ══ -->
+        <div class="screen" id="s1-com">
+          <div class="lock-bg">
+            <div style="font-size:42px;font-weight:800;color:#fff;margin-top:8px;">15:32</div>
+            <div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:3px;">sexta-feira, 9 de outubro</div>
+          </div>
+          <div class="push">
+            <div class="push-ico">🏦</div>
+            <div class="push-content">
+              <div class="push-app"><span>Mercantil</span><span>agora</span></div>
+              <div class="push-ttl">R$ 15.000 reservados para você ✓</div>
+              <div class="push-bdy">Conrado, finalize seu consignado e aproveite as melhores condições.</div>
+            </div>
+          </div>
+          <div class="modal-ov">
+            <div class="modal">
+              <div class="modal-handle"></div>
+              <div class="modal-emo">⏸️</div>
+              <div class="modal-t">Sua simulação está salva</div>
+              <div class="modal-b">Conrado, você parou na etapa de biometria. <strong>R$&nbsp;15.000 a 24 meses</strong> — as mesmas condições ainda estão disponíveis por <strong>48h</strong>.</div>
+              <div class="modal-acts">
+                <div class="modal-btn pr">Continuar simulação</div>
+                <div class="modal-btn sc">Agora não</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ S2 SEM: Meu+ ordem fixa ══ -->
+        <div class="screen" id="s2-sem">
+          <div class="sbar"><span class="sbar-time">15:34</span><div class="sbar-icons"><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M1 6l5 6 5-6"></path></svg><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path></svg><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><rect x="2" y="7" width="18" height="11" rx="2"></rect><path d="M22 11v3"></path></svg></div></div>
+          <div class="app-top"><div class="merc-logo"><svg width="80" height="16" viewBox="0 0 110 20" fill="none"><path d="M2 16 L5 6 L8.5 12 L12 6 L15 16" stroke="#2B3EE6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path><text x="19" y="10" font-family="Inter,sans-serif" font-size="5.5" font-weight="700" fill="#8888AA" letter-spacing="0.5">BANCO</text><text x="19" y="17" font-family="Inter,sans-serif" font-size="8" font-weight="900" fill="#2B3EE6" letter-spacing="0.3">MERCANTIL</text></svg></div></div>
+          <div class="greeting"><div class="greeting-name" style="font-size:18px;">Assistências Meu+</div></div>
+          <div class="sa">
+            <div class="meu-grid">
+              <div class="meu-item"><div class="meu-emo">🦷</div><div class="meu-nm">Odontológico</div><div class="meu-pr">R$ 19,90/mês</div></div>
+              <div class="meu-item"><div class="meu-emo">❤️</div><div class="meu-nm">Saúde Essencial</div><div class="meu-pr">R$ 29,90/mês</div></div>
+              <div class="meu-item"><div class="meu-emo">🔧</div><div class="meu-nm">Residencial</div><div class="meu-pr">R$ 15,90/mês</div></div>
+              <div class="meu-item"><div class="meu-emo">⚡</div><div class="meu-nm">Eletrodoméstico</div><div class="meu-pr">R$ 12,90/mês</div></div>
+              <div class="meu-item"><div class="meu-emo">🚗</div><div class="meu-nm">Auto Proteção</div><div class="meu-pr">R$ 24,90/mês</div></div>
+              <div class="meu-item"><div class="meu-emo">📱</div><div class="meu-nm">Celular</div><div class="meu-pr">R$ 9,90/mês</div></div>
+            </div>
+          </div>
+          <div class="bnav"><div class="bn"><div class="bn-ic">🏠</div><div class="bn-lb">Início</div></div><div class="bn active"><div class="bn-ic">🛡️</div><div class="bn-lb">Meu+</div></div><div class="bn"><div class="bn-ic">📊</div><div class="bn-lb">Investir</div></div><div class="bn"><div class="bn-ic">👤</div><div class="bn-lb">Perfil</div></div></div>
+        </div>
+
+        <!-- ══ S2 COM: Meu+ NBO ══ -->
+        <div class="screen" id="s2-com">
+          <div class="sbar"><span class="sbar-time">15:34</span><div class="sbar-icons"><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M1 6l5 6 5-6"></path></svg><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path></svg><svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><rect x="2" y="7" width="18" height="11" rx="2"></rect><path d="M22 11v3"></path></svg></div></div>
+          <div class="app-top"><div class="merc-logo"><svg width="80" height="16" viewBox="0 0 110 20" fill="none"><path d="M2 16 L5 6 L8.5 12 L12 6 L15 16" stroke="#2B3EE6" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"></path><text x="19" y="10" font-family="Inter,sans-serif" font-size="5.5" font-weight="700" fill="#8888AA" letter-spacing="0.5">BANCO</text><text x="19" y="17" font-family="Inter,sans-serif" font-size="8" font-weight="900" fill="#2B3EE6" letter-spacing="0.3">MERCANTIL</text></svg></div></div>
+          <div class="greeting"><div class="greeting-name" style="font-size:16px;">Escolhido para você ✦</div></div>
+          <div class="sa">
+            <div class="pers-label">Baseado no seu perfil e clientes similares</div>
+            <div class="meu-grid">
+              <div class="meu-item feat top">
+                <div style="font-size:24px;">❤️</div>
+                <div style="flex:1;">
+                  <div class="meu-nm" style="font-size:12px;">Saúde Essencial</div>
+                  <div class="meu-pr">R$ 29,90/mês</div>
+                  <div class="feat-tag" style="margin-top:4px;">✦ Mais relevante para você</div>
+                </div>
+                <div class="rank-badge">1º</div>
+              </div>
+              <div class="meu-item feat"><div class="meu-emo">🦷</div><div class="meu-nm">Odontológico</div><div class="meu-pr">R$ 19,90/mês</div><div class="feat-tag">2º para você</div></div>
+              <div class="meu-item feat"><div class="meu-emo">🔧</div><div class="meu-nm">Residencial</div><div class="meu-pr">R$ 15,90/mês</div><div class="feat-tag">3º para você</div></div>
+              <div class="meu-item"><div class="meu-emo">⚡</div><div class="meu-nm">Eletrodoméstico</div><div class="meu-pr">R$ 12,90/mês</div></div>
+              <div class="meu-item"><div class="meu-emo">📱</div><div class="meu-nm">Celular</div><div class="meu-pr">R$ 9,90/mês</div></div>
+            </div>
+          </div>
+          <div class="bnav"><div class="bn"><div class="bn-ic">🏠</div><div class="bn-lb">Início</div></div><div class="bn active"><div class="bn-ic">🛡️</div><div class="bn-lb">Meu+</div></div><div class="bn"><div class="bn-ic">📊</div><div class="bn-lb">Investir</div></div><div class="bn"><div class="bn-ic">👤</div><div class="bn-lb">Perfil</div></div></div>
+        </div>
+
+        <!-- ══ S3 SEM: Chat genérico ══ -->
+        <div class="screen" id="s3-sem">
+          <div class="sbar"><span class="sbar-time">15:45</span><div class="sbar-icons">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M1 6l5 6 5-6"></path><path d="M12 6l5 6 5-6"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><rect x="2" y="7" width="18" height="11" rx="2"></rect><path d="M22 11v3"></path></svg>
+          </div></div>
+          <div class="chat-hdr">
+            <div class="chat-hdr-back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+            <div class="chat-hdr-info">
+              <div class="chat-hdr-name">Assistente Mercantil</div>
+              <div class="chat-hdr-sub">🟢 Online agora</div>
+            </div>
+            <div class="chat-hdr-ava">🏦</div>
+          </div>
+          <div class="chat-body">
+            <div class="msg bot">
+              <div class="msg-bubble">Olá! Sou o assistente do Banco Mercantil. Como posso te ajudar hoje?</div>
+              <div class="msg-time">15:40</div>
+            </div>
+            <div class="msg user">
+              <div class="msg-bubble">Quero fazer um investimento mas não sei qual produto é melhor pra mim</div>
+              <div class="msg-time">15:41</div>
+            </div>
+            <div class="msg bot">
+              <div class="msg-bubble">Temos várias opções de investimento disponíveis:</div>
+              <div class="msg-time">15:41</div>
+            </div>
+            <!-- Card genérico -->
+            <div class="chat-card">
+              <div class="chat-card-t">Nossas opções de investimento</div>
+              <div class="chat-card-b">• CDB — a partir de R$ 1.000<br>• Tesouro Direto — a partir de R$ 30<br>• Fundos de Renda Fixa<br>• Poupança Digital<br>• LCI / LCA</div>
+              <div class="chat-card-btn">Ver todos os produtos →</div>
+            </div>
+            <div class="msg bot" style="margin-top:2px;">
+              <div class="msg-bubble">Qual dessas opções te interessa mais?</div>
+              <div class="msg-time">15:41</div>
+            </div>
+            <div class="msg user">
+              <div class="msg-bubble">Não sei... quero o que tiver melhor rendimento</div>
+              <div class="msg-time">15:43</div>
+            </div>
+            <div class="msg bot">
+              <div class="msg-bubble">Entendido! Para recomendar o melhor produto, vou precisar saber mais sobre seu perfil. Você é conservador, moderado ou arrojado?</div>
+              <div class="msg-time">15:43</div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <div class="chat-input">Digite sua mensagem...</div>
+            <div class="chat-send-btn"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
+          </div>
+        </div>
+
+        <!-- ══ S3 COM: Chat personalizado ══ -->
+        <div class="screen" id="s3-com">
+          <div class="sbar"><span class="sbar-time">15:45</span><div class="sbar-icons">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M1 6l5 6 5-6"></path><path d="M12 6l5 6 5-6"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path d="M5 12.55a11 11 0 0 1 14.08 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"></path></svg>
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><rect x="2" y="7" width="18" height="11" rx="2"></rect><path d="M22 11v3"></path></svg>
+          </div></div>
+          <div class="chat-hdr">
+            <div class="chat-hdr-back"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg></div>
+            <div class="chat-hdr-info">
+              <div class="chat-hdr-name">Assistente Mercantil</div>
+              <div class="chat-hdr-sub">🟢 Online · <span style="color:var(--gold);font-size:9px;">✦ Personalization ativo</span></div>
+            </div>
+            <div class="chat-hdr-ava">🏦</div>
+          </div>
+          <div class="chat-body">
+            <div class="msg bot">
+              <div class="msg-bubble">Olá, Conrado! Bom te ver por aqui 😊</div>
+              <div class="msg-time">15:40</div>
+            </div>
+            <div class="msg user">
+              <div class="msg-bubble">Quero fazer um investimento mas não sei qual produto é melhor pra mim</div>
+              <div class="msg-time">15:41</div>
+            </div>
+            <!-- Resposta personalizada imediata -->
+            <div class="msg bot">
+              <div class="msg-bubble">Conrado, vi que você tem um <strong>CDB vencendo em 30 dias</strong> e que costuma preferir renda fixa. Tenho uma sugestão personalizada:</div>
+              <div class="msg-time">15:41</div>
+            </div>
+            <div class="chat-pers-card">
+              <div class="chat-pers-lbl">✦ Recomendado para você</div>
+              <div class="chat-pers-t">CDB Mercantil Plus</div>
+              <div class="chat-pers-amt">110% do CDI</div>
+              <div class="chat-pers-b">Prazo: 12 meses · Liquidez no vencimento<br>Baseado no seu CDB atual e perfil conservador-moderado</div>
+            </div>
+            <div class="msg bot" style="margin-top:4px;">
+              <div class="msg-bubble">Você também tem <strong>R$&nbsp;7.892 em conta</strong> — consigo simular uma aplicação com esse valor agora. Quer ver?</div>
+              <div class="msg-time">15:41</div>
+            </div>
+            <div class="msg user">
+              <div class="msg-bubble">Sim, me mostra!</div>
+              <div class="msg-time">15:43</div>
+            </div>
+            <!-- Card simulação direta -->
+            <div class="chat-card" style="border-color:var(--royal);background:var(--royal-light);">
+              <div class="chat-card-t">Simulação — CDB 110% CDI / 12 meses</div>
+              <div class="chat-card-b" style="color:var(--ink);">Aplicação: <strong>R$ 7.000</strong><br>Rendimento estimado: <strong>+ R$ 770</strong><br>Valor bruto no vencimento: <strong>R$ 7.770</strong></div>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <div style="flex:1;font-size:11px;font-weight:700;color:var(--royal);background:#fff;border:1.5px solid var(--royal);padding:7px;border-radius:8px;text-align:center;">Aplicar agora</div>
+                <div style="flex:1;font-size:11px;font-weight:600;color:var(--ink-3);background:#fff;border:1.5px solid var(--line);padding:7px;border-radius:8px;text-align:center;">Ajustar valor</div>
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-row">
+            <div class="chat-input">Digite sua mensagem...</div>
+            <div class="chat-send-btn"><svg viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></div>
+          </div>
+        </div>
+
+      </div><!-- phone-inner -->
+    </div><!-- phone -->
+  </div><!-- phone-wrap -->
+
+  <div class="step-dots" id="sdots" style="display: none;">
+    <div class="sdot"></div><div class="sdot"></div><div class="sdot"></div><div class="sdot"></div><div class="sdot"></div>
+  </div>
+
+  <!-- ══ FSC SEM Personalization ══ -->
+  <div class="browser-frame" id="fsc-sem">
+    <!-- Chrome browser -->
+    <div class="br-chrome">
+      <div class="br-dots"><div class="br-dot r"></div><div class="br-dot y"></div><div class="br-dot g"></div></div>
+      <div class="br-tabs">
+        <div class="br-tab">
+          <svg class="br-tab-icon" viewBox="0 0 18 18"><rect width="18" height="18" rx="3" fill="#032D60"></rect><text x="9" y="13" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" font-family="Arial">S</text></svg>
+          <span class="br-tab-title">Conrado F. Lima · Financial Services Cloud</span>
+          <span class="br-tab-x">×</span>
+        </div>
+        <div class="br-newtab">+</div>
+      </div>
+    </div>
+    <div class="br-omnirow">
+      <div class="br-nav">←</div><div class="br-nav" style="opacity:.35">→</div><div class="br-nav">↻</div>
+      <div class="br-omnibox">
+        <span class="br-lock">🔒</span>
+        <span class="br-omni-url"><b>mercantil.my.salesforce.com</b>/lightning/r/Contact/0032Z000009uNKuQAM/view</span>
+      </div>
+      <div class="br-ext">⋮</div>
+    </div>
+    <!-- SF Global Nav — azul escuro, logo nuvem, busca central, ícones -->
+    <div class="sf-gnav">
+      <div class="sf-cloud"><svg viewBox="0 0 60 44" fill="none"><path d="M24.8 8.4a11.6 11.6 0 0 1 18.4 5.2A9.6 9.6 0 0 1 58 23a9.6 9.6 0 0 1-9.6 9.6H13.2A11.2 11.2 0 0 1 2 21.2a11.2 11.2 0 0 1 11.2-11.2 11 11 0 0 1 1.8.14A11.6 11.6 0 0 1 24.8 8.4z" fill="#fff"></path></svg></div>
+      <div class="sf-search">
+        <div class="sf-search-box">
+          <svg class="sf-search-icon" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span class="sf-search-ph">Search Salesforce</span>
+        </div>
+      </div>
+      <div class="sf-gnav-icons">
+        <div class="sf-gico-sq"><svg viewBox="0 0 24 24" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg><span>▾</span></div>
+        <div class="sf-gico"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
+        <div class="sf-gico"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg></div>
+        <div class="sf-gico"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"></path></svg></div>
+        <div class="sf-gico"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg></div>
+        <div class="sf-gnav-ava">GL</div>
+      </div>
+    </div>
+    <!-- App Nav Bar — branca: waffle | Financial Services C... | Home ▾ | Clients ▾ | Accounts ▾ | + | [record tab] -->
+    <div class="sf-appnav">
+      <div class="sf-an-waffle"><div class="sf-an-waffle-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+      <div class="sf-an-appname">Financial Services C...</div>
+      <div class="sf-an-items">
+        <div class="sf-an-item">Home <span class="sf-an-dd">▾</span></div>
+        <div class="sf-an-item">Files</div>
+        <div class="sf-an-item">Chatter</div>
+        <div class="sf-an-item active-obj">Clients <span class="sf-an-dd">▾</span></div>
+        <div class="sf-an-item">Opportunities <span class="sf-an-dd">▾</span></div>
+        <div class="sf-an-item">Advisor Analytics <span class="sf-an-dd" style="color:#0176D3">▾</span></div>
+        <div class="sf-an-item">Reports <span class="sf-an-dd">▾</span></div>
+      </div>
+      <div class="sf-an-plus">+</div>
+      <div class="sf-an-rectab">
+        <svg class="sf-an-rectab-ico" viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span class="sf-an-rectab-lbl">Conrado F. Lima</span>
+        <span class="sf-an-rectab-x">×</span>
+      </div>
+    </div>
+    <!-- Record Sub-tabs -->
+    <div class="sf-rectabs">
+      <div class="sf-rtab active">Overview <span class="sf-rtab-x">×</span></div>
+      <div class="sf-rtab">Contas Financeiras <span class="sf-rtab-x">×</span></div>
+      <div class="sf-rtab">Domicílio <span class="sf-rtab-x">×</span></div>
+      <div class="sf-rtab">Metas <span class="sf-rtab-x">×</span></div>
+    </div>
+    <!-- Record Body: 3 colunas sem highlights panel separado -->
+    <div class="sf-recbody">
+      <!-- Coluna esquerda: CLIENT card -->
+      <div class="sf-sidebar">
+        <div class="sf-cli-card">
+          <div class="sf-cli-hdr">
+            <div class="sf-cli-ico" style="background:#E8F4FF;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </div>
+            <div>
+              <div class="sf-cli-lbl">CLIENT</div>
+              <div class="sf-cli-name">Conrado F. Lima</div>
+            </div>
+          </div>
+          <div class="sf-cli-body">
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Contas Financeiras</span><span class="sf-cfield-val">R$ 30.000</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">AUM</span><span class="sf-cfield-val">R$ 22.000</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Tier</span><span class="sf-cfield-val">Standard</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Wallet Share</span><span class="sf-cfield-val">34%</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Segmento</span><span class="sf-cfield-val">Aposentado CLT</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Status</span><span class="sf-cfield-val">Ativo</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Gerente</span><span class="sf-cfield-val link">Gustavo Lima</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Última Interação</span><span class="sf-cfield-val">há 15 dias</span></div>
+          </div>
+        </div>
+        <div class="sf-clisec">
+          <div class="sf-clisec-hdr">
+            <div class="sf-clisec-hdr-l">
+              <div class="sf-clisec-ico" style="background:#E8F4FF;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87"></path><path d="M16 3.13a4 4 0 010 7.75"></path></svg></div>
+              Serviços ao Cliente
+            </div>
+            <span class="sf-clisec-dd">▾</span>
+          </div>
+          <div class="sf-clisec-body">
+            <div class="sf-clisec-grid">
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Próx. Revisão</span><span class="sf-cfield-val">Dez 2026</span></div>
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Últ. Revisão</span><span class="sf-cfield-val">Jul 2025</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="sf-clisec">
+          <div class="sf-clisec-hdr">
+            <div class="sf-clisec-hdr-l">
+              <div class="sf-clisec-ico" style="background:#F3EEF8;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg></div>
+              Conheça o Cliente
+            </div>
+            <span class="sf-clisec-dd">▾</span>
+          </div>
+          <div class="sf-clisec-body">
+            <div class="sf-clisec-grid">
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Experiência</span><span class="sf-cfield-val">Moderada</span></div>
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Tolerância</span><span class="sf-cfield-val">Conservador</span></div>
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Objetivo</span><span class="sf-cfield-val">Preservação</span></div>
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Patrimônio</span><span class="sf-cfield-val">R$ 34.200</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Coluna central -->
+      <div class="sf-center">
+        <div class="sf-center-tabs">
+          <div class="sf-ctab active">Contas Financeiras</div>
+          <div class="sf-ctab">Domicílio</div>
+          <div class="sf-ctab">Metas</div>
+          <div class="sf-ctab">Interações</div>
+          <div class="sf-ctab">Planos de Ação</div>
+        </div>
+        <div class="sf-center-body">
+          <!-- Financial Summary -->
+          <div class="sf-fin-summary">
+            <div class="sf-fin-summary-t">Resumo Financeiro</div>
+            <div class="sf-fin-row">
+              <div class="sf-fin-f"><span class="sf-fin-lbl">Total Crédito</span><span class="sf-fin-val">R$ 8.240</span></div>
+              <div class="sf-fin-f"><span class="sf-fin-lbl">Nº de Contas</span><span class="sf-fin-val">2</span></div>
+              <div class="sf-fin-f"><span class="sf-fin-lbl">Última Transação</span><span class="sf-fin-val">07/10/2026</span></div>
+            </div>
+          </div>
+          <!-- Contas de Crédito -->
+          <div class="sf-acc-card">
+            <div class="sf-acc-hdr">
+              <div class="sf-acc-hdr-l">
+                <div class="sf-acc-ico" style="background:#E8F9EC;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E844A" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div>
+                <span class="sf-acc-title">Contas de Crédito (1)</span>
+              </div>
+              <span class="sf-acc-new">Novo</span>
+            </div>
+            <div class="sf-tbl-hdr sf-tbl-5">
+              <div class="sf-tbl-cell"></div>
+              <div class="sf-tbl-cell">Conta Financeira</div>
+              <div class="sf-tbl-cell">Tipo</div>
+              <div class="sf-tbl-cell">Titular</div>
+              <div class="sf-tbl-cell">Saldo</div>
+            </div>
+            <div class="sf-tbl-row sf-tbl-5">
+              <div class="sf-tbl-expand">›</div>
+              <div class="sf-tbl-cell">Consignado CLT</div>
+              <div class="sf-tbl-cell">Crédito</div>
+              <div class="sf-tbl-cell">Primário</div>
+              <div class="sf-tbl-cell">R$ 8.240</div>
+            </div>
+          </div>
+          <!-- Contas de Investimento -->
+          <div class="sf-acc-card">
+            <div class="sf-acc-hdr">
+              <div class="sf-acc-hdr-l">
+                <div class="sf-acc-ico" style="background:#E8F4FF;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                <span class="sf-acc-title">Contas de Investimento (1)</span>
+              </div>
+              <span class="sf-acc-new">Novo</span>
+            </div>
+            <div class="sf-tbl-hdr sf-tbl-5">
+              <div class="sf-tbl-cell"></div>
+              <div class="sf-tbl-cell">Conta Financeira</div>
+              <div class="sf-tbl-cell">Tipo</div>
+              <div class="sf-tbl-cell">Titular</div>
+              <div class="sf-tbl-cell">Saldo</div>
+            </div>
+            <div class="sf-tbl-row sf-tbl-5">
+              <div class="sf-tbl-expand">›</div>
+              <div class="sf-tbl-cell">CDB 90 dias</div>
+              <div class="sf-tbl-cell">CDB</div>
+              <div class="sf-tbl-cell">Primário</div>
+              <div class="sf-tbl-cell">R$ 22.000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Coluna direita: Activity panel — SEM versão, sem LWC -->
+      <div class="sf-activity">
+        <div class="sf-act-tabs">
+          <div class="sf-act-tab active">Atividade</div>
+          <div class="sf-act-tab">Chatter</div>
+        </div>
+        <div class="sf-act-btns">
+          <div class="sf-act-btn active">Tarefa</div>
+          <div class="sf-act-btn">Registrar Chamada</div>
+          <div class="sf-act-btn">Email</div>
+        </div>
+        <div class="sf-act-subject">Assunto</div>
+        <div class="sf-act-addrow">
+          <div class="sf-act-search">Buscar atividades...</div>
+          <div class="sf-act-addbtn">Adicionar</div>
+        </div>
+        <div class="sf-act-body">
+          <div class="sf-act-filter-row">
+            <span class="sf-act-filter-lbl">Filtrar linha do tempo</span>
+            <div class="sf-act-filter-tabs">
+              <div class="sf-act-filter-tab active">Todas</div>
+              <div class="sf-act-filter-tab">Tarefas</div>
+              <div class="sf-act-filter-tab">Chamadas</div>
+              <div class="sf-act-filter-tab">Emails</div>
+            </div>
+          </div>
+          <div class="sf-nxt-section">
+            <div class="sf-nxt-lbl">Próximas etapas</div>
+            <div style="padding:8px 0;font-size:12px;color:#706E6B;text-align:center;">Nenhuma etapa agendada</div>
+          </div>
+          <div class="sf-nxt-section">
+            <div class="sf-nxt-lbl">Atividade anterior</div>
+            <div class="sf-nxt-item">
+              <div class="sf-nxt-ico" style="background:#EFF5FB;"><svg viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14h-.08z"></path></svg></div>
+              <div class="sf-nxt-check"></div>
+              <div class="sf-nxt-content">
+                <div class="sf-nxt-title">Ligação — Gustavo Lima</div>
+                <div class="sf-nxt-sub">há 15 dias · mencionou portabilidade</div>
+              </div>
+            </div>
+            <div class="sf-nxt-item">
+              <div class="sf-nxt-ico" style="background:#F3EEF8;"><svg viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg></div>
+              <div class="sf-nxt-check"></div>
+              <div class="sf-nxt-content">
+                <div class="sf-nxt-title">Consignado CLT contratado</div>
+                <div class="sf-nxt-sub">Mar 2022 · R$ 18.000 / 48 meses</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FSC COM Personalization ══ -->
+  <div class="browser-frame" id="fsc-com">
+    <!-- Chrome browser chrome -->
+    <div class="br-chrome">
+      <div class="br-dots"><div class="br-dot r"></div><div class="br-dot y"></div><div class="br-dot g"></div></div>
+      <div class="br-tabs">
+        <div class="br-tab">
+          <svg class="br-tab-icon" viewBox="0 0 18 18"><rect width="18" height="18" rx="3" fill="#032D60"></rect><text x="9" y="13" text-anchor="middle" font-size="10" font-weight="700" fill="#fff" font-family="Arial">S</text></svg>
+          <span class="br-tab-title">Conrado F. Lima · Financial Services</span>
+          <span class="br-tab-x">×</span>
+        </div>
+        <div class="br-newtab">+</div>
+      </div>
+    </div>
+    <!-- Omnibox row -->
+    <div class="br-omnirow">
+      <div class="br-nav-btn">←</div>
+      <div class="br-nav-btn" style="opacity:.35">→</div>
+      <div class="br-nav-btn">↻</div>
+      <div class="br-omnibox">
+        <span class="br-lock">🔒</span>
+        <span class="br-omni-text"><b>mercantil.my.salesforce.com</b>/lightning/r/Contact/0032Z000009uNKuQAM/view</span>
+      </div>
+      <div class="br-ext-area"><div class="br-ext-btn">⋮</div></div>
+    </div>
+    <!-- SF Global Nav — COM: com badge Personalization -->
+    <div class="sf-gnav">
+      <div class="sf-cloud"><svg viewBox="0 0 60 44" fill="none"><path d="M24.8 8.4a11.6 11.6 0 0 1 18.4 5.2A9.6 9.6 0 0 1 58 23a9.6 9.6 0 0 1-9.6 9.6H13.2A11.2 11.2 0 0 1 2 21.2a11.2 11.2 0 0 1 11.2-11.2 11 11 0 0 1 1.8.14A11.6 11.6 0 0 1 24.8 8.4z" fill="#fff"></path></svg></div>
+      <div class="sf-search">
+        <div class="sf-search-box">
+          <svg class="sf-search-icon" viewBox="0 0 24 24" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <span class="sf-search-ph">Search Salesforce</span>
+        </div>
+      </div>
+      <div class="sf-gnav-icons">
+        <div class="sf-pers-badge">✦ Personalization</div>
+        <div class="sf-gico-sq"><svg viewBox="0 0 24 24" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg><span>▾</span></div>
+        <div class="sf-gico"><svg viewBox="0 0 24 24" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
+        <div class="sf-gico"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg></div>
+        <div class="sf-gico"><svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.07 4.93a10 10 0 010 14.14M4.93 4.93a10 10 0 000 14.14"></path></svg></div>
+        <div class="sf-gico"><svg viewBox="0 0 24 24" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 01-3.46 0"></path></svg></div>
+        <div class="sf-gnav-ava">GL</div>
+      </div>
+    </div>
+    <!-- App Nav Bar -->
+    <div class="sf-appnav">
+      <div class="sf-an-waffle"><div class="sf-an-waffle-grid"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
+      <div class="sf-an-appname">Financial Services C...</div>
+      <div class="sf-an-items">
+        <div class="sf-an-item">Home <span class="sf-an-dd">▾</span></div>
+        <div class="sf-an-item">Files</div>
+        <div class="sf-an-item">Chatter</div>
+        <div class="sf-an-item active-obj">Clients <span class="sf-an-dd">▾</span></div>
+        <div class="sf-an-item">Opportunities <span class="sf-an-dd">▾</span></div>
+        <div class="sf-an-item">Advisor Analytics <span class="sf-an-dd" style="color:#0176D3">▾</span></div>
+        <div class="sf-an-item">Reports <span class="sf-an-dd">▾</span></div>
+      </div>
+      <div class="sf-an-plus">+</div>
+      <div class="sf-an-rectab">
+        <svg class="sf-an-rectab-ico" viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span class="sf-an-rectab-lbl">Conrado F. Lima</span>
+        <span class="sf-an-rectab-x">×</span>
+      </div>
+    </div>
+    <!-- Record Sub-tabs -->
+    <div class="sf-rectabs">
+      <div class="sf-rtab active">Overview <span class="sf-rtab-x">×</span></div>
+      <div class="sf-rtab">Contas Financeiras <span class="sf-rtab-x">×</span></div>
+      <div class="sf-rtab">Domicílio <span class="sf-rtab-x">×</span></div>
+      <div class="sf-rtab">Metas <span class="sf-rtab-x">×</span></div>
+    </div>
+    <!-- Record Body: 3 colunas -->
+    <div class="sf-recbody">
+      <!-- Coluna esquerda: CLIENT card com risco de churn visível -->
+      <div class="sf-sidebar">
+        <div class="sf-cli-card">
+          <div class="sf-cli-hdr">
+            <div class="sf-cli-ico" style="background:#E8F4FF;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </div>
+            <div>
+              <div class="sf-cli-lbl">CLIENT</div>
+              <div class="sf-cli-name">Conrado F. Lima</div>
+            </div>
+          </div>
+          <div class="sf-cli-body">
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Contas Financeiras</span><span class="sf-cfield-val">R$ 30.000</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">AUM</span><span class="sf-cfield-val">R$ 22.000</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Tier</span><span class="sf-cfield-val">Standard</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Wallet Share</span><span class="sf-cfield-val">34%</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Segmento</span><span class="sf-cfield-val">Aposentado CLT</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Risco de Churn</span><span class="sf-cfield-val alert">🔴 Elevado</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Gerente</span><span class="sf-cfield-val link">Gustavo Lima</span></div>
+            <div class="sf-cfield"><span class="sf-cfield-lbl">Última Interação</span><span class="sf-cfield-val">há 15 dias</span></div>
+          </div>
+        </div>
+        <div class="sf-clisec">
+          <div class="sf-clisec-hdr">
+            <div class="sf-clisec-hdr-l">
+              <div class="sf-clisec-ico" style="background:#E8F4FF;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87"></path><path d="M16 3.13a4 4 0 010 7.75"></path></svg></div>
+              Serviços ao Cliente
+            </div>
+            <span class="sf-clisec-dd">▾</span>
+          </div>
+          <div class="sf-clisec-body">
+            <div class="sf-clisec-grid">
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Próx. Revisão</span><span class="sf-cfield-val">Dez 2026</span></div>
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Últ. Revisão</span><span class="sf-cfield-val">Jul 2025</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="sf-clisec">
+          <div class="sf-clisec-hdr">
+            <div class="sf-clisec-hdr-l">
+              <div class="sf-clisec-ico" style="background:#F3EEF8;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8B5CF6" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg></div>
+              Conheça o Cliente
+            </div>
+            <span class="sf-clisec-dd">▾</span>
+          </div>
+          <div class="sf-clisec-body">
+            <div class="sf-clisec-grid">
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Experiência</span><span class="sf-cfield-val">Moderada</span></div>
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Tolerância</span><span class="sf-cfield-val">Conservador</span></div>
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Objetivo</span><span class="sf-cfield-val">Preservação</span></div>
+              <div class="sf-cfield"><span class="sf-cfield-lbl">Patrimônio</span><span class="sf-cfield-val">R$ 34.200</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Coluna central -->
+      <div class="sf-center">
+        <div class="sf-center-tabs">
+          <div class="sf-ctab active">Contas Financeiras</div>
+          <div class="sf-ctab">Domicílio</div>
+          <div class="sf-ctab">Metas</div>
+          <div class="sf-ctab">Interações</div>
+          <div class="sf-ctab">Planos de Ação</div>
+        </div>
+        <div class="sf-center-body">
+          <div class="sf-fin-summary">
+            <div class="sf-fin-summary-t">Resumo Financeiro</div>
+            <div class="sf-fin-row">
+              <div class="sf-fin-f"><span class="sf-fin-lbl">Total Crédito</span><span class="sf-fin-val">R$ 8.240</span></div>
+              <div class="sf-fin-f"><span class="sf-fin-lbl">Nº de Contas</span><span class="sf-fin-val">2</span></div>
+              <div class="sf-fin-f"><span class="sf-fin-lbl">Última Transação</span><span class="sf-fin-val">07/10/2026</span></div>
+            </div>
+          </div>
+          <div class="sf-acc-card">
+            <div class="sf-acc-hdr">
+              <div class="sf-acc-hdr-l">
+                <div class="sf-acc-ico" style="background:#E8F9EC;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2E844A" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div>
+                <span class="sf-acc-title">Contas de Crédito (1)</span>
+              </div>
+              <span class="sf-acc-new">Novo</span>
+            </div>
+            <div class="sf-tbl-hdr sf-tbl-5">
+              <div class="sf-tbl-cell"></div>
+              <div class="sf-tbl-cell">Conta Financeira</div>
+              <div class="sf-tbl-cell">Tipo</div>
+              <div class="sf-tbl-cell">Titular</div>
+              <div class="sf-tbl-cell">Saldo</div>
+            </div>
+            <div class="sf-tbl-row sf-tbl-5">
+              <div class="sf-tbl-expand">›</div>
+              <div class="sf-tbl-cell">Consignado CLT</div>
+              <div class="sf-tbl-cell">Crédito</div>
+              <div class="sf-tbl-cell">Primário</div>
+              <div class="sf-tbl-cell">R$ 8.240</div>
+            </div>
+          </div>
+          <div class="sf-acc-card">
+            <div class="sf-acc-hdr">
+              <div class="sf-acc-hdr-l">
+                <div class="sf-acc-ico" style="background:#E8F4FF;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg></div>
+                <span class="sf-acc-title">Contas de Investimento (1)</span>
+              </div>
+              <span class="sf-acc-new">Novo</span>
+            </div>
+            <div class="sf-tbl-hdr sf-tbl-5">
+              <div class="sf-tbl-cell"></div>
+              <div class="sf-tbl-cell">Conta Financeira</div>
+              <div class="sf-tbl-cell">Tipo</div>
+              <div class="sf-tbl-cell">Titular</div>
+              <div class="sf-tbl-cell">Saldo</div>
+            </div>
+            <div class="sf-tbl-row sf-tbl-5">
+              <div class="sf-tbl-expand">›</div>
+              <div class="sf-tbl-cell">CDB 90 dias</div>
+              <div class="sf-tbl-cell">CDB</div>
+              <div class="sf-tbl-cell">Primário</div>
+              <div class="sf-tbl-cell">R$ 22.000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Coluna direita: Activity + LWC Personalization (COM) -->
+      <div class="sf-activity">
+        <div class="sf-act-tabs">
+          <div class="sf-act-tab active">Atividade</div>
+          <div class="sf-act-tab">Chatter</div>
+        </div>
+        <div class="sf-act-btns">
+          <div class="sf-act-btn active">Tarefa</div>
+          <div class="sf-act-btn">Registrar Chamada</div>
+          <div class="sf-act-btn">Email</div>
+        </div>
+        <div class="sf-act-subject">Assunto</div>
+        <div class="sf-act-addrow">
+          <div class="sf-act-search">Buscar atividades...</div>
+          <div class="sf-act-addbtn">Adicionar</div>
+        </div>
+        <div class="sf-act-body">
+          <div class="sf-act-filter-row">
+            <span class="sf-act-filter-lbl">Filtrar linha do tempo</span>
+            <div class="sf-act-filter-tabs">
+              <div class="sf-act-filter-tab active">Todas</div>
+              <div class="sf-act-filter-tab">Tarefas</div>
+              <div class="sf-act-filter-tab">Chamadas</div>
+              <div class="sf-act-filter-tab">Emails</div>
+            </div>
+          </div>
+          <div class="sf-nxt-section">
+            <div class="sf-nxt-lbl">Próximas etapas</div>
+            <div class="sf-nxt-item">
+              <div class="sf-nxt-ico" style="background:#FEF3E2;"><svg viewBox="0 0 24 24" fill="none" stroke="#DD7A01" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg></div>
+              <div class="sf-nxt-check" style="border-color:#DD7A01;"></div>
+              <div class="sf-nxt-content">
+                <div class="sf-nxt-title" style="color:#DD7A01;">Risco de portabilidade — contatar hoje</div>
+                <div class="sf-nxt-sub">3 pesquisas nos últimos 3 dias</div>
+              </div>
+            </div>
+          </div>
+          <div class="sf-nxt-section">
+            <div class="sf-nxt-lbl">Atividade anterior</div>
+            <div class="sf-nxt-item">
+              <div class="sf-nxt-ico" style="background:#EFF5FB;"><svg viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14h-.08z"></path></svg></div>
+              <div class="sf-nxt-check"></div>
+              <div class="sf-nxt-content">
+                <div class="sf-nxt-title">Ligação — Gustavo Lima</div>
+                <div class="sf-nxt-sub">há 15 dias · portabilidade mencionada</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- LWC Personalization — componente injetado na ficha pelo SP -->
+        <div class="sf-lwc">
+          <div class="sf-lwc-hdr">
+            <span class="sf-lwc-t">⚡ Intenção Digital</span>
+            <span class="sf-lwc-badge">✦ Personalization</span>
+          </div>
+          <div class="sf-lwc-sigs">
+            <div class="sf-lwc-row">
+              <div class="sf-pdot r"></div>
+              <div><strong>Pesquisou portabilidade 3x</strong> em 3 dias · Ontem 18:34</div>
+            </div>
+            <div class="sf-lwc-row">
+              <div class="sf-pdot o"></div>
+              <div><strong>Simulação R$ 15.000</strong> abandonada na biometria · Ontem 16:12</div>
+            </div>
+            <div class="sf-lwc-row">
+              <div class="sf-pdot g"></div>
+              <div><strong>Visualizou Saúde Essencial</strong> (Meu+) · Há 3 dias</div>
+            </div>
+          </div>
+          <div class="sf-lwc-nbo">
+            <div class="sf-lwc-nbo-lbl">Next Best Offer</div>
+            <div class="sf-lwc-nbo-offer">Consignado CLT · R$ 15.000 · 24 meses</div>
+            <div class="sf-lwc-nbo-why">Simulação salva ontem. Alta propensão de conversão presencial.</div>
+            <div class="sf-lwc-nbo-row">
+              <div class="sf-conf">93% confiança</div>
+              <div class="sf-nbo-btn">Criar Oport.</div>
+            </div>
+          </div>
+          <div class="sf-lwc-abord">
+            <strong>💬 Abordagem:</strong> "Conrado, vi que o senhor simulou R$&nbsp;15.000 ontem. Posso finalizar agora — mesmas condições."
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- CENÁRIO 6: CAMPANHAS EMAIL + SMS -->
+<!-- CENÁRIO 5: E-MAIL -->
+<!-- CENÁRIO 5: E-MAIL -->
+<div class="camp-wrap" id="camp-email">
+
+  <!-- Email SEM — celular -->
+  <div class="camp-view" id="ce-sem" style="display: none;">
+    <div class="email-phone">
+      <div class="ep-notch"><div class="ep-notch-pill"></div></div>
+      <div class="ep-status">
+        <span>9:41</span>
+        <div class="ep-status-icons">
+          <svg width="11" height="8" viewBox="0 0 11 8"><rect x="0" y="2" width="2" height="6" rx="1" fill="#1C1C1E"></rect><rect x="3" y="1" width="2" height="7" rx="1" fill="#1C1C1E"></rect><rect x="6" y="0" width="2" height="8" rx="1" fill="#1C1C1E"></rect><rect x="9" y="0" width="2" height="8" rx="1" fill="#ccc"></rect></svg>
+          <svg width="13" height="9" viewBox="0 0 13 9" fill="none"><path d="M1 4.5C2.7 2.7 4.9 1.5 6.5 1.5s3.8 1.2 5.5 3" stroke="#1C1C1E" stroke-width="1.2" stroke-linecap="round"></path><path d="M3 6.5c.9-.9 2.2-1.5 3.5-1.5s2.6.6 3.5 1.5" stroke="#1C1C1E" stroke-width="1.2" stroke-linecap="round"></path><circle cx="6.5" cy="8" r="1" fill="#1C1C1E"></circle></svg>
+          <svg width="16" height="9" viewBox="0 0 16 9"><rect x="0" y="1" width="13" height="7" rx="2" stroke="#1C1C1E" stroke-width="1"></rect><rect x="1" y="2" width="9" height="5" rx="1" fill="#1C1C1E"></rect><path d="M14 3.5v2c.6-.2 1-.7 1-1s-.4-.8-1-1z" fill="#1C1C1E"></path></svg>
+        </div>
+      </div>
+      <!-- Mail app header -->
+      <div class="ep-mail-header">
+        <div class="ep-mail-back">
+          <svg width="7" height="11" viewBox="0 0 7 11" fill="none"><path d="M6 1L1 5.5L6 10" stroke="#007AFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          Caixa de Entrada
+        </div>
+        <div class="ep-mail-subject">Oportunidade de Crédito Consignado para você</div>
+        <div class="ep-mail-from">
+          <div class="ep-avatar sem">M</div>
+          <div class="ep-from-info">
+            <div class="ep-from-name">Banco Mercantil</div>
+            <div class="ep-from-addr">noreply@mercantil.com.br</div>
+          </div>
+          <div class="ep-mail-time">Hoje, 10:24</div>
+        </div>
+      </div>
+      <!-- Email content -->
+      <div class="ep-mail-body">
+        <div class="ep-banner sem">
+          <div class="ep-banner-logo">
+            <div class="ep-banner-logomark">
+              <svg viewBox="0 0 14 14" width="13" height="13"><path d="M7 1L2 4v6l5 3 5-3V4L7 1z"></path></svg>
+            </div>
+            <div>
+              <div class="ep-banner-name">BANCO MERCANTIL</div>
+              <div class="ep-banner-sub">Crédito Consignado</div>
+            </div>
+          </div>
+        </div>
+        <div class="ep-content">
+          <div class="ep-greeting">Prezado(a) Cliente,</div>
+          <div class="ep-txt">Apresentamos nossas condições exclusivas de crédito consignado para servidores e aposentados. Taxas a partir de 1,39% ao mês.</div>
+          <div class="ep-offer sem">
+            <div class="ep-offer-lbl">Oferta disponível</div>
+            <div class="ep-offer-prod">Consignado CLT</div>
+            <div class="ep-offer-det">Até R$ 50.000 · A partir de 1,39% a.m. · Até 96 meses</div>
+          </div>
+          <div class="ep-cta sem">Simular agora</div>
+        </div>
+        <div class="ep-footer-txt">Banco Mercantil do Brasil S.A. · CNPJ 17.184.037/0001-10<br>Para cancelar o recebimento, clique aqui.</div>
+      </div>
+    </div>
+    <div class="ep-delta">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7A7A8C" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+      <div><strong>Mensagem genérica para 48.200 contatos.</strong> Sem nome, sem valor personalizado, sem contexto. Open rate médio: ~18%. CTR médio: ~1,2%.</div>
+    </div>
+  </div>
+
+  <!-- Email COM — celular -->
+  <div class="camp-view" id="ce-com" style="display: block;">
+    <div class="email-phone">
+      <div class="ep-notch"><div class="ep-notch-pill"></div></div>
+      <div class="ep-status">
+        <span>9:41</span>
+        <div class="ep-status-icons">
+          <svg width="11" height="8" viewBox="0 0 11 8"><rect x="0" y="2" width="2" height="6" rx="1" fill="#1C1C1E"></rect><rect x="3" y="1" width="2" height="7" rx="1" fill="#1C1C1E"></rect><rect x="6" y="0" width="2" height="8" rx="1" fill="#1C1C1E"></rect><rect x="9" y="0" width="2" height="8" rx="1" fill="#ccc"></rect></svg>
+          <svg width="13" height="9" viewBox="0 0 13 9" fill="none"><path d="M1 4.5C2.7 2.7 4.9 1.5 6.5 1.5s3.8 1.2 5.5 3" stroke="#1C1C1E" stroke-width="1.2" stroke-linecap="round"></path><path d="M3 6.5c.9-.9 2.2-1.5 3.5-1.5s2.6.6 3.5 1.5" stroke="#1C1C1E" stroke-width="1.2" stroke-linecap="round"></path><circle cx="6.5" cy="8" r="1" fill="#1C1C1E"></circle></svg>
+          <svg width="16" height="9" viewBox="0 0 16 9"><rect x="0" y="1" width="13" height="7" rx="2" stroke="#1C1C1E" stroke-width="1"></rect><rect x="1" y="2" width="9" height="5" rx="1" fill="#1C1C1E"></rect><path d="M14 3.5v2c.6-.2 1-.7 1-1s-.4-.8-1-1z" fill="#1C1C1E"></path></svg>
+        </div>
+      </div>
+      <!-- Mail app header -->
+      <div class="ep-mail-header">
+        <div class="ep-mail-back">
+          <svg width="7" height="11" viewBox="0 0 7 11" fill="none"><path d="M6 1L1 5.5L6 10" stroke="#007AFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          Caixa de Entrada
+        </div>
+        <div class="ep-mail-subject">Conrado, sua simulação de R$ 15.000 ainda está aqui</div>
+        <div class="ep-mail-from">
+          <div class="ep-avatar com">M</div>
+          <div class="ep-from-info">
+            <div class="ep-from-name">Banco Mercantil</div>
+            <div class="ep-from-addr">conrado.lima@email.com</div>
+          </div>
+          <div class="ep-mail-time">Hoje, 16:15</div>
+        </div>
+      </div>
+      <!-- Email content -->
+      <div class="ep-mail-body">
+        <div class="ep-banner com">
+          <div class="ep-banner-logo">
+            <div class="ep-banner-logomark">
+              <svg viewBox="0 0 14 14" width="13" height="13"><path d="M7 1L2 4v6l5 3 5-3V4L7 1z"></path></svg>
+            </div>
+            <div>
+              <div class="ep-banner-name">BANCO MERCANTIL</div>
+              <div class="ep-banner-sub">Conrado, sua simulação está esperando</div>
+            </div>
+          </div>
+        </div>
+        <div class="ep-content">
+          <div class="ep-greeting">Olá, Conrado!</div>
+          <div class="ep-txt">Ontem você simulou um Consignado CLT de R$ 15.000. As condições ainda estão disponíveis — que tal fecharmos agora?</div>
+          <div class="ep-offer com">
+            <div class="ep-offer-lbl">Sua simulação salva</div>
+            <div class="ep-offer-prod pers">Consignado CLT · R$ 15.000</div>
+            <div class="ep-offer-det pers">24 meses · R$ 702/mês · Taxa 1,39% a.m.</div>
+          </div>
+          <div class="ep-why">💡 Baseado na simulação de ontem às 16h12 e no seu histórico como cliente Mercantil há 5 anos.</div>
+          <div class="ep-cta com">Continuar minha simulação →</div>
+        </div>
+        <div class="ep-footer-txt">Banco Mercantil do Brasil S.A. · Enviado por Salesforce Personalization<br>Descadastrar</div>
+      </div>
+    </div>
+    <div class="ep-delta" style="background:#EFF5FB; border-color:#D0D5FB;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2B3EE6" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+      <div><strong>Nome, valor exato e deep link</strong> para a simulação salva. Gatilho: abandono de simulação ontem. CTR esperado: ~5,8% (4,8× maior).</div>
+    </div>
+  </div>
+
+</div><!-- camp-email -->
+
+<!-- CENÁRIO 6: SMS -->
+<div class="camp-wrap" id="camp-sms">
+
+  <!-- SMS SEM -->
+  <div class="camp-view" id="cs-sem" style="max-width: 360px; display: block;">
+    <div class="sms-phone">
+      <div class="sms-topbar">
+        <div>
+          <div class="sms-contact">Mercantil</div>
+          <div class="sms-sub">Mensagem de texto · broadcast · 48.200 envios</div>
+        </div>
+      </div>
+      <div class="sms-body">
+        <div class="sms-bubble mercantil">
+          <div class="sms-tag sem">Campanha massiva · 48.200 envios</div>
+          Mercantil: Precisa de crédito? Consignado CLT a partir de 1,39% a.m. Simule agora:
+          <span class="sms-link">mercantil.com.br/consignado</span>
+        </div>
+      </div>
+      <div class="sms-delta">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7A7A8C" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+        <div><strong>Mensagem idêntica para toda a base.</strong> Sem nome, sem valor, sem contexto comportamental. CTR médio: ~0,8%.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SMS COM -->
+  <div class="camp-view" id="cs-com" style="display: none; max-width: 360px;">
+    <div class="sms-phone">
+      <div class="sms-topbar">
+        <div>
+          <div class="sms-contact">Mercantil</div>
+          <div class="sms-sub">Mensagem de texto · enviado 3 min após abandono</div>
+        </div>
+      </div>
+      <div class="sms-body">
+        <div class="sms-bubble mercantil">
+          <div class="sms-tag com">✦ Personalizado · gatilho: simulação abandonada</div>
+          Conrado, sua simulação de R$&nbsp;15.000 ainda está salva. Taxa 1,39% a.m. · 24 meses. Finalize agora:
+          <span class="sms-link">mercantil.com.br/continuar?id=sim_CFL_241008</span>
+        </div>
+      </div>
+      <div class="sms-delta" style="background:#EFF5FB; border-color:#D0D5FB;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2B3EE6" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <div><strong>Nome, valor exato e deep link</strong> para a simulação salva. Enviado 3 min após abandono, janela de alta intenção. CTR esperado: ~5,2% (6,5× maior).</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- camp-sms -->
+
+<!-- SPLASH INTRO -->
+<div class="splash-intro-wrap visible" id="splash-intro">
+
+  <!-- Hero -->
+  <div class="si-hero">
+    <div class="si-eyebrow">Tese de Valor · Salesforce Personalization × Banco Mercantil</div>
+    <div class="si-headline">O maior banco do público 50+<br>precisa de uma <em>nova alavanca</em></div>
+    <div class="si-lead">O Mercantil construiu uma máquina de eficiência — ROAE de 41%, CAC de R$&nbsp;28, 80% do crédito originado pelo WhatsApp. O próximo salto não vem de custo mais baixo, mas de <strong style="color:#fff">rentabilizar a base que já existe</strong> com inteligência de dados em tempo real.</div>
+  </div>
+
+  <!-- KPIs do Mercantil -->
+  <div class="si-kpis">
+    <div class="si-kpi">
+      <div class="si-kpi-val">10,2<span>M</span></div>
+      <div class="si-kpi-lbl">clientes — base com alto potencial de cross-sell</div>
+    </div>
+    <div class="si-kpi">
+      <div class="si-kpi-val">41<span>%</span></div>
+      <div class="si-kpi-lbl">ROAE — acima da média dos grandes bancos</div>
+    </div>
+    <div class="si-kpi">
+      <div class="si-kpi-val">R$<span>28</span></div>
+      <div class="si-kpi-lbl">CAC — eficiência digital via WhatsApp e app</div>
+    </div>
+    <div class="si-kpi">
+      <div class="si-kpi-val">80<span>%</span></div>
+      <div class="si-kpi-lbl">do crédito originado em canais digitais</div>
+    </div>
+  </div>
+
+  <!-- Dois cards: contexto + desafio -->
+  <div class="si-body">
+    <div class="si-card">
+      <div class="si-card-icon" style="background:#E8F4FF;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0176D3" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"></path></svg>
+      </div>
+      <div class="si-card-title">O público 50+ exige um banco diferente</div>
+      <div class="si-card-body">O aposentado brasileiro privilegia <strong>ecossistemas fechados e familiares</strong>. Para esse cliente, a fricção digital não é incômodo — é desconfiança. O banco precisa saber não só o nome, mas <strong>quando o benefício cai, qual é a preocupação de saúde e qual o nível de familiaridade digital</strong> de cada um.</div>
+      <div class="si-card-stat">
+        <div class="si-stat-val">78</div>
+        <div class="si-stat-lbl">NPS — +19 pontos a/a. Excelência no atendimento Phygital.</div>
+      </div>
+    </div>
+    <div class="si-card">
+      <div class="si-card-icon" style="background:#FFF0E6;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 8v4M12 16h.01"></path></svg>
+      </div>
+      <div class="si-card-title">O paradoxo do crédito consignado</div>
+      <div class="si-card-body">O consignado tem <strong>teto de margem definido por lei</strong>. Uma vez comprometida, o relacionamento entra em estagnação — a menos que o banco seja capaz de ofertar seguros, assistências e serviços <strong>no momento exato de propensão</strong>, não por campanha de calendário.</div>
+      <div class="si-card-stat">
+        <div class="si-stat-val">44<span style="font-size:12px;font-weight:700;color:var(--ink-3)">%</span></div>
+        <div class="si-stat-lbl">das reclamações no Reclame Aqui são sobre empréstimos — atritos que poderiam ser prevenidos com orquestração em tempo real.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paradoxo da digitalização: antes vs. depois -->
+  <div class="si-paradox">
+    <div class="si-paradox-hdr">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+      <div class="si-paradox-hdr-t">O paradoxo da digitalização: dados em abundância, personalização em falta</div>
+    </div>
+    <div class="si-paradox-body">
+      <div>
+        <div class="si-paradox-col-lbl antes">Hoje — sem orquestração</div>
+        <div class="si-paradox-item">Perfil de cliente atualizado a cada 24h (batch noturno)</div>
+        <div class="si-paradox-item">Oferta do "produto do mês" para toda a base</div>
+        <div class="si-paradox-item">Simulação abandonada no app — nenhuma ação de retorno</div>
+        <div class="si-paradox-item">WhatsApp, app e SAC sem visão unificada do cliente</div>
+        <div class="si-paradox-item">42% dos times admitem não conhecer o cliente a fundo</div>
+      </div>
+      <div>
+        <div class="si-paradox-col-lbl depois">Com Salesforce Personalization</div>
+        <div class="si-paradox-item after">Perfil atualizado em milissegundos — streaming em tempo real</div>
+        <div class="si-paradox-item after">Oferta calculada por score de propensão individual (RTOM)</div>
+        <div class="si-paradox-item after">Abandono detectado → SMS em 3 min com valor exato salvo</div>
+        <div class="si-paradox-item after">Identity Resolution unifica todos os canais em um único perfil 360°</div>
+        <div class="si-paradox-item after">Next Best Action entregue no momento da verdade — todo dia</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tese central -->
+  <div class="si-thesis">
+    <div class="si-thesis-ico">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"></path><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+    </div>
+    <div>
+      <div class="si-thesis-t">A tese: de banco de crédito a ecossistema da vida do público 50+</div>
+      <div class="si-thesis-b">O Salesforce Personalization converte os <em>10,2 milhões de clientes</em> do Mercantil de uma base de crédito em uma base de relacionamento contínuo. Com ROI cumulativo de <em>299% em 3 anos</em> (Forrester TEI), conversão <em>3,2× maior</em> em produtos adjacentes e <em>+35% no ticket médio</em> via cross-sell preditivo, a plataforma entrega o próximo patamar de crescimento — sem elevar o CAC, sem escalar o call center, dentro dos limites da LGPD e da regulação do INSS.</div>
+    </div>
+  </div>
+
+</div><!-- splash-intro -->
+
+<!-- SPLASH PROPOSTA DE VALOR -->
+<div class="splash-wrap" id="splash-pv">
+  <div class="splash-hero">
+    <div class="splash-eyebrow">Salesforce Personalization × Banco Mercantil</div>
+    <div class="splash-headline">Do dado ao <span>relacionamento</span><br>em tempo real</div>
+    <div class="splash-sub">Cada interação do Conrado — no app, no e-mail, no SMS ou com o gerente — tratada como uma oportunidade única, não como um número na base.</div>
+  </div>
+  <div class="splash-kpis">
+    <div class="splash-kpi">
+      <div class="splash-kpi-val">3,2<span>×</span></div>
+      <div class="splash-kpi-lbl">conversão em campanhas personalizadas vs. genéricas</div>
+      <div class="splash-kpi-src">Salesforce State of Marketing 2024</div>
+    </div>
+    <div class="splash-kpi">
+      <div class="splash-kpi-val">6,5<span>×</span></div>
+      <div class="splash-kpi-lbl">CTR em SMS com gatilho comportamental vs. broadcast</div>
+      <div class="splash-kpi-src">Benchmark setorial — serviços financeiros</div>
+    </div>
+    <div class="splash-kpi">
+      <div class="splash-kpi-val">40<span>%</span></div>
+      <div class="splash-kpi-lbl">redução de abandono em jornadas de crédito digital</div>
+      <div class="splash-kpi-src">Média clientes Salesforce FS · LATAM</div>
+    </div>
+    <div class="splash-kpi">
+      <div class="splash-kpi-val">R$<span>+</span></div>
+      <div class="splash-kpi-lbl">receita incremental por cliente ativo mensalmente</div>
+      <div class="splash-kpi-src">Estimativa baseada no perfil do Mercantil</div>
+    </div>
+  </div>
+  <div class="splash-pillars">
+    <div class="splash-pillar">
+      <div class="splash-pillar-icon" style="background:#EEF0FF;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2B3EE6" stroke-width="2"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"></path><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>
+      </div>
+      <div class="splash-pillar-title">App — Experiência 1:1</div>
+      <div class="splash-pillar-body">Cada cliente vê um app diferente, ordenado pelo seu comportamento e propensão individual.</div>
+      <div class="splash-pillar-items">
+        <div class="splash-item">Home com crédito pré-aprovado visível</div>
+        <div class="splash-item">Meu+ reordenado por score de propensão</div>
+        <div class="splash-item">Jornadas retomadas do ponto de abandono</div>
+        <div class="splash-item">Chat com contexto completo do perfil</div>
+      </div>
+    </div>
+    <div class="splash-pillar">
+      <div class="splash-pillar-icon" style="background:#FFF0E6;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+      </div>
+      <div class="splash-pillar-title">Campanhas — Precisão cirúrgica</div>
+      <div class="splash-pillar-body">E-mail e SMS ativados por evento real, com nome, valor e contexto — não por data de calendário.</div>
+      <div class="splash-pillar-items">
+        <div class="splash-item">Gatilho: abandono de simulação em 3 min</div>
+        <div class="splash-item">Valor exato e deep link para a simulação salva</div>
+        <div class="splash-item">CTR 6,5× superior ao broadcast genérico</div>
+        <div class="splash-item">Pressão de portabilidade neutralizada</div>
+      </div>
+    </div>
+    <div class="splash-pillar">
+      <div class="splash-pillar-icon" style="background:#E8F9EC;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+      </div>
+      <div class="splash-pillar-title">Operação — Gerente equipado</div>
+      <div class="splash-pillar-body">O FSC entrega ao gerente os sinais digitais do cliente antes do atendimento presencial começar.</div>
+      <div class="splash-pillar-items">
+        <div class="splash-item">Intenção digital visível na ficha do cliente</div>
+        <div class="splash-item">NBO com 93% de confiança já calculado</div>
+        <div class="splash-item">Abordagem sugerida palavra por palavra</div>
+        <div class="splash-item">Atendimento consultivo, não reativo</div>
+      </div>
+    </div>
+  </div>
+  <div class="splash-footer">
+    <div class="splash-footer-txt">
+      <strong>Próximo passo:</strong> workshop de descoberta com o time de CRM e Digital do Mercantil para mapeamento de casos de uso prioritários, definição de arquitetura de dados e roadmap de implantação em 90 dias.
+    </div>
+    <div class="splash-cta-badge">✦ Salesforce Personalization</div>
+  </div>
+</div><!-- splash-pv -->
+
+</div><!-- center -->
+
+<!-- CONTEXT PANEL -->
+<div class="ctx-panel">
+  <div class="ctx-hdr">O que o motor viu</div>
+
+  <div id="ctx-0" class="ctx-panels">
+    <div class="ctx-section"><div class="ctx-st">Perfil detectado</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>Conrado F. Lima</strong> · Correntista ativo · Consignado CLT · Renda R$&nbsp;8.500/mês</div></div>
+    </div>
+    <div class="ctx-section"><div class="ctx-st">Eventos disparadores</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>Crédito pré-aprovado disponível</strong> — R$&nbsp;42.800 calculado pelo motor de crédito baseado na renda e histórico</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>Perfil de crédito ativo</strong> → atalhos reordenados para Consignado em primeiro lugar</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>Sem produto de crédito adicional</strong> — oportunidade de cross-sell detectada</div></div>
+    </div>
+    <div class="ctx-dec" id="d0" style="display:none;"><strong>Decisão:</strong> banner personalizado com valor exato de crédito pré-aprovado + valor formatado em destaque dourado. Quick actions reordenadas por comportamento recente (Consignado e Empréstimo em primeiro lugar).</div>
+    <div class="ctx-sem" id="n0" style="display: none;">Sem Personalization: banner genérico do Meu+ exibido para todos os clientes. Conrado não sabe que tem crédito pré-aprovado disponível. Quick actions em ordem fixa de catálogo.</div>
+  </div>
+
+  <div id="ctx-1" class="ctx-panels">
+    <div class="ctx-section"><div class="ctx-st">Evento disparador</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot r"></div><div class="ctx-ev-txt"><strong>Abandono na biometria</strong> — etapa 1/3 da jornada de Consignado CLT · R$&nbsp;15.000 · 24 meses</div></div>
+    </div>
+    <div class="ctx-section"><div class="ctx-st">Lógica de recuperação</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt">Propensão de retorno: alta nas primeiras 2h. Push enviado 3 min após abandono.</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt">Modal de continuação com os exatos dados da simulação salva no próximo login.</div></div>
+    </div>
+    <div class="ctx-dec" id="d1" style="display:none;"><strong>Motor ativo:</strong> push + modal de recuperação com dados salvos. Jornada retoma do ponto de abandono.</div>
+    <div class="ctx-sem" id="n1" style="display: none;">Sem Personalization: abandono não detectado. Nenhuma ação. 40% das simulações encerram assim — oportunidade perdida permanentemente.</div>
+  </div>
+
+  <div id="ctx-2" class="ctx-panels">
+    <div class="ctx-section"><div class="ctx-st">Scores de propensão</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>Saúde Essencial: 0.87</strong> — perfil de aposentado sem cobertura cadastrada</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>Odontológico: 0.74</strong> — segunda maior propensão no segmento</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>Residencial: 0.61</strong> — inferido por padrão de comportamento</div></div>
+    </div>
+    <div class="ctx-dec" id="d2" style="display:none;"><strong>Reordenação:</strong> grade do Meu+ exibida em ordem de score individual. Produto de maior score destacado no topo com card duplo.</div>
+    <div class="ctx-sem" id="n2" style="display: none;">Sem Personalization: todos os produtos exibidos em ordem fixa de catálogo. Saúde Essencial aparece em 2º lugar sem destaque.</div>
+  </div>
+
+  <!-- ctx-3 = Chat in-app (cenário 4) -->
+  <div id="ctx-3" class="ctx-panels">
+    <div class="ctx-section"><div class="ctx-st">Canal</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>Chat in-app</strong> — cliente inicia conversa no próprio app do Mercantil</div></div>
+    </div>
+    <div class="ctx-section"><div class="ctx-st">Perfil em tempo real</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>CDB vencendo</strong> em 30 dias — gatilho de reinvestimento identificado</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>Perfil conservador-moderado</strong> inferido pelo histórico de produtos</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>R$&nbsp;7.892 em conta</strong> — saldo disponível para aplicação imediata</div></div>
+    </div>
+    <div class="ctx-dec" id="d3" style="display:none;"><strong>Decisão do motor:</strong> primeira resposta já inclui produto recomendado com base no perfil + simulação com saldo real do cliente. Jornada de investimento encurtada de 5 passos para 1 interação.</div>
+    <div class="ctx-sem" id="n3" style="display: none;">Sem Personalization: bot responde com lista genérica de todos os produtos. Pergunta sobre perfil de risco — dado que o banco já tem. Cliente precisa navegar sozinho até o produto certo.</div>
+  </div>
+
+  <!-- ctx-4 = E-mail (cenário 5) -->
+  <div id="ctx-4" class="ctx-panels">
+    <div class="ctx-section"><div class="ctx-st">Gatilho do e-mail</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot r"></div><div class="ctx-ev-txt"><strong>Simulação abandonada</strong> — R$&nbsp;15.000 · Consignado CLT · Ontem 16h12</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot o"></div><div class="ctx-ev-txt"><strong>Score de propensão: 93%</strong> — maior janela de conversão identificada pelo motor</div></div>
+    </div>
+    <div class="ctx-section"><div class="ctx-st">O que o SP faz diferente</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt">Assunto personalizado com nome e contexto → open rate +40%</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt">Valor exato da simulação salva no corpo do e-mail</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt">CTA deep link direto para a simulação — sem fricção de re-navegação</div></div>
+    </div>
+    <div class="ctx-dec" id="d4" style="display: none;"><strong>Impacto:</strong> conversão 3,2× maior que campanha genérica. E-mail enviado no dia seguinte ao abandono, quando o cliente ainda está na janela de decisão.</div>
+    <div class="ctx-sem" id="n4" style="display: none;">Sem Personalization: e-mail idêntico para toda a base. Conrado recebe "Prezado Cliente" mesmo tendo simulado ontem. Open rate baixo, zero personalização de valor ou contexto.</div>
+  </div>
+
+  <!-- ctx-5 = SMS (cenário 6) -->
+  <div id="ctx-5" class="ctx-panels">
+    <div class="ctx-section"><div class="ctx-st">Gatilho do SMS</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot r"></div><div class="ctx-ev-txt"><strong>Abandono detectado em tempo real</strong> — 3 min após saída da jornada de biometria</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot o"></div><div class="ctx-ev-txt"><strong>Janela de alta intenção</strong> — propensão de retorno decai após 30 min</div></div>
+    </div>
+    <div class="ctx-section"><div class="ctx-st">O que o SP faz diferente</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt">Nome, valor e deep link gerados dinamicamente por cliente</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt">URL única aponta para a simulação salva — retoma do ponto exato de abandono</div></div>
+    </div>
+    <div class="ctx-dec" id="d5" style="display: none;"><strong>Impacto:</strong> CTR 5,2% vs 0,8% no broadcast. 6,5× mais cliques, jornada retomada sem re-digitação. SMS enviado 3 min após abandono — dentro da janela ideal.</div>
+    <div class="ctx-sem" id="n5" style="display: none;">Sem Personalization: SMS genérico para toda a base com URL pública. Conrado recebe a mesma mensagem de quem nunca abriu o app. Propensão de 93% ignorada.</div>
+  </div>
+
+  <!-- ctx-6 = FSC Desktop (cenário 7) -->
+  <div id="ctx-6" class="ctx-panels">
+    <div class="ctx-section"><div class="ctx-st">Canal</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>Console FSC desktop</strong> — gerente abre a ficha do cliente antes do atendimento presencial</div></div>
+    </div>
+    <div class="ctx-section"><div class="ctx-st">LWC injetado na ficha</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot r"></div><div class="ctx-ev-txt"><strong>Risco de portabilidade</strong> — 3 pesquisas em 3 dias. Score de churn elevado.</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>Intenção de crédito</strong> — simulação salva, alta propensão para conversão presencial</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt">Sinais digitais + NBO + abordagem sugerida diretamente na ficha do FSC</div></div>
+    </div>
+    <div class="ctx-dec" id="d6" style="display:none;"><strong>Impacto:</strong> gerente entra no atendimento com contexto completo. Risco de portabilidade neutralizado com oferta proativa. Atendimento consultivo em vez de reativo.</div>
+    <div class="ctx-sem" id="n6" style="display: none;">Sem Personalization: ficha padrão do FSC com dados cadastrais apenas. Gerente não sabe do risco de portabilidade nem da simulação abandonada. Aborda do zero.</div>
+  </div>
+
+  <!-- ctx-8 = Intro (sem/com não se aplica) -->
+  <div id="ctx-8" class="ctx-panels">
+    <div class="ctx-section"><div class="ctx-st">Sobre esta seção</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt">Contexto estratégico do Banco Mercantil e a tese de valor do Salesforce Personalization, baseados em dados públicos do RI, Reclame Aqui, Forrester TEI e State of Marketing 2024.</div></div>
+    </div>
+    <div class="ctx-section"><div class="ctx-st">Fontes principais</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>RI Mercantil</strong> — ROAE 41,3%, base 10,2M, carteira R$&nbsp;25B</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>Forrester TEI</strong> — ROI 299%, conversão +60%, ticket médio +35%</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>Reclame Aqui</strong> — 44% das reclamações em empréstimos; 87,6% resolvidas</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>State of Marketing 2024</strong> — 42% dos times sem dados suficientes para personalização</div></div>
+    </div>
+  </div>
+
+  <!-- ctx-7 = Splash proposta de valor (sem/com não se aplica) -->
+  <div id="ctx-7" class="ctx-panels show">
+    <div class="ctx-section"><div class="ctx-st">Resumo executivo</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>7 cenários demonstrados</strong> — App (4), Campanhas (2), Operação (1)</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt"><strong>Um único motor de decisão</strong> operando em tempo real em todos os canais simultaneamente</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt"><strong>Conrado F. Lima</strong> usado como persona-âncora: aposentado CLT, 5 anos de banco, crédito pré-aprovado, risco de churn elevado</div></div>
+    </div>
+    <div class="ctx-section"><div class="ctx-st">Próximo passo sugerido</div>
+      <div class="ctx-ev"><div class="ctx-ev-dot g"></div><div class="ctx-ev-txt">Workshop de descoberta com times de CRM, Digital e Gerência de Relacionamento do Mercantil</div></div>
+      <div class="ctx-ev"><div class="ctx-ev-dot b"></div><div class="ctx-ev-txt">Mapeamento de casos de uso prioritários e definição de roadmap de 90 dias</div></div>
+    </div>
+  </div>
+
+</div><!-- ctx-panel -->
+</div><!-- shell -->
+
+<script>
+let scene = 0, mode = 'sem';
+const N = 9;          // 0–6 = cenários, 7 = splash proposta de valor, 8 = intro
+const FSC_SCENE    = 6;
+const EMAIL_SCENE  = 4;
+const SMS_SCENE    = 5;
+const SPLASH_SCENE = 7;
+const INTRO_SCENE  = 8;
+const meta = [
+  {t:'Home do App', s:'O que o cliente vê ao abrir o app'},
+  {t:'Recuperação de Abandono', s:'Simulação de Consignado CLT abandonada na biometria'},
+  {t:'Meu+ — Next Best Offer', s:'Grade de assistências ordenada por propensão individual'},
+  {t:'Chat In-App Personalizado', s:'Recomendações em tempo real baseadas no perfil do cliente'},
+  {t:'E-mail Personalizado', s:'Campanha 1:1 ativada por gatilho de abandono · Conrado F. Lima'},
+  {t:'SMS Personalizado', s:'Mensagem com nome, valor e deep link enviada 3 min após abandono'},
+  {t:'Gerente no FSC — Console Lightning', s:'Financial Services Cloud · visão desktop com Lightning Web Components'},
+  {t:'Proposta de Valor', s:'Salesforce Personalization × Banco Mercantil — do dado ao relacionamento'},
+  {t:'O Mercantil e o Imperativo da Personalização', s:'Contexto estratégico · base 10,2M · ROAE 41% · o próximo salto'},
+];
+
+// cenários especiais que não usam o phone
+const SPECIAL = [EMAIL_SCENE, SMS_SCENE, FSC_SCENE, SPLASH_SCENE, INTRO_SCENE];
+
+function goScene(n) {
+  scene = n;
+  // sempre volta para "Sem Personalization" ao trocar de cenário (0–6)
+  if (n <= 6) setModeVisual('sem');
+  // sidebar: botões reindexados por grupo
+  document.querySelectorAll('.sb-btn').forEach(b => b.classList.toggle('active', parseInt(b.dataset.scene)===n));
+  document.getElementById('scene-t').textContent = meta[n].t;
+  document.getElementById('scene-s').textContent = meta[n].s;
+  document.querySelectorAll('.sdot').forEach((d,i) => { d.classList.toggle('active', i===n); });
+  document.getElementById('btn-prev').disabled = n===0;
+  document.getElementById('btn-next').disabled = n===N-1;
+  document.querySelectorAll('.ctx-panels').forEach((el,i) => { el.classList.toggle('show', i===n); });
+  redraw();
+}
+
+function redraw() {
+  const isFSC    = scene === FSC_SCENE;
+  const isEmail  = scene === EMAIL_SCENE;
+  const isSMS    = scene === SMS_SCENE;
+  const isSplash = scene === SPLASH_SCENE;
+  const isIntro  = scene === INTRO_SCENE;
+  const isPhone  = !SPECIAL.includes(scene);
+
+  // Phone
+  document.getElementById('pwrap').style.display = isPhone ? 'block' : 'none';
+  document.getElementById('sdots').style.display = isPhone ? 'flex' : 'none';
+
+  // FSC browser frames
+  const fscSem = document.getElementById('fsc-sem');
+  const fscCom = document.getElementById('fsc-com');
+  fscSem.classList.remove('visible');
+  fscCom.classList.remove('visible');
+  if (isFSC) {
+    if (mode === 'sem') fscSem.classList.add('visible');
+    else fscCom.classList.add('visible');
+  }
+
+  // E-mail — mostra a view do modo atual
+  const emailEl = document.getElementById('camp-email');
+  emailEl.classList.toggle('visible', isEmail);
+  if (isEmail) {
+    document.getElementById('ce-sem').style.display = mode === 'sem' ? 'block' : 'none';
+    document.getElementById('ce-com').style.display = mode === 'com' ? 'block' : 'none';
+  }
+
+  // SMS — mostra a view do modo atual
+  const smsEl = document.getElementById('camp-sms');
+  smsEl.classList.toggle('visible', isSMS);
+  if (isSMS) {
+    document.getElementById('cs-sem').style.display = mode === 'sem' ? 'block' : 'none';
+    document.getElementById('cs-com').style.display = mode === 'com' ? 'block' : 'none';
+  }
+
+  // Splash proposta de valor
+  const splashEl = document.getElementById('splash-pv');
+  splashEl.classList.toggle('visible', isSplash);
+
+  // Splash intro
+  const introEl = document.getElementById('splash-intro');
+  introEl.classList.toggle('visible', isIntro);
+
+  // Phone screens
+  if (isPhone) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const el = document.getElementById(`s${scene}-${mode}`);
+    if (el) el.classList.add('active');
+  }
+
+  document.getElementById('pwrap').classList.toggle('on', mode==='com' && isPhone);
+
+  // Toggle sem/com: oculto nas telas que não precisam dele (intro, splash, FSC já usa)
+  const togBar = document.querySelector('.tog-bar');
+  if (togBar) togBar.style.visibility = (isSplash || isIntro) ? 'hidden' : 'visible';
+
+  // Context panel extras (d/n)
+  for(let i=0;i<N;i++) {
+    const d = document.getElementById(`d${i}`); const nn = document.getElementById(`n${i}`);
+    if(d) d.style.display = (i===scene && mode==='com') ? 'block' : 'none';
+    if(nn) nn.style.display = (i===scene && mode==='sem') ? 'block' : 'none';
+  }
+}
+
+function setModeVisual(m) {
+  mode = m;
+  document.getElementById('tog-sem').className = 'tog' + (m==='sem' ? ' sem-on' : '');
+  document.getElementById('tog-com').className = 'tog' + (m==='com' ? ' com-on' : '');
+}
+function setMode(m) {
+  setModeVisual(m);
+  redraw();
+}
+function nextScene() { if(scene<N-1) goScene(scene+1); }
+function prevScene() { if(scene>0) goScene(scene-1); }
+
+goScene(0); setMode('sem');
+</script>
+
+
+</body></html>
